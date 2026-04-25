@@ -7,7 +7,7 @@
 <style>
 body {
     margin: 0;
-    background: #d8d6e8;
+    background: #d8d6e8; /* 梦幻色背景 */
     font-family: "Courier New";
     height: 100vh;
     display: flex;
@@ -15,11 +15,11 @@ body {
     align-items: center;
 }
 
-/* 容器 */
+/* 书本容器 */
 .book-container {
     position: relative;
-    width: 400px;
-    height: 600px;
+    width: 500px;
+    height: 700px;
     perspective: 1500px; /* 透视效果 */
 }
 
@@ -29,12 +29,12 @@ body {
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    transform: rotateX(0);
-    transition: transform 1s ease-in-out;
+    transform: rotateY(0deg);
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .book:hover {
-    transform: rotateX(180deg); /* 翻页效果 */
+    transform: rotateY(180deg); /* 翻页效果 */
 }
 
 /* 封面 */
@@ -62,21 +62,23 @@ body {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
-/* 书本背面 */
-.back {
-    background: #fff;
-    color: transparent;
-    visibility: hidden;
+/* 返回按钮 */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 20px;
+    color: #a8a3c7;
+    cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 书本 -->
 <div class="book-container">
     <div class="book">
-        <!-- 第一页（封面） -->
+        <!-- 翻书效果的封面 -->
         <div class="cover">
             <div>illit world</div>
         </div>
@@ -88,11 +90,13 @@ body {
     </div>
 </div>
 
+<!-- 返回按钮 -->
+<div class="back-btn" onclick="goBack()">← 返回首页</div>
+
 <script>
-    // 页面翻书效果
-    document.querySelector('.book').addEventListener('click', function () {
-        this.style.transform = 'rotateX(180deg)';
-    });
+function goBack() {
+    window.location.href = "menu.html";
+}
 </script>
 
 </body>
