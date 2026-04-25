@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+，<!DOCTYPE html>
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
@@ -6,22 +6,21 @@
   <style>
     body {
       margin: 0;
-      background: #f5e5e5;
+      background: #c8c8ff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      font-family: 'Courier New', monospace;
+      font-family: 'Arial', sans-serif;
     }
 
     .book-container {
       position: relative;
-      width: 500px;
-      height: 700px;
+      width: 350px;
+      height: 500px;
       perspective: 1500px; /* 透视效果 */
     }
 
-    /* 翻书效果 */
     .book {
       position: absolute;
       width: 100%;
@@ -35,15 +34,15 @@
       transform: rotateY(180deg); /* 翻页效果 */
     }
 
-    /* 封面 */
     .cover {
-      background: #a8b1c8;
+      background: url('book_cover_image.jpg'); /* 替换为您提供的封面图 */
+      background-size: cover;
       text-align: center;
       display: flex;
       justify-content: center;
       align-items: center;
       color: white;
-      font-size: 48px;
+      font-size: 36px;
       font-weight: bold;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
       position: absolute;
@@ -51,10 +50,10 @@
       height: 100%;
     }
 
-    /* 内页 */
     .page {
-      background: #c6d1d9;
+      background: #f1f1f1;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       color: #333;
@@ -65,12 +64,12 @@
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     }
 
-    /* 按钮样式 */
     .button {
-      font-size: 18px;
-      margin: 10px;
-      background-color: rgba(255, 255, 255, 0.7);
-      padding: 12px 24px;
+      font-size: 20px;
+      margin: 20px;
+      padding: 10px 20px;
+      background-color: #ffffff;
+      color: #555;
       border-radius: 10px;
       border: none;
       cursor: pointer;
@@ -81,41 +80,27 @@
     .button:hover {
       background-color: rgba(255, 255, 255, 0.9);
     }
-
-    .back-btn {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 20px;
-      color: #a8a3c7;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
 
+<!-- 书籍封面 -->
 <div class="book-container">
   <div class="book">
-    <!-- 封面 -->
-    <div class="cover">illit world</div>
+    <div class="cover" onclick="location.href='page.html'">
+      <span>illit world</span>
+    </div>
 
-    <!-- 内页 -->
+    <!-- 打开的书 -->
     <div class="page">
       <div>
-        <button class="button" onclick="location.href='menu.html'">进入主页</button>
+        <button class="button" onclick="location.href='game.html'">换装小游戏</button>
+        <button class="button" onclick="location.href='music.html'">播放音乐</button>
+        <button class="button" onclick="location.href='dream.html'">梦核空间</button>
       </div>
     </div>
   </div>
 </div>
-
-<!-- 返回按钮 -->
-<div class="back-btn" onclick="goBack()">← 返回首页</div>
-
-<script>
-  function goBack() {
-    window.location.href = "index.html";
-  }
-</script>
 
 </body>
 </html>
