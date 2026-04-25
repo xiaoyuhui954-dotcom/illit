@@ -1,106 +1,15 @@
-，<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>illit world</title>
-  <style>
-    body {
-      margin: 0;
-      background: #c8c8ff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: 'Arial', sans-serif;
-    }
-
-    .book-container {
-      position: relative;
-      width: 350px;
-      height: 500px;
-      perspective: 1500px; /* 透视效果 */
-    }
-
-    .book {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transform: rotateY(0deg);
-      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .book:hover {
-      transform: rotateY(180deg); /* 翻页效果 */
-    }
-
-    .cover {
-      background: url('book_cover_image.jpg'); /* 替换为您提供的封面图 */
-      background-size: cover;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 36px;
-      font-weight: bold;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
-
-    .page {
-      background: #f1f1f1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: #333;
-      font-size: 24px;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    }
-
-    .button {
-      font-size: 20px;
-      margin: 20px;
-      padding: 10px 20px;
-      background-color: #ffffff;
-      color: #555;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease;
-    }
-
-    .button:hover {
-      background-color: rgba(255, 255, 255, 0.9);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<!-- 书籍封面 -->
-<div class="book-container">
-  <div class="book">
-    <div class="cover" onclick="location.href='page.html'">
-      <span>illit world</span>
-    </div>
-
-    <!-- 打开的书 -->
-    <div class="page">
-      <div>
-        <button class="button" onclick="location.href='game.html'">换装小游戏</button>
-        <button class="button" onclick="location.href='music.html'">播放音乐</button>
-        <button class="button" onclick="location.href='dream.html'">梦核空间</button>
-      </div>
-    </div>
+  <div class="book-cover">
+    <h1>illit world</h1>
+    <button onclick="location.href='menu.html'">点击进入首页</button>
   </div>
-</div>
-
 </body>
 </html>
