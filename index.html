@@ -7,53 +7,93 @@
 <style>
 body {
     margin: 0;
-    background: #d8d6e8; /* 低饱和梦幻色 */
+    background: #d8d6e8;
+    font-family: "Courier New";
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    font-family: "Courier New";
 }
 
-/* 书本 */
+/* 容器 */
+.book-container {
+    position: relative;
+    width: 400px;
+    height: 600px;
+    perspective: 1500px; /* 透视效果 */
+}
+
+/* 翻书效果 */
 .book {
-    width: 300px;
-    height: 400px;
-    background: #f5f4fa;
-    border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.3s;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateX(0);
+    transition: transform 1s ease-in-out;
 }
 
 .book:hover {
-    transform: scale(1.05);
+    transform: rotateX(180deg); /* 翻页效果 */
 }
 
-/* 标题 */
-.title {
+/* 封面 */
+.cover {
+    background: #f5f4fa;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #a8a3c7;
-    font-size: 28px;
-    letter-spacing: 2px;
+    font-size: 48px;
+    font-weight: bold;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* 页面 */
+.page {
+    background: #cfd3e6;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #555;
+    font-size: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* 书本背面 */
+.back {
+    background: #fff;
+    color: transparent;
+    visibility: hidden;
 }
 </style>
 </head>
 
 <body>
 
-<div class="book" onclick="openBook()">
-    <div class="title">illit world</div>
+<!-- 书本 -->
+<div class="book-container">
+    <div class="book">
+        <!-- 第一页（封面） -->
+        <div class="cover">
+            <div>illit world</div>
+        </div>
+
+        <!-- 第二页 -->
+        <div class="page" onclick="location.href='menu.html'">
+            <div>点击进入主页</div>
+        </div>
+    </div>
 </div>
 
 <script>
-function openBook() {
-    window.location.href = "menu.html";
-}
+    // 页面翻书效果
+    document.querySelector('.book').addEventListener('click', function () {
+        this.style.transform = 'rotateX(180deg)';
+    });
 </script>
 
 </body>
 </html>
-  
