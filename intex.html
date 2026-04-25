@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>ILLIT DREAM WORLD</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(135deg,#ffd6ec,#c8e8ff);
+  font-family:sans-serif;
+}
+
+.box{
+  text-align:center;
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.3);
+  padding:40px;
+  border-radius:30px;
+}
+
+h1{
+  color:white;
+  letter-spacing:3px;
+}
+
+button{
+  margin:10px;
+  padding:12px 20px;
+  border:none;
+  border-radius:20px;
+  background:white;
+  cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+  <h1>☁ ILLIT DREAM WORLD ☁</h1>
+
+  <button onclick="go('game.html')">🎮 换装</button>
+  <button onclick="alert('音乐页面还没做')">🎵 音乐</button>
+  <button onclick="alert('梦核空间开发中')">☁ 梦核空间</button>
+</div>
+
+<script>
+function go(page){
+  window.location.href = page;
+}
+</script>
+
+</body>
+</html>
