@@ -1,91 +1,28 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="UTF-8">
-<title>换装小游戏</title>
-
-<style>
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background: linear-gradient(#ffe0f0,#e0f7ff);
-  font-family:sans-serif;
-}
-
-.container{
-  display:flex;
-  gap:40px;
-}
-
-.character{
-  position:relative;
-  width:200px;
-  height:400px;
-  background:#fff;
-  border-radius:20px;
-}
-
-.character img{
-  position:absolute;
-  width:100%;
-}
-
-.controls{
-  display:flex;
-  flex-direction:column;
-}
-
-button{
-  margin:5px;
-  padding:10px;
-  border:none;
-  border-radius:15px;
-  cursor:pointer;
-}
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>换装小游戏</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <div class="game-container">
+    <div class="character">
+      <img id="character-body" src="body.png" alt="Character Body">
+      <img id="character-clothes" src="default_clothes.png" alt="Clothes" class="clothes">
+    </div>
 
-<div class="container">
-
-  <!-- 人物 -->
-  <div class="character">
-    <img id="top" src="">
-    <img id="bottom" src="">
+    <div class="clothes-options">
+      <button onclick="changeClothes('clothes1.png')">穿衣1</button>
+      <button onclick="changeClothes('clothes2.png')">穿衣2</button>
+      <button onclick="changeClothes('clothes3.png')">穿衣3</button>
+    </div>
+    <div class="back-button">
+      <button onclick="window.location.href='menu.html'">返回菜单</button>
+    </div>
   </div>
 
-  <!-- 控制 -->
-  <div class="controls">
-    <button onclick="changeTop('https://i.imgur.com/8QfQZ6p.png')">粉色上衣</button>
-    <button onclick="changeTop('https://i.imgur.com/qIufhof.png')">蓝色上衣</button>
-
-    <button onclick="changeBottom('https://i.imgur.com/3ZQ3Z3Z.png')">短裙</button>
-    <button onclick="changeBottom('https://i.imgur.com/l49aYS3.png')">牛仔裤</button>
-
-    <button onclick="clearAll()">清空</button>
-  </div>
-
-</div>
-
-<script>
-function changeTop(src){
-  document.getElementById('top').src = src;
-}
-
-function changeBottom(src){
-  document.getElementById('bottom').src = src;
-}
-
-function clearAll(){
-  document.getElementById('top').src = '';
-  document.getElementById('bottom').src = '';
-}
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
