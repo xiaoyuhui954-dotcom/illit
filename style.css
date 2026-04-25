@@ -1,0 +1,36 @@
+/* 设置背景色：建议用那种亮粉色或梦幻蓝 */
+body {
+    background-color: #ffc0cb; /* 粉色背景 */
+    background-image: radial-gradient(#ffffff 1px, transparent 1px);
+    background-size: 20px 20px; /* 这种点状背景很有 Y2K 感觉 */
+    font-family: "Courier New", Courier, monospace;
+    padding: 20px;
+}
+
+/* 桌面图标样式 */
+.desktop-icons {
+    color: white;
+    font-size: 14px;
+    text-shadow: 1px 1px #000;
+}
+
+/* 窗口内部调整 */
+.window-body {
+    background: #ffffff !important; /* 窗口内部变白，方便看图 */
+}
+
+/* 简单的呼吸灯效果，让网站“活”起来 */
+h2 {
+    animation: blinker 1.5s linear infinite;
+    color: #ff4081;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* 图片悬停效果 */
+img:hover {
+    filter: sepia(50%) hue-rotate(300deg); /* 鼠标放上去变粉色滤镜 */
+    cursor: crosshair; /* 鼠标变成十字星 */
+}
