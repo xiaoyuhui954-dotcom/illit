@@ -2,101 +2,58 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>ILLIT DREAM WORLD</title>
+<title>illit world</title>
 
 <style>
-body{
-  margin:0;
-  height:100vh;
-  background: linear-gradient(135deg,#ffd6f9,#cceeff);
-  font-family: "Arial";
-  overflow:hidden;
+body {
+    margin: 0;
+    background: #d8d6e8; /* 低饱和梦幻色 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: "Courier New";
 }
 
-/* 背景漂浮光点 */
-.bubble{
-  position:absolute;
-  width:10px;
-  height:10px;
-  background:white;
-  border-radius:50%;
-  opacity:0.5;
-  animation: float 6s infinite;
+/* 书本 */
+.book {
+    width: 300px;
+    height: 400px;
+    background: #f5f4fa;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-@keyframes float{
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-30px);}
-  100%{transform:translateY(0);}
+.book:hover {
+    transform: scale(1.05);
 }
 
-/* 主卡片 */
-.container{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center;
-  background:rgba(255,255,255,0.2);
-  backdrop-filter:blur(15px);
-  padding:40px;
-  border-radius:30px;
-  box-shadow:0 0 30px rgba(255,255,255,0.3);
-}
-
-h1{
-  color:white;
-  font-size:36px;
-  margin-bottom:20px;
-}
-
-/* 卡片按钮 */
-.card{
-  display:inline-block;
-  margin:10px;
-  padding:20px 30px;
-  border-radius:20px;
-  background:rgba(255,255,255,0.5);
-  backdrop-filter:blur(10px);
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.card:hover{
-  transform:scale(1.1);
-  background:white;
+/* 标题 */
+.title {
+    color: #a8a3c7;
+    font-size: 28px;
+    letter-spacing: 2px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 动态背景 -->
-<script>
-for(let i=0;i<40;i++){
-  let b=document.createElement("div");
-  b.className="bubble";
-  b.style.top=Math.random()*100+"%";
-  b.style.left=Math.random()*100+"%";
-  document.body.appendChild(b);
-}
-</script>
-
-<!-- 主内容 -->
-<div class="container">
-  <h1>☁ ILLIT DREAM WORLD ☁</h1>
-
-  <div class="card" onclick="go('game.html')">🎮 换装</div>
-  <div class="card" onclick="go('music.html')">🎵 音乐</div>
-  <div class="card" onclick="go('dream.html')">☁ 梦核空间</div>
-
+<div class="book" onclick="openBook()">
+    <div class="title">illit world</div>
 </div>
 
 <script>
-function go(page){
-  window.location.href = page;
+function openBook() {
+    window.location.href = "menu.html";
 }
 </script>
 
 </body>
 </html>
+  
