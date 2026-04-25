@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>menu</title>
+
+<style>
+body {
+    margin: 0;
+    background: #cfd3e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 容器 */
+.container {
+    display: flex;
+    gap: 40px;
+}
+
+/* 按钮卡片 */
+.card {
+    width: 120px;
+    height: 160px;
+    background: #f4f3fb;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    flex-direction: column;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.text {
+    margin-top: 10px;
+    color: #888;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card" onclick="go('dress.html')">
+        🎀
+        <div class="text">dress up</div>
+    </div>
+
+    <div class="card" onclick="go('music.html')">
+        🎧
+        <div class="text">music</div>
+    </div>
+
+    <div class="card" onclick="go('other.html')">
+        ✨
+        <div class="text">other</div>
+    </div>
+
+</div>
+
+<script>
+function go(page) {
+    window.location.href = page;
+}
+</script>
+
+</body>
+</html>
