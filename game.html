@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>换装小游戏</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(#ffe0f0,#e0f7ff);
+  font-family:sans-serif;
+}
+
+.container{
+  display:flex;
+  gap:40px;
+}
+
+.character{
+  position:relative;
+  width:200px;
+  height:400px;
+  background:#fff;
+  border-radius:20px;
+}
+
+.character img{
+  position:absolute;
+  width:100%;
+}
+
+.controls{
+  display:flex;
+  flex-direction:column;
+}
+
+button{
+  margin:5px;
+  padding:10px;
+  border:none;
+  border-radius:15px;
+  cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- 人物 -->
+  <div class="character">
+    <img id="top" src="">
+    <img id="bottom" src="">
+  </div>
+
+  <!-- 控制 -->
+  <div class="controls">
+    <button onclick="changeTop('https://i.imgur.com/8QfQZ6p.png')">粉色上衣</button>
+    <button onclick="changeTop('https://i.imgur.com/qIufhof.png')">蓝色上衣</button>
+
+    <button onclick="changeBottom('https://i.imgur.com/3ZQ3Z3Z.png')">短裙</button>
+    <button onclick="changeBottom('https://i.imgur.com/l49aYS3.png')">牛仔裤</button>
+
+    <button onclick="clearAll()">清空</button>
+  </div>
+
+</div>
+
+<script>
+function changeTop(src){
+  document.getElementById('top').src = src;
+}
+
+function changeBottom(src){
+  document.getElementById('bottom').src = src;
+}
+
+function clearAll(){
+  document.getElementById('top').src = '';
+  document.getElementById('bottom').src = '';
+}
+</script>
+
+</body>
+</html>
