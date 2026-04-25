@@ -1,108 +1,120 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="UTF-8">
-<title>illit world</title>
+  <meta charset="UTF-8">
+  <title>illit world</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f5e5e5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Courier New', monospace;
+    }
 
-<style>
-body {
-    margin: 0;
-    background: #d8d6e8;
-    font-family: "Courier New";
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .book-container {
+      position: relative;
+      width: 500px;
+      height: 700px;
+      perspective: 1500px; /* 透视效果 */
+    }
 
-/* 书本容器 */
-.book-container {
-    position: relative;
-    width: 500px;
-    height: 700px;
-    perspective: 1500px; /* 透视效果 */
-}
+    /* 翻书效果 */
+    .book {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transform: rotateY(0deg);
+      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-/* 翻书效果 */
-.book {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transform: rotateY(0deg);
-    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-}
+    .book:hover {
+      transform: rotateY(180deg); /* 翻页效果 */
+    }
 
-.book:hover {
-    transform: rotateY(180deg); /* 翻页效果 */
-}
+    /* 封面 */
+    .cover {
+      background: #a8b1c8;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 48px;
+      font-weight: bold;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
 
-/* 封面 */
-.cover {
-    background: #f5f4fa;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #a8a3c7;
-    font-size: 48px;
-    font-weight: bold;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
+    /* 内页 */
+    .page {
+      background: #c6d1d9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+      font-size: 24px;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
 
-/* 页面 */
-.page {
-    background: #cfd3e6;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #555;
-    font-size: 24px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
+    /* 按钮样式 */
+    .button {
+      font-size: 18px;
+      margin: 10px;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
+    }
 
-/* 返回按钮 */
-.back-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 20px;
-    color: #a8a3c7;
-    cursor: pointer;
-}
-</style>
+    .button:hover {
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 20px;
+      color: #a8a3c7;
+      cursor: pointer;
+    }
+  </style>
 </head>
-
 <body>
 
 <div class="book-container">
-    <div class="book">
-        <!-- 翻书效果的封面 -->
-        <div class="cover">
-            <div>illit world</div>
-        </div>
+  <div class="book">
+    <!-- 封面 -->
+    <div class="cover">illit world</div>
 
-        <!-- 第二页 -->
-        <div class="page" onclick="location.href='menu.html'">
-            <div>点击进入主页</div>
-        </div>
+    <!-- 内页 -->
+    <div class="page">
+      <div>
+        <button class="button" onclick="location.href='menu.html'">进入主页</button>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- 返回按钮 -->
 <div class="back-btn" onclick="goBack()">← 返回首页</div>
 
 <script>
-function goBack() {
-    window.location.href = "menu.html";
-}
+  function goBack() {
+    window.location.href = "index.html";
+  }
 </script>
 
 </body>
