@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/7.css">
+    <link rel="stylesheet" href="style.css">
+    <title>ILLIT Music Player</title>
+</head>
+<body style="background: none; padding: 20px;"> <div class="window" style="width: 300px;">
+        <div class="title-bar">
+            <div class="title-bar-text">CD_Player.exe</div>
+        </div>
+        <div class="window-body">
+            <div style="text-align: center; background: #000; padding: 10px; margin-bottom: 10px;">
+                <img src="https://via.placeholder.com/150" id="album-art" style="border-radius: 50%; border: 2px solid #fff;">
+            </div>
+
+            <p id="song-title" style="text-align: center; font-weight: bold;">请选择歌曲</p>
+            
+            <audio id="main-player" controls style="width: 100%;">
+                <source src="" type="audio/mpeg">
+            </audio>
+
+            <hr>
+            
+            <ul class="tree-view">
+              <li>
+                <a href="#" onclick="changeSong('Magnetic.mp3', 'Magnetic - ILLIT')">01. Magnetic</a>
+              </li>
+              <li>
+                <a href="#" onclick="changeSong('LuckyGirl.mp3', 'Lucky Girl Syndrome')">02. Lucky Girl Syndrome</a>
+              </li>
+              <li>
+                <a href="#" onclick="changeSong('Midnight.mp3', 'Midnight Fiction')">03. Midnight Fiction</a>
+              </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function changeSong(file, title) {
+            const player = document.getElementById('main-player');
+            const titleDisplay = document.getElementById('song-title');
+            player.src = file;
+            titleDisplay.innerText = title;
+            player.play();
+        }
+    </script>
+</body>
+</html>
