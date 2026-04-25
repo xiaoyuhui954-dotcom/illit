@@ -2,49 +2,136 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <title>ILLIT Music Player v1.0</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
-    <title>ILLIT Music Player</title>
+    <style>
+        body { background-color: #f8bbd0; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        
+        /* 播放器专属样式 */
+        .player-container { width: 320px; }
+        
+        /* 模拟 LCD 屏幕 */
+        .lcd-screen {
+            background: #222;
+            color: #0f0; /* 经典的荧光绿 */
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            box-shadow: inset 0 0 10px #000;
+            text-align: center;
+        }
+
+        /* 旋转的专辑图 */
+        .disc {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid #333;
+            margin: 0 auto 10px;
+            background: url('IMG_4415.jpeg') no-repeat center; /* 默认先用你的合照 */
+            background-size: cover;
+            animation: rotate 5s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .playing .disc { animation-play-state: running; }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 歌曲列表样式 */
+        .playlist {
+            max-height: 150px;
+            overflow-y: auto;
+            background: white;
+            border: 1px inset #808080;
+            padding: 5px;
+            list-style: none;
+            margin: 10px 0;
+        }
+
+        .playlist li {
+            padding: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            border-bottom: 1px dotted #ccc;
+        }
+
+        .playlist li:hover { background: #000080; color: white; }
+
+        /* 复古控制按钮 */
+        .controls { display: flex; justify-content: space-around; margin-top: 10px; }
+    </style>
 </head>
-<body style="background: none; padding: 20px;"> <div class="window" style="width: 300px;">
+<body id="player-body">
+
+<div class="player-container">
+    <div class="window">
         <div class="title-bar">
-            <div class="title-bar-text">CD_Player.exe</div>
+            <div class="title-bar-text">ILLIT_Player.exe</div>
+            <div class="title-bar-controls">
+                <button aria-label="Close" onclick="window.location.href='index.html'"></button>
+            </div>
         </div>
+        
         <div class="window-body">
-            <div style="text-align: center; background: #000; padding: 10px; margin-bottom: 10px;">
-                <img src="https://via.placeholder.com/150" id="album-art" style="border-radius: 50%; border: 2px solid #fff;">
+            <div class="lcd-screen">
+                <div class="disc" id="disc"></div>
+                <div id="status">STOPPED</div>
+                <div id="song-name" style="font-size: 14px; overflow: hidden; white-space: nowrap;">Wait for play...</div>
             </div>
 
-            <p id="song-title" style="text-align: center; font-weight: bold;">请选择歌曲</p>
-            
-            <audio id="main-player" controls style="width: 100%;">
+            <audio id="audio-element">
                 <source src="" type="audio/mpeg">
             </audio>
 
-            <hr>
-            
-            <ul class="tree-view">
-              <li>
-                <a href="#" onclick="changeSong('Magnetic.mp3', 'Magnetic - ILLIT')">01. Magnetic</a>
-              </li>
-              <li>
-                <a href="#" onclick="changeSong('LuckyGirl.mp3', 'Lucky Girl Syndrome')">02. Lucky Girl Syndrome</a>
-              </li>
-              <li>
-                <a href="#" onclick="changeSong('Midnight.mp3', 'Midnight Fiction')">03. Midnight Fiction</a>
-              </li>
+            <div class="controls">
+                <button onclick="playAudio()">播放 ▶</button>
+                <button onclick="pauseAudio()">暂停 ⏸</button>
+            </div>
+
+            <ul class="playlist">
+                <li onclick="loadSong('Magnetic.mp3', 'Magnetic - ILLIT')">🎵 01. Magnetic</li>
+                <li onclick="loadSong('LuckyGirl.mp3', 'Lucky Girl Syndrome')">🎵 02. Lucky Girl Syndrome</li>
+                <li onclick="loadSong('Midnight.mp3', 'Midnight Fiction')">🎵 03. Midnight Fiction</li>
             </ul>
+
+            <p style="text-align: center; font-size: 10px; color: #666;">ILLIT World Audio System</p>
         </div>
     </div>
+</div>
 
-    <script>
-        function changeSong(file, title) {
-            const player = document.getElementById('main-player');
-            const titleDisplay = document.getElementById('song-title');
-            player.src = file;
-            titleDisplay.innerText = title;
-            player.play();
+<script>
+    const audio = document.getElementById('audio-element');
+    const disc = document.getElementById('disc');
+    const status = document.getElementById('status');
+    const songName = document.getElementById('song-name');
+    const playerBody = document.getElementById('player-body');
+
+    function loadSong(file, name) {
+        audio.src = file;
+        songName.innerText = name;
+        playAudio();
+    }
+
+    function playAudio() {
+        if(audio.src) {
+            audio.play();
+            playerBody.classList.add('playing');
+            status.innerText = "PLAYING...";
         }
-    </script>
+    }
+
+    function pauseAudio() {
+        audio.pause();
+        playerBody.classList.remove('playing');
+        status.innerText = "PAUSED";
+    }
+</script>
+
 </body>
 </html>
