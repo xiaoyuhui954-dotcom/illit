@@ -8,17 +8,15 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
-        /* 加载层全屏样式 */
         #loading-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #fce4ec; /* 粉色背景 */
+            background: #fce4ec;
             display: flex; justify-content: center; align-items: center;
             z-index: 10000;
             transition: opacity 0.5s;
         }
         .loading-content { text-align: center; }
-        /* 进度条外框 */
         .bar-border {
             width: 200px; height: 15px; 
             background: #fff; border: 2px solid #ff80ab; 
@@ -74,31 +72,39 @@
     </div>
 
     <script>
-        // 进度条逻辑
-        window.onload = function() {
-            let bar = document.getElementById('progress-bar');
-            let text = document.getElementById('progress-text');
-            let screen = document.getElementById('loading-screen');
-            let width = 0;
+        // 检测是否是从内部返回的
+        const urlParams = new URLSearchParams(window.location.search);
+        const screen = document.getElementById('loading-screen');
 
-            let timer = setInterval(() => {
-                width += Math.floor(Math.random() * 10) + 2; 
-                if (width >= 100) {
-                    width = 100;
-                    clearInterval(timer);
-                    setTimeout(() => {
-                        if(screen) {
-                            screen.style.opacity = '0';
-                            setTimeout(() => screen.style.display = 'none', 500);
-                        }
-                    }, 500);
-                }
-                if(bar) bar.style.width = width + '%';
-                if(text) text.innerText = width + '%';
-            }, 100);
-        };
+        if (urlParams.get('from') === 'internal') {
+            // 如果链接里有 ?from=internal，直接关掉加载层，不跑进度条
+            screen.style.display = 'none';
+        } else {
+            // 否则正常跑进度条
+            window.onload = function() {
+                let bar = document.getElementById('progress-bar');
+                let text = document.getElementById('progress-text');
+                let width = 0;
 
-        // 鼠标星星特效
+                let timer = setInterval(() => {
+                    width += Math.floor(Math.random() * 10) + 5; 
+                    if (width >= 100) {
+                        width = 100;
+                        clearInterval(timer);
+                        setTimeout(() => {
+                            if(screen) {
+                                screen.style.opacity = '0';
+                                setTimeout(() => screen.style.display = 'none', 500);
+                            }
+                        }, 500);
+                    }
+                    if(bar) bar.style.width = width + '%';
+                    if(text) text.innerText = width + '%';
+                }, 80);
+            };
+        }
+
+        // 星星特效逻辑
         document.addEventListener('mousemove', function(e) {
             var star = document.createElement('div');
             star.innerHTML = '✨';
