@@ -2,42 +2,187 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT Record Store 💿</title>
+    <title>ILLIT Music Center 💿</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        .album-wall { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 10px; }
-        .album-wall a:last-child { grid-column: span 2; justify-self: center; }
-        .album-art { width: 140px; height: 140px; border: 2px solid #333; object-fit: cover; }
-        .album-title { font-size: 11px; text-align: center; margin-top: 5px; color: #333; }
-        .cd-case { text-decoration: none; transition: transform 0.2s; }
-        .cd-case:hover { transform: scale(1.05); }
+        /* 布局控制 */
+        .music-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        /* 左侧唱片架样式 */
+        .album-shelf {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            background: #fff;
+            padding: 15px;
+            border: 2px solid #333;
+            box-shadow: inset 2px 2px 0 #dfdfdf;
+        }
+
+        .cd-item {
+            cursor: pointer;
+            width: 120px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .cd-item:hover { transform: scale(1.1); }
+        .cd-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border: 2px solid #333;
+        }
+
+        /* 右侧播放器旋转动画 */
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .disk {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 6px solid #333;
+            object-fit: cover;
+            animation: rotate 5s linear infinite;
+            animation-play-state: paused;
+            box-shadow: 0 0 15px rgba(255, 128, 171, 0.5);
+        }
+
+        /* 星星特效基础样式 */
+        .star-effect {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 24px; /* 让星星更大更明显 */
+            user-select: none;
+        }
     </style>
 </head>
-<body style="background: #fce4ec; padding: 20px;">
-    <div class="window" style="width: 450px; margin: 0 auto;">
-        <div class="title-bar"><div class="title-bar-text">ILLIT_Store.sys</div></div>
-        <div class="window-body">
-            <h3 style="text-align: center;">请选择一张 CD：</h3>
-            <div class="album-wall">
-                <a href="player.html?song=0" class="cd-case">
-                    <img src="IMG_4457.jpeg" class="album-art">
-                    <p class="album-title">NOT CUTE ANYMORE</p>
-                </a>
-                <a href="player.html?song=1" class="cd-case">
-                    <img src="IMG_4458.jpeg" class="album-art">
-                    <p class="album-title">Billyeoon Goyangi</p>
-                </a>
-                <a href="player.html?song=2" class="cd-case">
-                    <img src="IMG_4456.jpeg" class="album-art">
-                    <p class="album-title">Magnetic</p>
-                </a>
-            </div>
-            <hr>
-            <div style="text-align: center;">
-                <button onclick="window.location.href='index.html?from=internal'">返回桌面</button>
+<body style="background: #fce4ec; padding: 20px; overflow-x: hidden;">
+
+    <div class="music-container">
+        
+        <div class="window" style="width: 320px;">
+            <div class="title-bar"><div class="title-bar-text">Album_Shelf.sys</div></div>
+            <div class="window-body">
+                <p style="margin-top: 0; font-weight: bold;">💿 选择一张唱片放入播放器：</p>
+                <div class="album-shelf">
+                    <div class="cd-item" onclick="changeSong(0)">
+                        <img src="IMG_4457.jpeg" alt="Not Cute Anymore">
+                        <p style="font-size: 10px;">NOT CUTE ANYMORE</p>
+                    </div>
+                    <div class="cd-item" onclick="changeSong(1)">
+                        <img src="IMG_4458.jpeg" alt="Billyeoon Goyangi">
+                        <p style="font-size: 10px;">Billyeoon Goyangi</p>
+                    </div>
+                    <div class="cd-item" onclick="changeSong(2)">
+                        <img src="IMG_4456.jpeg" alt="Magnetic">
+                        <p style="font-size: 10px;">Magnetic</p>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="window" style="width: 320px;">
+            <div class="title-bar">
+                <div class="title-bar-text">ILLIT_Player.exe</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Close" onclick="window.location.href='index.html?from=internal'"></button>
+                </div>
+            </div>
+            <div class="window-body" style="text-align: center;">
+                <div style="margin: 20px 0;">
+                    <img id="p-cover" src="IMG_4457.jpeg" class="disk">
+                </div>
+                <h3 id="p-title" style="margin: 10px 0 5px 0; color: #ff4081;">NOT CUTE ANYMORE</h3>
+                <p style="color: #666; font-size: 12px; margin-bottom: 15px;">Artist: ILLIT (아일릿)</p>
+                
+                <audio id="main-audio" controls style="width: 100%;">
+                    <source id="audio-src" src="magnetic.mp3.mp3" type="audio/mpeg">
+                </audio>
+
+                <hr>
+                <div style="padding: 10px 0;">
+                    <button onclick="window.location.href='index.html?from=internal'">返回桌面系统</button>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <script>
+        // --- 1. 音乐控制逻辑 ---
+        const songs = [
+            { title: "NOT CUTE ANYMORE", cover: "IMG_4457.jpeg", file: "magnetic.mp3.mp3" },
+            { title: "Billyeoon Goyangi", cover: "IMG_4458.jpeg", file: "magnetic.mp3.mp3" },
+            { title: "Magnetic", cover: "IMG_4456.jpeg", file: "magnetic.mp3.mp3" }
+        ];
+
+        const audio = document.getElementById('main-audio');
+        const cover = document.getElementById('p-cover');
+        const title = document.getElementById('p-title');
+        const source = document.getElementById('audio-src');
+
+        function changeSong(index) {
+            const song = songs[index];
+            title.innerText = song.title;
+            cover.src = song.cover;
+            source.src = song.file;
+            audio.load();
+            audio.play().catch(() => {
+                console.log("需要用户点击后才能自动播放");
+            });
+            cover.style.animationPlayState = 'running';
+        }
+
+        audio.onplay = () => cover.style.animationPlayState = 'running';
+        audio.onpause = () => cover.style.animationPlayState = 'paused';
+
+        // --- 2. 升级版显眼星星特效 ---
+        document.addEventListener('mousemove', function(e) {
+            const star = document.createElement('div');
+            // 随机选一个颜色和符号
+            const colors = ['#ff80ab', '#f48fb1', '#ce93d8', '#ffffff'];
+            const icons = ['✨', '⭐', '🌸'];
+            
+            star.className = 'star-effect';
+            star.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            star.style.color = colors[Math.floor(Math.random() * colors.length)];
+            
+            star.style.left = e.clientX + 'px';
+            star.style.top = e.clientY + 'px';
+            
+            document.body.appendChild(star);
+
+            let speedY = Math.random() * 2 + 1; // 下落速度
+            let speedX = (Math.random() - 0.5) * 2; // 左右轻微漂移
+            let opacity = 1;
+
+            const animation = setInterval(() => {
+                opacity -= 0.02;
+                let currentTop = parseFloat(star.style.top);
+                let currentLeft = parseFloat(star.style.left);
+                
+                star.style.top = (currentTop + speedY) + 'px';
+                star.style.left = (currentLeft + speedX) + 'px';
+                star.style.opacity = opacity;
+                star.style.transform = `scale(${opacity + 0.5}) rotate(${currentTop}deg)`;
+
+                if (opacity <= 0) {
+                    clearInterval(animation);
+                    star.remove();
+                }
+            }, 30);
+        });
+    </script>
 </body>
 </html>
