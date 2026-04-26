@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>ILLIT Guestbook 💌✨</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
-    <link rel="stylesheet" href="style.css">
     <style>
         :root {
             --y2k-pink: #ff80ab;
@@ -23,12 +22,11 @@
         }
         @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* 装饰层：漂浮的爱心和星星 */
         .deco-container { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
         .deco-item { position: absolute; animation: float 8s ease-in-out infinite; opacity: 0.5; font-size: 24px; }
         @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(20deg); } }
 
-        /* --- 2. 留言板主体 (玻璃拟态) --- */
+        /* --- 2. 留言板主体 --- */
         .board-window {
             width: 450px;
             background: var(--glass-bg) !important;
@@ -44,59 +42,60 @@
             border-radius: 18px 18px 0 0 !important;
         }
 
-        /* --- 3. 留言列表样式 --- */
+        /* --- 3. 留言列表（修复滑动关键） --- */
         #message-list {
-            height: 250px;
-            background: rgba(255, 255, 255, 0.5);
+            height: 300px; /* 固定高度 */
+            background: rgba(255, 255, 255, 0.6);
             border: 2px solid var(--y2k-pink);
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 15px;
-            overflow-y: auto;
+            overflow-y: scroll; /* 强制显示滚动条区域 */
+            overflow-x: hidden;
             padding: 15px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--y2k-pink) transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        /* 每一条留言的泡泡感 */
+        /* 自定义滚动条样式 */
+        #message-list::-webkit-scrollbar { width: 8px; }
+        #message-list::-webkit-scrollbar-thumb { background: var(--y2k-pink); border-radius: 10px; }
+        #message-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.3); }
+
         .msg-entry {
             background: white;
-            border: 1px solid #eee;
             border-radius: 15px 15px 15px 0;
-            padding: 8px 12px;
-            margin-bottom: 10px;
+            padding: 10px 15px;
+            position: relative;
             font-size: 13px;
             color: #444;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
             animation: slideIn 0.3s ease-out;
+            word-wrap: break-word; /* 自动换行 */
         }
+
+        /* 删除按钮样式 */
+        .delete-btn {
+            position: absolute;
+            top: 5px; right: 8px;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .delete-btn:hover { color: var(--y2k-pink); }
+
         @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* 输入框和按钮 */
         .input-group { display: flex; gap: 8px; }
-        
         input[type="text"] {
-            flex: 1;
-            border-radius: 20px;
-            padding: 8px 15px;
-            border: 2px solid var(--y2k-pink);
-            outline: none;
+            flex: 1; border-radius: 20px; padding: 8px 15px;
+            border: 2px solid var(--y2k-pink); outline: none;
         }
 
         .send-btn {
-            background: var(--y2k-pink);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 0 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .send-btn:hover { background: var(--y2k-purple); transform: scale(1.05); }
-
-        .back-link {
-            display: block; margin-top: 15px; text-align: center;
-            font-size: 11px; color: var(--y2k-pink); text-decoration: underline; cursor: pointer;
+            background: var(--y2k-pink); color: white; border: none;
+            border-radius: 20px; padding: 0 20px; font-weight: bold; cursor: pointer;
         }
     </style>
 </head>
@@ -110,29 +109,31 @@
         </div>
         <div class="window-body">
             <div style="text-align: center; margin-bottom: 10px;">
-                <span style="font-size: 18px;">🎀</span>
-                <strong style="color: var(--y2k-pink);">Lucky Message Board</strong>
-                <span style="font-size: 18px;">🎀</span>
+                <strong style="color: var(--y2k-pink);">🎀 Lucky Message Board 🎀</strong>
             </div>
 
             <div id="message-list">
-                <div class="msg-entry">✨ 欢迎来到 ILLIT 的梦幻留言板！</div>
-                <div class="msg-entry">💖 在这里留下你想对成员们说的话吧~</div>
+                <div class="msg-entry">
+                    ✨ 欢迎来到我们的留言板！
+                    <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+                </div>
             </div>
 
             <div class="input-group">
-                <input id="msg-input" type="text" placeholder="输入你的梦幻留言...">
+                <input id="msg-input" type="text" placeholder="输入你想说的话...">
                 <button class="send-btn" onclick="sendMsg()">SEND</button>
             </div>
 
-            <span class="back-link" onclick="window.location.href='index.html'">BACK TO DESKTOP</span>
+            <center>
+                <p onclick="window.location.href='index.html'" style="margin-top:15px; font-size:10px; cursor:pointer; color:var(--y2k-pink); text-decoration:underline;">BACK TO DESKTOP</p>
+            </center>
         </div>
     </div>
 
     <script>
-        // 1. 自动生成背景漂浮物
+        // 背景装饰
         const decoBox = document.getElementById('deco-box');
-        const icons = ['✨', '💖', '🍭', '🌸', '⭐', '☁️'];
+        const icons = ['✨', '💖', '🍭', '🌸', '⭐'];
         for (let i = 0; i < 15; i++) {
             const item = document.createElement('div');
             item.className = 'deco-item';
@@ -140,11 +141,10 @@
             item.style.left = Math.random() * 100 + 'vw';
             item.style.top = Math.random() * 100 + 'vh';
             item.style.animationDelay = (Math.random() * 5) + 's';
-            item.style.fontSize = (Math.random() * 20 + 20) + 'px';
             decoBox.appendChild(item);
         }
 
-        // 2. 发送留言功能
+        // 发送留言
         function sendMsg() {
             const input = document.getElementById('msg-input');
             const list = document.getElementById('message-list');
@@ -153,41 +153,24 @@
 
             const newMsg = document.createElement('div');
             newMsg.className = 'msg-entry';
-            // 加入随机表情前缀增加可爱感
-            const emojis = ['🎈', '🌈', '🌙', '🍬'];
-            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
             
-            newMsg.innerHTML = `${randomEmoji} ${input.value}`;
+            // 包含删除按钮的 HTML 结构
+            newMsg.innerHTML = `
+                ${input.value}
+                <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+            `;
+            
             list.appendChild(newMsg);
-            
-            // 自动滚动到底部
             input.value = "";
+            
+            // 自动滚动到最底部
             list.scrollTop = list.scrollHeight;
-
-            // 简单的“发送成功”小特效
-            createSparkle();
         }
 
-        // 敲回车也可以发送
-        document.getElementById('msg-input').addEventListener('keypress', function (e) {
+        // 回车发送
+        document.getElementById('msg-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMsg();
         });
-
-        function createSparkle() {
-            const sparkle = document.createElement('div');
-            sparkle.style.position = 'fixed';
-            sparkle.style.left = '50%';
-            sparkle.style.top = '50%';
-            sparkle.innerHTML = '✨✨✨';
-            sparkle.style.transition = '2s';
-            sparkle.style.pointerEvents = 'none';
-            document.body.appendChild(sparkle);
-            setTimeout(() => {
-                sparkle.style.transform = 'translateY(-100px) scale(2)';
-                sparkle.style.opacity = '0';
-            }, 100);
-            setTimeout(() => sparkle.remove(), 2000);
-        }
     </script>
 </body>
 </html>
