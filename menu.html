@@ -2,70 +2,178 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT Members</title>
+    <title>ILLIT Archives 📂</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 40px; }
-        .window { width: 220px; }
-        .member-img { width: 100%; border: 1px solid #000; margin-bottom: 10px; }
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+
+        .member-card {
+            text-align: center;
+            background: #fff;
+        }
+
+        .member-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border: 2px solid #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .member-info {
+            font-size: 11px;
+            line-height: 1.6;
+            text-align: left;
+            padding: 5px 10px;
+        }
+
+        .member-info strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #ff4081;
+            text-align: center;
+        }
+
+        /* 升级版星星特效样式 */
+        .star-effect {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 24px;
+            user-select: none;
+        }
     </style>
 </head>
-<body>
+<body style="background: #fce4ec; padding: 20px;">
 
-    <div class="grid">
-        <div class="window">
-            <div class="title-bar"><div class="title-bar-text">YUNAH.bmp</div></div>
-            <div class="window-body">
-                <img src="yunah.jpg" class="member-img">
-                <p><strong>YUNAH (允儿)</strong></p>
-                <p style="font-size: 11px;">生日: 2004.01.15</p>
+    <div class="window" style="width: 95%; max-width: 1100px; margin: 0 auto;">
+        <div class="title-bar">
+            <div class="title-bar-text">ILLIT_Official_Profiles.dat</div>
+            <div class="title-bar-controls">
+                <button aria-label="Close" onclick="window.location.href='index.html?from=internal'"></button>
             </div>
         </div>
+        <div class="window-body">
+            <h2 style="text-align: center; color: #ff4081;">ILLIT 成员档案库</h2>
+            <hr>
 
-        <div class="window">
-            <div class="title-bar"><div class="title-bar-text">MINJU.bmp</div></div>
-            <div class="window-body">
-                <img src="minju.jpg" class="member-img">
-                <p><strong>MINJU (敏珠)</strong></p>
-                <p style="font-size: 11px;">生日: 2004.05.11</p>
+            <div class="archive-grid">
+                <div class="window member-card">
+                    <div class="title-bar"><div class="title-bar-text">YUNAH.bmp</div></div>
+                    <div class="window-body">
+                        <img src="387.jpeg" class="member-img" alt="YUNAH">
+                        <div class="member-info">
+                            <strong>YUNAH (卢玧我)</strong>
+                            <p>● 国籍：韩国</p>
+                            <p>● MBTI：ENFP</p>
+                            <p>● 生日：2004.01.15</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="window member-card">
+                    <div class="title-bar"><div class="title-bar-text">MINJU.bmp</div></div>
+                    <div class="window-body">
+                        <img src="389.jpeg" class="member-img" alt="MINJU">
+                        <div class="member-info">
+                            <strong>MINJU (朴敏珠)</strong>
+                            <p>● 国籍：韩国</p>
+                            <p>● MBTI：ISTP</p>
+                            <p>● 生日：2004.05.11</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="window member-card">
+                    <div class="title-bar"><div class="title-bar-text">MOKA.bmp</div></div>
+                    <div class="window-body">
+                        <img src="390.jpeg" class="member-img" alt="MOKA">
+                        <div class="member-info">
+                            <strong>MOKA (境 萌花)</strong>
+                            <p>● 国籍：日本</p>
+                            <p>● MBTI：ISFP</p>
+                            <p>● 生日：2004.10.08</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="window member-card">
+                    <div class="title-bar"><div class="title-bar-text">WONHEE.bmp</div></div>
+                    <div class="window-body">
+                        <img src="391.jpeg" class="member-img" alt="WONHEE">
+                        <div class="member-info">
+                            <strong>WONHEE (李沅禧)</strong>
+                            <p>● 国籍：韩国</p>
+                            <p>● MBTI：ISFP</p>
+                            <p>● 生日：2007.06.26</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="window member-card">
+                    <div class="title-bar"><div class="title-bar-text">IROHA.bmp</div></div>
+                    <div class="window-body">
+                        <img src="388.jpeg" class="member-img" alt="IROHA">
+                        <div class="member-info">
+                            <strong>IROHA (外园 彩羽)</strong>
+                            <p>● 国籍：日本</p>
+                            <p>● MBTI：ISFP</p>
+                            <p>● 生日：2008.02.04</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="window">
-            <div class="title-bar"><div class="title-bar-text">MOKA.bmp</div></div>
-            <div class="window-body">
-                <img src="moka.jpg" class="member-img">
-                <p><strong>MOKA (摩卡)</strong></p>
-                <p style="font-size: 11px;">生日: 2004.10.08</p>
-            </div>
-        </div>
-
-        <div class="window">
-            <div class="title-bar"><div class="title-bar-text">WONHEE.bmp</div></div>
-            <div class="window-body">
-                <img src="wonhee.jpg" class="member-img">
-                <p><strong>WONHEE (沅禧)</strong></p>
-                <p style="font-size: 11px;">生日: 2007.06.26</p>
-            </div>
-        </div>
-
-        <div class="window">
-            <div class="title-bar"><div class="title-bar-text">IROHA.bmp</div></div>
-            <div class="window-body">
-                <img src="iroha.jpg" class="member-img">
-                <p><strong>IROHA (彩羽)</strong></p>
-                <p style="font-size: 11px;">生日: 2008.02.04</p>
+            <hr>
+            <div style="text-align: center; margin-top: 20px;">
+                <button style="padding: 5px 25px;" onclick="window.location.href='index.html?from=internal'">返回系统桌面</button>
             </div>
         </div>
     </div>
 
+    <script>
+        // --- 显眼星星特效脚本 ---
+        document.addEventListener('mousemove', function(e) {
+            const star = document.createElement('div');
+            const colors = ['#ff80ab', '#f48fb1', '#ce93d8', '#ffffff'];
+            const icons = ['✨', '⭐', '🌸'];
+            
+            star.className = 'star-effect';
+            star.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            star.style.color = colors[Math.floor(Math.random() * colors.length)];
+            star.style.left = e.clientX + 'px';
+            star.style.top = e.clientY + 'px';
+            
+            document.body.appendChild(star);
 
-        </div>
+            let speedY = Math.random() * 2 + 1;
+            let speedX = (Math.random() - 0.5) * 2;
+            let opacity = 1;
 
-    <div style="text-align: center;">
-        <button onclick="window.location.href='index.html?from=internal'">返回桌面</button>
-    </div>
+            const animation = setInterval(() => {
+                opacity -= 0.02;
+                let currentTop = parseFloat(star.style.top);
+                let currentLeft = parseFloat(star.style.left);
+                
+                star.style.top = (currentTop + speedY) + 'px';
+                star.style.left = (currentLeft + speedX) + 'px';
+                star.style.opacity = opacity;
+                star.style.transform = `scale(${opacity + 0.5}) rotate(${currentTop}deg)`;
 
+                if (opacity <= 0) {
+                    clearInterval(animation);
+                    star.remove();
+                }
+            }, 30);
+        });
+    </script>
 </body>
 </html>
