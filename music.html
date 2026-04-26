@@ -5,14 +5,14 @@
     <title>ILLIT Dreamy Player 🎀</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
-    <style>
+        <style>
         :root {
             --dream-pink: #ffc1e3;
             --dream-purple: #e1bee7;
             --pixel-border: 4px solid #333;
         }
 
-        /* 1. 梦幻流动背景 */
+        /* --- 彻底消除白底：极光流动背景 --- */
         body {
             margin: 0;
             padding: 0;
@@ -20,20 +20,32 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(45deg, #fce4ec, #f3e5f5, #e1f5fe, #fce4ec);
+            /* 使用更饱和的梦幻色彩，确保不发白 */
+            background: linear-gradient(135deg, #ffc1e3 0%, #e1bee7 35%, #b3e5fc 70%, #ffc1e3 100%);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            animation: gradientBG 12s ease infinite;
             overflow: hidden;
             position: relative;
         }
 
+        /* 背景流动的动画 */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* 2. 背景漂浮装饰层 */
+        /* 增加一层微弱的像素网格纹理，增加梦核细节 */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+            background-size: 25px 25px;
+            z-index: -1;
+        }
+
+        /* 背景漂浮物层 */
         .floating-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -43,29 +55,31 @@
 
         .deco-item {
             position: absolute;
-            font-size: 20px;
-            opacity: 0.5;
+            font-size: 22px;
+            opacity: 0.6;
             animation: floatUp 12s linear infinite;
         }
 
         @keyframes floatUp {
             from { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-            50% { opacity: 0.7; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
             to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        /* 3. 播放器主体 */
+        /* 播放器容器：增加磨砂玻璃感 */
         .mp3-player {
             width: 340px;
-            background: rgba(255, 193, 227, 0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
             border: var(--pixel-border);
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 12px 12px 0px rgba(255, 128, 171, 0.4);
+            box-shadow: 15px 15px 0px rgba(255, 128, 171, 0.3);
             z-index: 10;
         }
 
+        /* 屏幕部分 */
         .player-screen {
             background: #1a1a1a;
             border: 3px solid #ff80ab;
@@ -86,18 +100,20 @@
 
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        /* 频谱条 */
         .visualizer { display: flex; align-items: flex-end; gap: 4px; height: 30px; justify-content: center; }
         .bar { width: 5px; background: #ff80ab; animation: bounce 0.5s infinite alternate; animation-play-state: paused; }
         @keyframes bounce { from { height: 4px; } to { height: 24px; } }
 
         .pixel-btn {
             background: #fff; border: 2px solid #333; box-shadow: 4px 4px 0px #333;
-            padding: 10px; cursor: pointer; transition: 0.1s; font-weight: bold;
+            padding: 8px; cursor: pointer; transition: 0.1s; font-weight: bold;
         }
         .pixel-btn:active { box-shadow: 0px 0px 0px #333; transform: translate(4px, 4px); }
 
         .star-effect { position: fixed; pointer-events: none; z-index: 999; font-size: 26px; }
     </style>
+
 </head>
 <body>
 
