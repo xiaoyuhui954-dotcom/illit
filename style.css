@@ -1,3 +1,16 @@
+/* 让窗口有呼吸灯一样的阴影效果 */
+.window {
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px #fff, 0 0 10px #f8bbd0;
+    }
+    to {
+        box-shadow: 0 0 20px #fff, 0 0 30px #ff69b4;
+    }
+}
 /* 设置背景色：建议用那种亮粉色或梦幻蓝 */
 body {
     background-color: #ffc0cb; /* 粉色背景 */
