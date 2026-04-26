@@ -12,165 +12,131 @@
             --pixel-border: 4px solid #333;
         }
 
+        /* 1. 梦幻流动背景 */
         body {
-            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
+            background: linear-gradient(45deg, #fce4ec, #f3e5f5, #e1f5fe, #fce4ec);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             overflow: hidden;
+            position: relative;
         }
 
-        /* 核心 MP3 播放器容器 */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 2. 背景漂浮装饰层 */
+        .floating-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .deco-item {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.5;
+            animation: floatUp 12s linear infinite;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.7; }
+            to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* 3. 播放器主体 */
         .mp3-player {
             width: 340px;
-            background: var(--dream-pink);
+            background: rgba(255, 193, 227, 0.85);
+            backdrop-filter: blur(8px);
             border: var(--pixel-border);
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 8px 8px 0px rgba(255, 128, 171, 0.3);
-            position: relative;
+            box-shadow: 12px 12px 0px rgba(255, 128, 171, 0.4);
+            z-index: 10;
         }
 
-        /* 像素屏幕区域 */
         .player-screen {
-            background: #222;
-            border: 3px solid #555;
+            background: #1a1a1a;
+            border: 3px solid #ff80ab;
             border-radius: 10px;
             padding: 15px;
-            color: #00ffcc;
-            font-family: 'Courier New', Courier, monospace;
-            text-shadow: 0 0 5px #00ffcc;
+            color: #ff80ab;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 8px rgba(255, 128, 171, 0.8);
             margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
         }
 
-        /* 旋转唱片 */
-        .disk-wrapper {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 15px;
-            position: relative;
-        }
-
+        .disk-wrapper { width: 130px; height: 130px; margin: 0 auto 15px; position: relative; }
         .disk {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid #fff;
-            object-fit: cover;
-            animation: rotate 6s linear infinite;
-            animation-play-state: paused;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            width: 100%; height: 100%; border-radius: 50%;
+            border: 4px solid #fff; object-fit: cover;
+            animation: rotate 6s linear infinite; animation-play-state: paused;
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* 模拟像素频谱图 */
-        .visualizer {
-            display: flex;
-            align-items: flex-end;
-            gap: 3px;
-            height: 30px;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        .bar {
-            width: 4px;
-            background: #00ffcc;
-            animation: bounce 0.5s ease-in-out infinite alternate;
-            animation-play-state: paused;
-        }
-
-        @keyframes bounce {
-            from { height: 5px; }
-            to { height: 25px; }
-        }
-
-        /* 像素控制按钮 */
-        .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
+        .visualizer { display: flex; align-items: flex-end; gap: 4px; height: 30px; justify-content: center; }
+        .bar { width: 5px; background: #ff80ab; animation: bounce 0.5s infinite alternate; animation-play-state: paused; }
+        @keyframes bounce { from { height: 4px; } to { height: 24px; } }
 
         .pixel-btn {
-            background: #fff;
-            border: 2px solid #333;
-            box-shadow: 3px 3px 0px #333;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.1s;
+            background: #fff; border: 2px solid #333; box-shadow: 4px 4px 0px #333;
+            padding: 10px; cursor: pointer; transition: 0.1s; font-weight: bold;
         }
+        .pixel-btn:active { box-shadow: 0px 0px 0px #333; transform: translate(4px, 4px); }
 
-        .pixel-btn:active {
-            box-shadow: 0px 0px 0px #333;
-            transform: translate(3px, 3px);
-        }
-
-        /* 隐藏原生音频播放器，只留逻辑 */
-        audio { display: none; }
-
-        /* 星星特效 */
-        .star-effect {
-            position: fixed;
-            pointer-events: none;
-            z-index: 99;
-            font-size: 24px;
-        }
+        .star-effect { position: fixed; pointer-events: none; z-index: 999; font-size: 26px; }
     </style>
 </head>
 <body>
 
+    <div class="floating-bg" id="bg-layer"></div>
+
     <div class="mp3-player">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-            <span style="font-weight: bold; color: #fff; font-size: 12px;">ILLIT DreamPlayer v1.0</span>
-            <div style="display: flex; gap: 4px;">
-                <div style="width: 8px; height: 8px; background: #ff4081; border-radius: 50%;"></div>
-                <div style="width: 8px; height: 8px; background: #fff; border-radius: 50%;"></div>
-            </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 10px; color: #fff;">
+            <strong>✨ ILLIT DREAM CORE PLAYER</strong>
+            <span>🔋 100%</span>
         </div>
 
         <div class="player-screen">
             <div class="disk-wrapper">
-                <img id="p-cover" src="IMG_4457.jpeg" class="disk">
+                <img id="p-cover" src="IMG_4458.jpeg" class="disk">
             </div>
-            <div style="text-align: center; font-size: 14px; margin-bottom: 5px;" id="p-title">LOADING...</div>
-            
-            <div class="visualizer" id="viz">
+            <div id="p-title" style="text-align: center; font-size: 11px; margin-bottom: 5px;">Magnetic</div>
+            <div class="visualizer">
                 <div class="bar" style="animation-delay: 0.1s"></div>
                 <div class="bar" style="animation-delay: 0.3s"></div>
                 <div class="bar" style="animation-delay: 0.2s"></div>
                 <div class="bar" style="animation-delay: 0.4s"></div>
                 <div class="bar" style="animation-delay: 0.1s"></div>
-                <div class="bar" style="animation-delay: 0.5s"></div>
             </div>
         </div>
 
-        <div style="display: flex; gap: 5px; overflow-x: auto; padding-bottom: 5px; margin-bottom: 10px;">
-            <button class="pixel-btn" style="font-size: 10px; white-space: nowrap;" onclick="changeSong(0)">Magnetic</button>
-            <button class="pixel-btn" style="font-size: 10px; white-space: nowrap;" onclick="changeSong(1)">CuteAnymore</button>
-            <button class="pixel-btn" style="font-size: 10px; white-space: nowrap;" onclick="changeSong(2)">Billyeoon</button>
+        <div style="display: flex; gap: 5px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px;">
+            <button class="pixel-btn" style="font-size: 9px; white-space: nowrap;" onclick="changeSong(0)">Magnetic</button>
+            <button class="pixel-btn" style="font-size: 9px; white-space: nowrap;" onclick="changeSong(1)">Not Cute</button>
+            <button class="pixel-btn" style="font-size: 9px; white-space: nowrap;" onclick="changeSong(2)">Billyeoon</button>
         </div>
 
-        <div class="controls-grid">
-            <button class="pixel-btn" onclick="audio.currentTime -= 10">⏪</button>
-            <button class="pixel-btn" id="playBtn" onclick="togglePlay()">▶️</button>
-            <button class="pixel-btn" onclick="audio.currentTime += 10">⏩</button>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <button class="pixel-btn" onclick="audio.currentTime -= 5">⏪</button>
+            <button class="pixel-btn" id="playBtn" onclick="togglePlay()" style="font-size: 20px;">▶</button>
+            <button class="pixel-btn" onclick="audio.currentTime += 5">⏩</button>
         </div>
 
         <center>
-            <button style="margin-top: 20px; border: none; background: transparent; cursor: pointer; text-decoration: underline; color: #7b1fa2;" onclick="window.location.href='index.html?from=internal'">
-                返回桌面系统
-            </button>
+            <p onclick="window.location.href='index.html?from=internal'" style="margin-top:15px; font-size:10px; cursor:pointer; color:#7b1fa2; text-decoration:underline; font-weight:bold;">EXIT TO DESKTOP</p>
         </center>
     </div>
 
@@ -179,6 +145,22 @@
     </audio>
 
     <script>
+        // 1. 自动生成漂浮装饰
+        const bgLayer = document.getElementById('bg-layer');
+        const icons = ['✨', '💖', '⭐', '🌸', '☁️', '◦'];
+        for (let i = 0; i < 25; i++) {
+            let el = document.createElement('div');
+            el.className = 'deco-item';
+            el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            el.style.animationDelay = (Math.random() * 10) + 's';
+            el.style.fontSize = (Math.random() * 15 + 15) + 'px';
+            el.style.color = ['#ff80ab', '#e1bee7', '#ffffff'][Math.floor(Math.random() * 3)];
+            bgLayer.appendChild(el);
+        }
+
+        // 2. 核心数据 (已按你的要求更新)
         const songs = [
             { title: "Magnetic", cover: "IMG_4458.jpeg", file: "magnetic.mp3.mp3" },
             { title: "NOT CUTE ANYMORE", cover: "IMG_4456.jpeg", file: "ScreenRecording_04-26-2026 14-47-55_1 (online-audio-converter.com).mp3" },
@@ -195,46 +177,45 @@
         function togglePlay() {
             if (audio.paused) {
                 audio.play();
-                playBtn.innerText = "⏸️";
+                playBtn.innerText = "⏸";
                 cover.style.animationPlayState = 'running';
                 bars.forEach(b => b.style.animationPlayState = 'running');
             } else {
                 audio.pause();
-                playBtn.innerText = "▶️";
+                playBtn.innerText = "▶";
                 cover.style.animationPlayState = 'paused';
                 bars.forEach(b => b.style.animationPlayState = 'paused');
             }
         }
 
-        function changeSong(index) {
-            const song = songs[index];
-            title.innerText = song.title;
-            cover.src = song.cover;
-            source.src = song.file;
+        function changeSong(i) {
+            title.innerText = songs[i].title;
+            cover.src = songs[i].cover;
+            source.src = songs[i].file;
             audio.load();
-            if (!audio.paused || playBtn.innerText === "⏸️") {
-                audio.play();
+            if (playBtn.innerText === "⏸") { 
+                audio.play(); 
                 cover.style.animationPlayState = 'running';
-                bars.forEach(b => b.style.animationPlayState = 'running');
+            } else {
+                cover.style.animationPlayState = 'paused';
             }
         }
 
-        // 星星特效
-        document.addEventListener('mousemove', function(e) {
-            const star = document.createElement('div');
-            star.className = 'star-effect';
-            star.innerHTML = ['✨', '🌸', '💫', '⭐'][Math.floor(Math.random()*4)];
-            star.style.left = e.clientX + 'px';
-            star.style.top = e.clientY + 'px';
-            star.style.color = ['#ff80ab', '#f48fb1', '#ce93d8', '#ffffff'][Math.floor(Math.random()*4)];
-            document.body.appendChild(star);
-            
-            let opacity = 1;
+        // 3. 鼠标星星特效
+        document.addEventListener('mousemove', (e) => {
+            const s = document.createElement('div');
+            s.className = 'star-effect';
+            s.innerHTML = '✨';
+            s.style.left = e.clientX + 'px';
+            s.style.top = e.clientY + 'px';
+            s.style.color = '#ff80ab';
+            document.body.appendChild(s);
+            let op = 1;
             const ani = setInterval(() => {
-                opacity -= 0.05;
-                star.style.opacity = opacity;
-                star.style.transform = `scale(${opacity + 0.5}) translateY(${20 - opacity*20}px)`;
-                if(opacity <= 0) { clearInterval(ani); star.remove(); }
+                op -= 0.05;
+                s.style.opacity = op;
+                s.style.transform = `scale(${op + 0.5}) translateY(${10 - op*10}px)`;
+                if(op <= 0) { clearInterval(ani); s.remove(); }
             }, 30);
         });
     </script>
