@@ -2,76 +2,110 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT 音像店 💿</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ILLIT Record Store 💿</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        body { background-color: #f8bbd0; padding: 30px; }
-        
-        /* 专辑墙的布局 */
         .album-wall {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 10px;
+            justify-items: center;
         }
-
-        /* 专辑 CD 的容器 */
+        /* 针对第三张专辑进行居中处理 */
+        .album-wall a:last-child {
+            grid-column: span 2;
+        }
         .cd-case {
-            width: 150px;
-            cursor: pointer;
+            text-decoration: none;
             transition: transform 0.2s;
+            display: block;
+            width: 140px;
         }
-
         .cd-case:hover {
-            transform: scale(1.05); /* 鼠标放上去稍微变大 */
+            transform: scale(1.05);
         }
-
-        /* 这是放图片的地方：设定大小和边框 */
         .album-art {
             width: 100%;
-            height: 150px;
+            height: 140px;
+            object-fit: cover;
             border: 2px solid #333;
-            box-shadow: 3px 3px #808080;
-            margin-bottom: 5px;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+        }
+        .album-title {
+            font-size: 11px;
+            text-align: center;
+            color: #333;
+            margin-top: 8px;
+            font-weight: bold;
+            /* 限制文字高度，防止过长打乱布局 */
+            height: 30px;
+            overflow: hidden;
         }
     </style>
 </head>
-<body>
+<body style="background: #fce4ec; padding: 20px;">
 
     <div class="window" style="width: 500px; margin: 0 auto;">
         <div class="title-bar">
             <div class="title-bar-text">ILLIT_Record_Store.sys</div>
+            <div class="title-bar-controls">
+                <button aria-label="Close" onclick="window.location.href='index.html?from=internal'"></button>
+            </div>
         </div>
         <div class="window-body">
-            <h3 style="text-align: center;">请选择一张 CD：</h3>
-            
+            <h3 style="text-align: center; margin-bottom: 20px;">请选择一张 CD：</h3>
+
             <div class="album-wall">
-    <a href="player.html" class="cd-case">
-        <img src="IMG_4456.jpeg" class="album-art" alt="Album1">
-        <p style="font-size: 11px; text-align: center; color: #333;">NOT CUTE ANYMORE</p>
-    </a>
+                <a href="player.html?song=0" class="cd-case">
+                    <img src="IMG_4456.jpeg" class="album-art" alt="Album1">
+                    <p class="album-title">NOT CUTE ANYMORE</p>
+                </a>
 
-    <a href="player.html" class="cd-case">
-        <img src="IMG_4457.jpeg" class="album-art" alt="Album2">
-        <p style="font-size: 11px; text-align: center; color: #333;">Billyeoon Goyangi (Do the Dance)</p>
-    </a>
+                <a href="player.html?song=1" class="cd-case">
+                    <img src="IMG_4457.jpeg" class="album-art" alt="Album2">
+                    <p class="album-title">Billyeoon Goyangi (Do the Dance)</p>
+                </a>
 
-    <a href="player.html" class="cd-case">
-        <img src="IMG_4458.jpeg" class="album-art" alt="Album3">
-        <p style="font-size: 11px; text-align: center; color: #333;">Magnetic</p>
-    </a>
-</div>
-
+                <a href="player.html?song=2" class="cd-case">
+                    <img src="IMG_4458.jpeg" class="album-art" alt="Album3">
+                    <p class="album-title">Magnetic</p>
+                </a>
             </div>
 
             <hr>
+            
             <div style="text-align: center; margin-top: 15px;">
                 <button onclick="window.location.href='index.html?from=internal'">返回桌面</button>
             </div>
         </div>
     </div>
 
+    <script>
+        document.addEventListener('mousemove', function(e) {
+            var star = document.createElement('div');
+            star.innerHTML = '✨';
+            star.style.position = 'fixed';
+            star.style.left = e.clientX + 'px';
+            star.style.top = e.clientY + 'px';
+            star.style.fontSize = '20px';
+            star.style.pointerEvents = 'none';
+            star.style.zIndex = '9999';
+            document.body.appendChild(star);
+            
+            var speed = 0;
+            var interval = setInterval(function() {
+                speed += 2;
+                star.style.top = (parseInt(star.style.top) + speed) + 'px';
+                star.style.opacity = star.style.opacity ? star.style.opacity - 0.05 : 1;
+                if (star.style.opacity <= 0) {
+                    clearInterval(interval);
+                    star.remove();
+                }
+            }, 30);
+        });
+    </script>
 </body>
 </html>
