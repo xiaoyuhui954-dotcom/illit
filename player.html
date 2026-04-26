@@ -2,136 +2,65 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT Music Player v1.0</title>
+    <title>ILLIT Music Player 🎧</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
+</head>
+<body style="background: #fce4ec; padding: 20px;">
+
+    <div class="window" style="width: 350px; margin: 0 auto;">
+        <div class="title-bar">
+            <div class="title-bar-text">ILLIT_Player.exe</div>
+        </div>
+        <div class="window-body" style="text-align: center;">
+            
+            <div class="disk-container" style="margin: 20px 0;">
+                <img id="player-cover" src="IMG_4456.jpeg" style="width: 180px; height: 180px; border-radius: 50%; border: 5px solid #333; animation: rotate 5s linear infinite;">
+            </div>
+
+            <h3 id="player-title">NOT CUTE ANYMORE</h3>
+            <p id="player-artist" style="color: #666;">ILLIT (아일릿)</p>
+
+            <hr>
+
+            <audio id="main-audio" controls style="width: 100%; margin-bottom: 10px;">
+                <source id="audio-source" src="song1.mp3" type="audio/mpeg">
+            </audio>
+
+            <div class="field-row" style="justify-content: center;">
+                <button onclick="window.location.href='index.html?from=internal'">返回桌面</button>
+                <button onclick="window.location.href='music.html'">换首歌</button>
+            </div>
+        </div>
+    </div>
+
     <style>
-        body { background-color: #f8bbd0; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        
-        /* 播放器专属样式 */
-        .player-container { width: 320px; }
-        
-        /* 模拟 LCD 屏幕 */
-        .lcd-screen {
-            background: #222;
-            color: #0f0; /* 经典的荧光绿 */
-            padding: 15px;
-            font-family: 'Courier New', monospace;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            box-shadow: inset 0 0 10px #000;
-            text-align: center;
-        }
-
-        /* 旋转的专辑图 */
-        .disc {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 5px solid #333;
-            margin: 0 auto 10px;
-            background: url('IMG_4415.jpeg') no-repeat center; /* 默认先用你的合照 */
-            background-size: cover;
-            animation: rotate 5s linear infinite;
-            animation-play-state: paused;
-        }
-
-        .playing .disc { animation-play-state: running; }
-
         @keyframes rotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-
-        /* 歌曲列表样式 */
-        .playlist {
-            max-height: 150px;
-            overflow-y: auto;
-            background: white;
-            border: 1px inset #808080;
-            padding: 5px;
-            list-style: none;
-            margin: 10px 0;
-        }
-
-        .playlist li {
-            padding: 5px;
-            cursor: pointer;
-            font-size: 12px;
-            border-bottom: 1px dotted #ccc;
-        }
-
-        .playlist li:hover { background: #000080; color: white; }
-
-        /* 复古控制按钮 */
-        .controls { display: flex; justify-content: space-around; margin-top: 10px; }
     </style>
-</head>
-<body id="player-body">
 
-<div class="player-container">
-    <div class="window">
-        <div class="title-bar">
-            <div class="title-bar-text">ILLIT_Player.exe</div>
-            <div class="title-bar-controls">
-                <button aria-label="Close" onclick="window.location.href='index.html'"></button>
-            </div>
-        </div>
-        
-        <div class="window-body">
-            <div class="lcd-screen">
-                <div class="disc" id="disc"></div>
-                <div id="status">STOPPED</div>
-                <div id="song-name" style="font-size: 14px; overflow: hidden; white-space: nowrap;">Wait for play...</div>
-            </div>
+    <script>
+        // 歌曲数据库
+        const songs = [
+            { title: "NOT CUTE ANYMORE", cover: "IMG_4456.jpeg", file: "song1.mp3" },
+            { title: "Billyeoon Goyangi (Do the Dance)", cover: "IMG_4457.jpeg", file: "song2.mp3" },
+            { title: "Magnetic", cover: "IMG_4458.jpeg", file: "song3.mp3" }
+        ];
 
-            <audio id="audio-element">
-                <source src="" type="audio/mpeg">
-            </audio>
+        // 获取链接里的歌曲编号
+        const urlParams = new URLSearchParams(window.location.search);
+        let songIndex = urlParams.get('song') || 0; // 默认第一首
 
-            <div class="controls">
-                <button onclick="playAudio()">播放 ▶</button>
-                <button onclick="pauseAudio()">暂停 ⏸</button>
-            </div>
-
-            <ul class="playlist">
-                <li onclick="loadSong('Magnetic.mp3', 'Magnetic - ILLIT')">🎵 01. Magnetic</li>
-                <li onclick="loadSong('LuckyGirl.mp3', 'Lucky Girl Syndrome')">🎵 02. Lucky Girl Syndrome</li>
-                <li onclick="loadSong('Midnight.mp3', 'Midnight Fiction')">🎵 03. Midnight Fiction</li>
-            </ul>
-
-            <p style="text-align: center; font-size: 10px; color: #666;">ILLIT World Audio System</p>
-        </div>
-    </div>
-</div>
-
-<script>
-    const audio = document.getElementById('audio-element');
-    const disc = document.getElementById('disc');
-    const status = document.getElementById('status');
-    const songName = document.getElementById('song-name');
-    const playerBody = document.getElementById('player-body');
-
-    function loadSong(file, name) {
-        audio.src = file;
-        songName.innerText = name;
-        playAudio();
-    }
-
-    function playAudio() {
-        if(audio.src) {
-            audio.play();
-            playerBody.classList.add('playing');
-            status.innerText = "PLAYING...";
+        // 自动切换播放器内容
+        if (songs[songIndex]) {
+            document.getElementById('player-title').innerText = songs[songIndex].title;
+            document.getElementById('player-cover').src = songs[songIndex].cover;
+            // 如果你有音频文件，取消下面这行的注释
+            // document.getElementById('audio-source').src = songs[songIndex].file;
+            // document.getElementById('main-audio').load();
         }
-    }
-
-    function pauseAudio() {
-        audio.pause();
-        playerBody.classList.remove('playing');
-        status.innerText = "PAUSED";
-    }
-</script>
-
+    </script>
 </body>
 </html>
