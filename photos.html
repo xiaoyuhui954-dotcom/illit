@@ -10,7 +10,6 @@
             --y2k-purple: #ea80fc;
         }
 
-        /* 极光背景 */
         body {
             margin: 0; padding: 0; min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
@@ -18,18 +17,16 @@
             background-size: 400% 400%;
             animation: aurora 15s ease infinite;
             overflow: hidden; position: relative;
-            font-family: sans-serif;
         }
         @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         .container { display: flex; gap: 30px; z-index: 10; align-items: center; }
 
-        /* 拍立得相纸区域 */
+        /* 拍立得区域 */
         .polaroid {
             background: #fff; padding: 15px 15px 80px 15px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.15);
             border: 1px solid #ddd; position: relative;
-            transform: rotate(-1deg);
         }
 
         .cam-container {
@@ -39,25 +36,26 @@
 
         #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
-        /* 成员与贴纸通用样式 */
+        /* 可拖动元素样式 */
         .movable {
-            position: absolute; cursor: move; user-select: none; z-index: 100;
-            touch-action: none; transition: transform 0.2s;
+            position: absolute; 
+            cursor: move; 
+            user-select: none; 
+            z-index: 100;
+            touch-action: none;
         }
-        .movable:hover { transform: scale(1.05); filter: brightness(1.1); }
-        .member-sticker { height: 80%; bottom: 0; } /* 成员初始大小 */
+        .member-sticker { height: 70%; bottom: 0; }
+        .emoji-sticker { font-size: 50px; line-height: 1; }
 
-        /* 控制面板 */
+        /* 玻璃面板 */
         .glass-ui {
             width: 320px; background: rgba(255, 255, 255, 0.4) !important;
             backdrop-filter: blur(12px); border-radius: 20px !important;
             border: 2px solid rgba(255, 255, 255, 0.6) !important;
         }
-
         .title-bar { background: linear-gradient(90deg, var(--y2k-pink), var(--y2k-purple)) !important; }
 
         .grid-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-        
         .choice-btn {
             background: white; border: 2px solid var(--y2k-pink); border-radius: 10px;
             padding: 5px; cursor: pointer; font-size: 10px; font-weight: bold; color: var(--y2k-pink);
@@ -68,7 +66,7 @@
             width: 100%; padding: 15px; margin-top: 20px;
             background: linear-gradient(45deg, #ff4081, #ea80fc);
             color: white; border: none; border-radius: 30px;
-            font-weight: bold; cursor: pointer; font-size: 16px;
+            font-weight: bold; cursor: pointer;
         }
     </style>
 </head>
@@ -80,35 +78,31 @@
                 <video id="video" autoplay playsinline></video>
                 </div>
             <div style="text-align: center; margin-top: 25px;">
-                <span style="font-family: 'Comic Sans MS'; color: #ff80ab; font-size: 18px;">🌸 ILLIT & ME 🌸</span>
+                <span style="font-family: 'Comic Sans MS'; color: #ff80ab; font-size: 18px;">✨ 双击贴纸可删除 ✨</span>
             </div>
         </div>
 
         <div class="window glass-ui">
             <div class="title-bar"><div class="title-bar-text">Dreamy_Studio.exe</div></div>
             <div class="window-body">
-                <p><strong>✨ 第一步：召唤成员</strong></p>
+                <p><strong>✨ 选择成员：</strong></p>
                 <div class="grid-box">
-                    <button class="choice-btn" onclick="addMember('yunah')">YUNAH</button>
-                    <button class="choice-btn" onclick="addMember('minju')">MINJU</button>
-                    <button class="choice-btn" onclick="addMember('moka')">MOKA</button>
-                    <button class="choice-btn" onclick="addMember('wonhee')">WONHEE</button>
-                    <button class="choice-btn" onclick="addMember('iroha')">IROHA</button>
-                    <button class="choice-btn" style="border-color:#ccc; color:#999;" onclick="clearItems()">❌ 清空</button>
+                    <button class="choice-btn" onclick="addItem('yunah_pose.png', 'img')">YUNAH</button>
+                    <button class="choice-btn" onclick="addItem('minju_pose.png', 'img')">MINJU</button>
+                    <button class="choice-btn" onclick="addItem('moka_pose.png', 'img')">MOKA</button>
+                    <button class="choice-btn" onclick="addItem('wonhee_pose.png', 'img')">WONHEE</button>
+                    <button class="choice-btn" onclick="addItem('iroha_pose.png', 'img')">IROHA</button>
                 </div>
 
-                <p style="margin-top:20px;"><strong>💖 第二步：添加可爱贴纸</strong></p>
+                <p style="margin-top:20px;"><strong>💖 添加贴纸：</strong></p>
                 <div class="grid-box">
-                    <button class="choice-btn" onclick="addEmoji('✨')">✨ 闪闪</button>
-                    <button class="choice-btn" onclick="addEmoji('🎀')">🎀 蝴蝶结</button>
-                    <button class="choice-btn" onclick="addEmoji('💖')">💖 爱心</button>
+                    <button class="choice-btn" onclick="addItem('✨', 'text')">✨</button>
+                    <button class="choice-btn" onclick="addItem('🎀', 'text')">🎀</button>
+                    <button class="choice-btn" onclick="addItem('💖', 'text')">💖</button>
                 </div>
                 
-                <button class="snap-btn" id="take-photo">📸 拍摄并保存合照</button>
-                
-                <center>
-                    <button class="choice-btn" style="margin-top:20px; width:80px;" onclick="window.location.href='index.html'">返回</button>
-                </center>
+                <button class="snap-btn" id="take-photo">📸 拍摄并保存</button>
+                <center><p onclick="window.location.href='index.html'" style="cursor:pointer; font-size:10px; color:#999; text-decoration:underline; margin-top:10px;">返回桌面</p></center>
             </div>
         </div>
     </div>
@@ -118,99 +112,102 @@
     <script>
         const video = document.getElementById('video');
         const zone = document.getElementById('sticker-zone');
+        let zIndexCounter = 100;
 
-        // 启动摄像头
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => { video.srcObject = stream; });
+        navigator.mediaDevices.getUserMedia({ video: true }).then(s => video.srcObject = s);
 
-        // 通用拖拽函数
-        function makeDraggable(el) {
-            let isDragging = false;
-            el.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                let shiftX = e.clientX - el.getBoundingClientRect().left;
-                let shiftY = e.clientY - el.getBoundingClientRect().top;
+        // 统一添加函数
+        function addItem(content, type) {
+            const el = document.createElement(type === 'img' ? 'img' : 'div');
+            if (type === 'img') {
+                el.src = content;
+                el.className = 'movable member-sticker';
+            } else {
+                el.innerHTML = content;
+                el.className = 'movable emoji-sticker';
+            }
+            
+            el.style.left = '50px';
+            el.style.top = '50px';
+            zone.appendChild(el);
+            
+            // 绑定拖拽
+            initDrag(el);
+            
+            // 绑定双击删除
+            el.addEventListener('dblclick', () => el.remove());
+        }
 
-                function moveAt(pageX, pageY) {
-                    let rect = zone.getBoundingClientRect();
-                    el.style.left = (pageX - rect.left - shiftX) + 'px';
-                    el.style.top = (pageY - rect.top - shiftY) + 'px';
-                }
+        // 核心拖拽逻辑修复
+        function initDrag(el) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-                function onMouseMove(e) { if(isDragging) moveAt(e.pageX, e.pageY); }
-                document.addEventListener('mousemove', onMouseMove);
+            el.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e.preventDefault();
+                // 提升当前点击元素的图层
+                zIndexCounter++;
+                el.style.zOrder = zIndexCounter;
+                el.style.zIndex = zIndexCounter;
+
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
                 
-                document.onmouseup = function() {
-                    isDragging = false;
-                    document.removeEventListener('mousemove', onMouseMove);
-                };
-            });
-            el.ondragstart = () => false;
+                // 设置新位置
+                let newTop = el.offsetTop - pos2;
+                let newLeft = el.offsetLeft - pos1;
+                
+                el.style.top = newTop + "px";
+                el.style.left = newLeft + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
         }
 
-        // 添加成员贴纸
-        function addMember(name) {
-            const img = document.createElement('img');
-            img.src = `${name}_pose.png`; 
-            img.className = 'movable member-sticker';
-            img.style.left = '100px';
-            img.style.top = '50px';
-            zone.appendChild(img);
-            makeDraggable(img);
-        }
-
-        // 添加文字/表情贴纸
-        function addEmoji(emoji) {
-            const span = document.createElement('div');
-            span.innerHTML = emoji;
-            span.className = 'movable';
-            span.style.fontSize = '50px';
-            span.style.left = '50px';
-            span.style.top = '50px';
-            zone.appendChild(span);
-            makeDraggable(span);
-        }
-
-        function clearItems() {
-            const items = zone.querySelectorAll('.movable');
-            items.forEach(i => i.remove());
-        }
-
-        // 拍照合成
+        // 拍照合成 (保持原样)
         document.getElementById('take-photo').addEventListener('click', () => {
             const canvas = document.getElementById('photo-canvas');
             const ctx = canvas.getContext('2d');
-            
-            // 1. 画背景
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, 640, 800);
             
-            // 2. 画摄像头 (镜像翻转)
             ctx.save();
             ctx.translate(600, 40); 
             ctx.scale(-1, 1);
             ctx.drawImage(video, 0, 0, 560, 700);
             ctx.restore();
 
-            // 3. 循环画出所有移动元素
             const movables = zone.querySelectorAll('.movable');
             movables.forEach(el => {
                 const rect = el.getBoundingClientRect();
                 const zoneRect = zone.getBoundingClientRect();
-                const x = (rect.left - zoneRect.left) * 2 + 40; // 这里的2是预览图到画布的缩放倍数
+                const x = (rect.left - zoneRect.left) * 2 + 40;
                 const y = (rect.top - zoneRect.top) * 2 + 40;
 
                 if (el.tagName === 'IMG') {
                     ctx.drawImage(el, x, y, el.clientWidth * 2, el.clientHeight * 2);
                 } else {
-                    ctx.font = "80px serif";
-                    ctx.fillText(el.innerHTML, x, y + 70);
+                    ctx.font = "100px serif";
+                    ctx.fillText(el.innerHTML, x, y + 80);
                 }
             });
 
-            // 下载
             const link = document.createElement('a');
-            link.download = 'ILLIT_Summer_Photo.png';
+            link.download = 'ILLIT_Photo.png';
             link.href = canvas.toDataURL();
             link.click();
         });
