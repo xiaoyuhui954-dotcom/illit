@@ -2,135 +2,209 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT Music Center 💿</title>
+    <title>ILLIT Dreamy Player 🎀</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* 布局控制 */
-        .music-container {
+        :root {
+            --dream-pink: #ffc1e3;
+            --dream-purple: #e1bee7;
+            --pixel-border: 4px solid #333;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
             display: flex;
-            gap: 20px;
             justify-content: center;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            margin-top: 20px;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
 
-        /* 左侧唱片架样式 */
-        .album-shelf {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            background: #fff;
+        /* 核心 MP3 播放器容器 */
+        .mp3-player {
+            width: 340px;
+            background: var(--dream-pink);
+            border: var(--pixel-border);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 8px 8px 0px rgba(255, 128, 171, 0.3);
+            position: relative;
+        }
+
+        /* 像素屏幕区域 */
+        .player-screen {
+            background: #222;
+            border: 3px solid #555;
+            border-radius: 10px;
             padding: 15px;
-            border: 2px solid #333;
-            box-shadow: inset 2px 2px 0 #dfdfdf;
+            color: #00ffcc;
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 0 0 5px #00ffcc;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .cd-item {
-            cursor: pointer;
+        /* 旋转唱片 */
+        .disk-wrapper {
             width: 120px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-        .cd-item:hover { transform: scale(1.1); }
-        .cd-item img {
-            width: 100%;
             height: 120px;
-            object-fit: cover;
-            border: 2px solid #333;
+            margin: 0 auto 15px;
+            position: relative;
         }
 
-        /* 右侧播放器旋转动画 */
+        .disk {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            object-fit: cover;
+            animation: rotate 6s linear infinite;
+            animation-play-state: paused;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
         @keyframes rotate {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        .disk {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            border: 6px solid #333;
-            object-fit: cover;
-            animation: rotate 5s linear infinite;
-            animation-play-state: paused;
-            box-shadow: 0 0 15px rgba(255, 128, 171, 0.5);
+
+        /* 模拟像素频谱图 */
+        .visualizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 30px;
+            justify-content: center;
+            margin-top: 10px;
         }
 
-        /* 星星特效基础样式 */
+        .bar {
+            width: 4px;
+            background: #00ffcc;
+            animation: bounce 0.5s ease-in-out infinite alternate;
+            animation-play-state: paused;
+        }
+
+        @keyframes bounce {
+            from { height: 5px; }
+            to { height: 25px; }
+        }
+
+        /* 像素控制按钮 */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .pixel-btn {
+            background: #fff;
+            border: 2px solid #333;
+            box-shadow: 3px 3px 0px #333;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.1s;
+        }
+
+        .pixel-btn:active {
+            box-shadow: 0px 0px 0px #333;
+            transform: translate(3px, 3px);
+        }
+
+        /* 隐藏原生音频播放器，只留逻辑 */
+        audio { display: none; }
+
+        /* 星星特效 */
         .star-effect {
             position: fixed;
             pointer-events: none;
-            z-index: 9999;
-            font-size: 24px; /* 让星星更大更明显 */
-            user-select: none;
+            z-index: 99;
+            font-size: 24px;
         }
     </style>
 </head>
-<body style="background: #fce4ec; padding: 20px; overflow-x: hidden;">
+<body>
 
-    <div class="music-container">
-        
-        <div class="window" style="width: 320px;">
-            <div class="title-bar"><div class="title-bar-text">Album_Shelf.sys</div></div>
-            <div class="window-body">
-                <p style="margin-top: 0; font-weight: bold;">💿 选择一张唱片放入播放器：</p>
-                <div class="album-shelf">
-                    <div class="cd-item" onclick="changeSong(0)">
-                        <img src="IMG_4456.jpeg" alt="Not Cute Anymore">
-                        <p style="font-size: 10px;">NOT CUTE ANYMORE</p>
-                    </div>
-                    <div class="cd-item" onclick="changeSong(1)">
-                        <img src="IMG_4457.jpeg" alt="Billyeoon Goyangi">
-                        <p style="font-size: 10px;">Billyeoon Goyangi</p>
-                    </div>
-                    <div class="cd-item" onclick="changeSong(2)">
-                        <img src="IMG_4458.jpeg" alt="Magnetic">
-                        <p style="font-size: 10px;">Magnetic</p>
-                    </div>
-                </div>
+    <div class="mp3-player">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+            <span style="font-weight: bold; color: #fff; font-size: 12px;">ILLIT DreamPlayer v1.0</span>
+            <div style="display: flex; gap: 4px;">
+                <div style="width: 8px; height: 8px; background: #ff4081; border-radius: 50%;"></div>
+                <div style="width: 8px; height: 8px; background: #fff; border-radius: 50%;"></div>
             </div>
         </div>
 
-        <div class="window" style="width: 320px;">
-            <div class="title-bar">
-                <div class="title-bar-text">ILLIT_Player.exe</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Close" onclick="window.location.href='index.html?from=internal'"></button>
-                </div>
+        <div class="player-screen">
+            <div class="disk-wrapper">
+                <img id="p-cover" src="IMG_4457.jpeg" class="disk">
             </div>
-            <div class="window-body" style="text-align: center;">
-                <div style="margin: 20px 0;">
-                    <img id="p-cover" src="IMG_4457.jpeg" class="disk">
-                </div>
-                <h3 id="p-title" style="margin: 10px 0 5px 0; color: #ff4081;">NOT CUTE ANYMORE</h3>
-                <p style="color: #666; font-size: 12px; margin-bottom: 15px;">Artist: ILLIT (아일릿)</p>
-                
-                <audio id="main-audio" controls style="width: 100%;">
-                    <source id="audio-src" src="magnetic.mp3.mp3" type="audio/mpeg">
-                </audio>
-
-                <hr>
-                <div style="padding: 10px 0;">
-                    <button onclick="window.location.href='index.html?from=internal'">返回桌面系统</button>
-                </div>
+            <div style="text-align: center; font-size: 14px; margin-bottom: 5px;" id="p-title">LOADING...</div>
+            
+            <div class="visualizer" id="viz">
+                <div class="bar" style="animation-delay: 0.1s"></div>
+                <div class="bar" style="animation-delay: 0.3s"></div>
+                <div class="bar" style="animation-delay: 0.2s"></div>
+                <div class="bar" style="animation-delay: 0.4s"></div>
+                <div class="bar" style="animation-delay: 0.1s"></div>
+                <div class="bar" style="animation-delay: 0.5s"></div>
             </div>
         </div>
 
+        <div style="display: flex; gap: 5px; overflow-x: auto; padding-bottom: 5px; margin-bottom: 10px;">
+            <button class="pixel-btn" style="font-size: 10px; white-space: nowrap;" onclick="changeSong(0)">Magnetic</button>
+            <button class="pixel-btn" style="font-size: 10px; white-space: nowrap;" onclick="changeSong(1)">CuteAnymore</button>
+            <button class="pixel-btn" style="font-size: 10px; white-space: nowrap;" onclick="changeSong(2)">Billyeoon</button>
+        </div>
+
+        <div class="controls-grid">
+            <button class="pixel-btn" onclick="audio.currentTime -= 10">⏪</button>
+            <button class="pixel-btn" id="playBtn" onclick="togglePlay()">▶️</button>
+            <button class="pixel-btn" onclick="audio.currentTime += 10">⏩</button>
+        </div>
+
+        <center>
+            <button style="margin-top: 20px; border: none; background: transparent; cursor: pointer; text-decoration: underline; color: #7b1fa2;" onclick="window.location.href='index.html?from=internal'">
+                返回桌面系统
+            </button>
+        </center>
     </div>
 
+    <audio id="main-audio">
+        <source id="audio-src" src="magnetic.mp3.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // --- 1. 音乐控制逻辑 ---
         const songs = [
-            { title: "NOT CUTE ANYMORE", cover: "IMG_4456.jpeg", file: "ScreenRecording_04-26-2026 14-47-55_1 (online-audio-converter.com).mp3" },
-            { title: "Billyeoon Goyangi", cover: "IMG_4457.jpeg", file: "ScreenRecording_04-26-2026 14-58-30_1 (online-audio-converter.com).mp3" },
-            { title: "Magnetic", cover: "IMG_4458.jpeg", file: "magnetic.mp3.mp3" }
+            { title: "Magnetic", cover: "IMG_4458.jpeg", file: "magnetic.mp3.mp3" },
+            { title: "NOT CUTE ANYMORE", cover: "IMG_4456.jpeg", file: "magnetic.mp3.mp3" },
+            { title: "Billyeoon Goyangi", cover: "IMG_4457.jpeg", file: "magnetic.mp3.mp3" }
         ];
 
         const audio = document.getElementById('main-audio');
         const cover = document.getElementById('p-cover');
         const title = document.getElementById('p-title');
         const source = document.getElementById('audio-src');
+        const playBtn = document.getElementById('playBtn');
+        const bars = document.querySelectorAll('.bar');
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerText = "⏸️";
+                cover.style.animationPlayState = 'running';
+                bars.forEach(b => b.style.animationPlayState = 'running');
+            } else {
+                audio.pause();
+                playBtn.innerText = "▶️";
+                cover.style.animationPlayState = 'paused';
+                bars.forEach(b => b.style.animationPlayState = 'paused');
+            }
+        }
 
         function changeSong(index) {
             const song = songs[index];
@@ -138,49 +212,29 @@
             cover.src = song.cover;
             source.src = song.file;
             audio.load();
-            audio.play().catch(() => {
-                console.log("需要用户点击后才能自动播放");
-            });
-            cover.style.animationPlayState = 'running';
+            if (!audio.paused || playBtn.innerText === "⏸️") {
+                audio.play();
+                cover.style.animationPlayState = 'running';
+                bars.forEach(b => b.style.animationPlayState = 'running');
+            }
         }
 
-        audio.onplay = () => cover.style.animationPlayState = 'running';
-        audio.onpause = () => cover.style.animationPlayState = 'paused';
-
-        // --- 2. 升级版显眼星星特效 ---
+        // 星星特效
         document.addEventListener('mousemove', function(e) {
             const star = document.createElement('div');
-            // 随机选一个颜色和符号
-            const colors = ['#ff80ab', '#f48fb1', '#ce93d8', '#ffffff'];
-            const icons = ['✨', '⭐', '🌸'];
-            
             star.className = 'star-effect';
-            star.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-            star.style.color = colors[Math.floor(Math.random() * colors.length)];
-            
+            star.innerHTML = ['✨', '🌸', '💫', '⭐'][Math.floor(Math.random()*4)];
             star.style.left = e.clientX + 'px';
             star.style.top = e.clientY + 'px';
-            
+            star.style.color = ['#ff80ab', '#f48fb1', '#ce93d8', '#ffffff'][Math.floor(Math.random()*4)];
             document.body.appendChild(star);
-
-            let speedY = Math.random() * 2 + 1; // 下落速度
-            let speedX = (Math.random() - 0.5) * 2; // 左右轻微漂移
+            
             let opacity = 1;
-
-            const animation = setInterval(() => {
-                opacity -= 0.02;
-                let currentTop = parseFloat(star.style.top);
-                let currentLeft = parseFloat(star.style.left);
-                
-                star.style.top = (currentTop + speedY) + 'px';
-                star.style.left = (currentLeft + speedX) + 'px';
+            const ani = setInterval(() => {
+                opacity -= 0.05;
                 star.style.opacity = opacity;
-                star.style.transform = `scale(${opacity + 0.5}) rotate(${currentTop}deg)`;
-
-                if (opacity <= 0) {
-                    clearInterval(animation);
-                    star.remove();
-                }
+                star.style.transform = `scale(${opacity + 0.5}) translateY(${20 - opacity*20}px)`;
+                if(opacity <= 0) { clearInterval(ani); star.remove(); }
             }, 30);
         });
     </script>
