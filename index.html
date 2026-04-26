@@ -87,6 +87,30 @@ document.addEventListener('mousemove', function(e) {
         }
     }, 30);
 });
+    89:     });
+90: 
+91:     // --- 这里是新加入的进度条控制脚本 ---
+92:     let bar = document.getElementById('progress-bar');
+93:     let text = document.getElementById('progress-text');
+94:     let screen = document.getElementById('loading-screen');
+95:     let width = 0;
+96: 
+97:     let timer = setInterval(() => {
+98:         width += Math.floor(Math.random() * 10); 
+99:         if (width >= 100) {
+100:            width = 100;
+101:            clearInterval(timer);
+102:            setTimeout(() => {
+103:                screen.style.opacity = '0';
+104:                setTimeout(() => screen.style.display = 'none', 500);
+105:            }, 500);
+106:        }
+107:        if(bar) bar.style.width = width + '%';
+108:        if(text) text.innerText = width + '%';
+109:    }, 100);
+110:    // ----------------------------------
+111: </script>
+
 </script>
 
 </body>
