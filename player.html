@@ -2,31 +2,27 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT Music Player 🎧</title>
+    <title>ILLIT Player 🎧</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .disk { width: 180px; height: 180px; border-radius: 50%; border: 5px solid #333; animation: rotate 5s linear infinite; object-fit: cover; }
+    </style>
 </head>
 <body style="background: #fce4ec; padding: 20px;">
-
     <div class="window" style="width: 350px; margin: 0 auto;">
-        <div class="title-bar">
-            <div class="title-bar-text">ILLIT_Player.exe</div>
-        </div>
+        <div class="title-bar"><div class="title-bar-text">ILLIT_Player.exe</div></div>
         <div class="window-body" style="text-align: center;">
+            <div style="margin: 20px 0;"><img id="p-cover" src="IMG_4457.jpeg" class="disk"></div>
+            <h3 id="p-title">Loading...</h3>
+            <p style="color: #666; margin-bottom: 10px;">ILLIT (아일릿)</p>
             
-            <div class="disk-container" style="margin: 20px 0;">
-                <img id="player-cover" src="IMG_4456.jpeg" style="width: 180px; height: 180px; border-radius: 50%; border: 5px solid #333; animation: rotate 5s linear infinite;">
-            </div>
-
-            <h3 id="player-title">NOT CUTE ANYMORE</h3>
-            <p id="player-artist" style="color: #666;">ILLIT (아일릿)</p>
-
-            <hr>
-
-            <audio id="main-audio" controls style="width: 100%; margin-bottom: 10px;">
-                <source id="audio-source" src="song1.mp3" type="audio/mpeg">
+            <audio id="main-audio" controls style="width: 100%; margin-bottom: 15px;">
+                <source id="audio-src" src="" type="audio/mpeg">
             </audio>
 
+            <hr>
             <div class="field-row" style="justify-content: center;">
                 <button onclick="window.location.href='index.html?from=internal'">返回桌面</button>
                 <button onclick="window.location.href='music.html'">换首歌</button>
@@ -34,32 +30,27 @@
         </div>
     </div>
 
-    <style>
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-    </style>
-
     <script>
-        // 歌曲数据库
+        // 歌曲数据库：确保文件名与 GitHub 仓库一致
         const songs = [
-            { title: "NOT CUTE ANYMORE", cover: "IMG_4456.jpeg", file: "song1.mp3" },
-            { title: "Billyeoon Goyangi (Do the Dance)", cover: "IMG_4457.jpeg", file: "song2.mp3" },
-            { title: "Magnetic", cover: "IMG_4458.jpeg", file: "song3.mp3" }
+            { title: "NOT CUTE ANYMORE", cover: "IMG_4457.jpeg", file: "magnetic.mp3.mp3" }, 
+            { title: "Billyeoon Goyangi", cover: "IMG_4458.jpeg", file: "magnetic.mp3.mp3" }, 
+            { title: "Magnetic", cover: "IMG_4456.jpeg", file: "magnetic.mp3.mp3" } 
         ];
 
-        // 获取链接里的歌曲编号
+        // 解析网址里的歌曲编号 (?song=X)
         const urlParams = new URLSearchParams(window.location.search);
-        let songIndex = urlParams.get('song') || 0; // 默认第一首
+        let idx = parseInt(urlParams.get('song')) || 0;
 
-        // 自动切换播放器内容
-        if (songs[songIndex]) {
-            document.getElementById('player-title').innerText = songs[songIndex].title;
-            document.getElementById('player-cover').src = songs[songIndex].cover;
-            // 如果你有音频文件，取消下面这行的注释
-            // document.getElementById('audio-source').src = songs[songIndex].file;
-            // document.getElementById('main-audio').load();
+        // 自动装载对应内容
+        if (songs[idx]) {
+            document.getElementById('p-title').innerText = songs[idx].title;
+            document.getElementById('p-cover').src = songs[idx].cover;
+            const audio = document.getElementById('main-audio');
+            const source = document.getElementById('audio-src');
+            
+            source.src = songs[idx].file;
+            audio.load(); // 重新加载音频源
         }
     </script>
 </body>
