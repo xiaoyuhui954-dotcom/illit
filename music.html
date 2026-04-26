@@ -2,110 +2,42 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ILLIT Record Store 💿</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        .album-wall {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            padding: 10px;
-            justify-items: center;
-        }
-        /* 针对第三张专辑进行居中处理 */
-        .album-wall a:last-child {
-            grid-column: span 2;
-        }
-        .cd-case {
-            text-decoration: none;
-            transition: transform 0.2s;
-            display: block;
-            width: 140px;
-        }
-        .cd-case:hover {
-            transform: scale(1.05);
-        }
-        .album-art {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border: 2px solid #333;
-            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
-        }
-        .album-title {
-            font-size: 11px;
-            text-align: center;
-            color: #333;
-            margin-top: 8px;
-            font-weight: bold;
-            /* 限制文字高度，防止过长打乱布局 */
-            height: 30px;
-            overflow: hidden;
-        }
+        .album-wall { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 10px; }
+        .album-wall a:last-child { grid-column: span 2; justify-self: center; }
+        .album-art { width: 140px; height: 140px; border: 2px solid #333; object-fit: cover; }
+        .album-title { font-size: 11px; text-align: center; margin-top: 5px; color: #333; }
+        .cd-case { text-decoration: none; transition: transform 0.2s; }
+        .cd-case:hover { transform: scale(1.05); }
     </style>
 </head>
 <body style="background: #fce4ec; padding: 20px;">
-
-    <div class="window" style="width: 500px; margin: 0 auto;">
-        <div class="title-bar">
-            <div class="title-bar-text">ILLIT_Record_Store.sys</div>
-            <div class="title-bar-controls">
-                <button aria-label="Close" onclick="window.location.href='index.html?from=internal'"></button>
-            </div>
-        </div>
+    <div class="window" style="width: 450px; margin: 0 auto;">
+        <div class="title-bar"><div class="title-bar-text">ILLIT_Store.sys</div></div>
         <div class="window-body">
-            <h3 style="text-align: center; margin-bottom: 20px;">请选择一张 CD：</h3>
-
+            <h3 style="text-align: center;">请选择一张 CD：</h3>
             <div class="album-wall">
                 <a href="player.html?song=0" class="cd-case">
-                    <img src="IMG_4456.jpeg" class="album-art" alt="Album1">
+                    <img src="IMG_4457.jpeg" class="album-art">
                     <p class="album-title">NOT CUTE ANYMORE</p>
                 </a>
-
                 <a href="player.html?song=1" class="cd-case">
-                    <img src="IMG_4457.jpeg" class="album-art" alt="Album2">
-                    <p class="album-title">Billyeoon Goyangi (Do the Dance)</p>
+                    <img src="IMG_4458.jpeg" class="album-art">
+                    <p class="album-title">Billyeoon Goyangi</p>
                 </a>
-
                 <a href="player.html?song=2" class="cd-case">
-                    <img src="IMG_4458.jpeg" class="album-art" alt="Album3">
+                    <img src="IMG_4456.jpeg" class="album-art">
                     <p class="album-title">Magnetic</p>
                 </a>
             </div>
-
             <hr>
-            
-            <div style="text-align: center; margin-top: 15px;">
+            <div style="text-align: center;">
                 <button onclick="window.location.href='index.html?from=internal'">返回桌面</button>
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('mousemove', function(e) {
-            var star = document.createElement('div');
-            star.innerHTML = '✨';
-            star.style.position = 'fixed';
-            star.style.left = e.clientX + 'px';
-            star.style.top = e.clientY + 'px';
-            star.style.fontSize = '20px';
-            star.style.pointerEvents = 'none';
-            star.style.zIndex = '9999';
-            document.body.appendChild(star);
-            
-            var speed = 0;
-            var interval = setInterval(function() {
-                speed += 2;
-                star.style.top = (parseInt(star.style.top) + speed) + 'px';
-                star.style.opacity = star.style.opacity ? star.style.opacity - 0.05 : 1;
-                if (star.style.opacity <= 0) {
-                    clearInterval(interval);
-                    star.remove();
-                }
-            }, 30);
-        });
-    </script>
 </body>
 </html>
