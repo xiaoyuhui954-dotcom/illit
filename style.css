@@ -47,3 +47,12 @@ img:hover {
     filter: sepia(50%) hue-rotate(300deg); /* 鼠标放上去变粉色滤镜 */
     cursor: crosshair; /* 鼠标变成十字星 */
 }
+.image-container img {
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
