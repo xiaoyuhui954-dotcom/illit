@@ -6,29 +6,38 @@
     <title>ILLIT WORLD 🎀</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
+    
     <style>
-#loading-screen {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: #fce4ec; /* 粉色背景 */
-    display: flex; justify-content: center; align-items: center;
-    z-index: 10000; /* 确保在最最前面 */
-    transition: opacity 0.5s;
-}
-</style>
-
+        /* 加载层全屏样式 */
+        #loading-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #fce4ec; /* 粉色背景 */
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s;
+        }
+        .loading-content { text-align: center; }
+        /* 进度条外框 */
+        .bar-border {
+            width: 200px; height: 15px; 
+            background: #fff; border: 2px solid #ff80ab; 
+            border-radius: 10px; margin: 10px auto; overflow: hidden;
+        }
+    </style>
 </head>
 <body>
-<div id="loading-screen">
-    <div class="loading-content">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJtZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4ZzR4JmVwaT12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3o7TKMGpx4B4SxhF84/giphy.gif" alt="bunny" id="loading-icon" style="width:80px;">
-        <h2 style="color: #ff80ab; text-shadow: 1px 1px #fff;">ILLIT World Loading...</h2>
-        <div style="width: 200px; height: 15px; background: #fff; border: 2px solid #ff80ab; border-radius: 10px; margin: 10px auto; overflow: hidden;">
-            <div id="progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #ff80ab, #ce93d8); transition: width 0.1s;"></div>
+
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div style="font-size: 50px; margin-bottom: 15px;">🎀</div>
+            <h2 style="color: #ff80ab; text-shadow: 1px 1px #fff;">ILLIT World Loading...</h2>
+            <div class="bar-border">
+                <div id="progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #ff80ab, #ce93d8); transition: width 0.1s;"></div>
+            </div>
+            <p id="progress-text" style="color: #ff80ab; font-weight: bold;">0%</p>
         </div>
-        <p id="progress-text" style="color: #ff80ab; font-weight: bold;">0%</p>
     </div>
-</div>
 
     <div class="desktop-icons">
         <p>ILLIT_Project_v1.exe</p>
@@ -44,74 +53,70 @@
             </div>
         </div>
         <div class="window-body">
-            <h2 style="text-align: center;">Magnetic Love! 🧲</h2>
+            <h2 style="text-align: center;">Magnetic Love! 🎧</h2>
             <div class="image-container">
                 <img src="IMG_4415.jpeg" alt="ILLIT" style="width: 100%;">
             </div>
-            <p>欢迎来到 ILLIT 的复古应援站。点击下方按钮了解成员：</p>
+            <p>欢迎来到 ILLIT 的复古应援站。</p>
             
-                <hr> <p>快捷方式：</p>
-<button onclick="window.location.href='music.html'">🎶 音乐频道</button>
-<button onclick="window.location.href='player.html'">💿 播放器</button>
-                <button onclick="window.location.href='menu.html'" style="margin-top:10px; width:100%; font-weight:bold;">📂 进入成员档案库</button>
-
-
-            </section>
+            <hr>
+            <p>快速访问：</p>
+            <div class="field-row" style="justify-content: center; gap: 5px;">
+                <button onclick="window.location.href='music.html'">🎶 音乐频道</button>
+                <button onclick="window.location.href='player.html'">💿 播放器</button>
+                <button onclick="window.location.href='menu.html'">📂 档案库</button>
+            </div>
         </div>
         <div class="status-bar">
             <p class="status-bar-field">Status: Online</p>
             <p class="status-bar-field">Members: 5</p>
         </div>
     </div>
-<script>
-document.addEventListener('mousemove', function(e) {
-    var star = document.createElement('div');
-    star.innerHTML = '✨'; // 你也可以换成 🎀 或 💖
-    star.style.position = 'fixed';
-    star.style.left = e.clientX + 'px';
-    star.style.top = e.clientY + 'px';
-    star.style.fontSize = '20px';
-    star.style.pointerEvents = 'none';
-    star.style.zIndex = '9999';
-    document.body.appendChild(star);
 
-    // 让星星向下掉并消失
-    var speed = 0;
-    var interval = setInterval(function() {
-        speed += 2;
-        star.style.top = (parseInt(star.style.top) + speed) + 'px';
-        star.style.opacity = star.style.opacity ? star.style.opacity - 0.05 : 1;
-        if (star.style.opacity <= 0) {
-            clearInterval(interval);
-            star.remove();
-        }
-    }, 30);
-});
-    89:     });
-90: 
-91:     // --- 这里是新加入的进度条控制脚本 ---
-92:     let bar = document.getElementById('progress-bar');
-93:     let text = document.getElementById('progress-text');
-94:     let screen = document.getElementById('loading-screen');
-95:     let width = 0;
-96: 
-97:     let timer = setInterval(() => {
-98:         width += Math.floor(Math.random() * 10); 
-99:         if (width >= 100) {
-100:            width = 100;
-101:            clearInterval(timer);
-102:            setTimeout(() => {
-103:                screen.style.opacity = '0';
-104:                setTimeout(() => screen.style.display = 'none', 500);
-105:            }, 500);
-106:        }
-107:        if(bar) bar.style.width = width + '%';
-108:        if(text) text.innerText = width + '%';
-109:    }, 100);
-110:    // ----------------------------------
-111: </script>
+    <script>
+        // 进度条逻辑
+        window.onload = function() {
+            let bar = document.getElementById('progress-bar');
+            let text = document.getElementById('progress-text');
+            let screen = document.getElementById('loading-screen');
+            let width = 0;
 
-</script>
+            let timer = setInterval(() => {
+                width += Math.floor(Math.random() * 10) + 2; 
+                if (width >= 100) {
+                    width = 100;
+                    clearInterval(timer);
+                    setTimeout(() => {
+                        if(screen) {
+                            screen.style.opacity = '0';
+                            setTimeout(() => screen.style.display = 'none', 500);
+                        }
+                    }, 500);
+                }
+                if(bar) bar.style.width = width + '%';
+                if(text) text.innerText = width + '%';
+            }, 100);
+        };
 
+        // 鼠标星星特效
+        document.addEventListener('mousemove', function(e) {
+            var star = document.createElement('div');
+            star.innerHTML = '✨';
+            star.style.position = 'fixed';
+            star.style.left = e.clientX + 'px';
+            star.style.top = e.clientY + 'px';
+            star.style.fontSize = '20px';
+            star.style.pointerEvents = 'none';
+            star.style.zIndex = '10001'; 
+            document.body.appendChild(star);
+            var speed = 0;
+            var interval = setInterval(function() {
+                speed += 2;
+                star.style.top = (parseInt(star.style.top) + speed) + 'px';
+                star.style.opacity = star.style.opacity ? star.style.opacity - 0.05 : 1;
+                if (star.style.opacity <= 0) { clearInterval(interval); star.remove(); }
+            }, 30);
+        });
+    </script>
 </body>
 </html>
