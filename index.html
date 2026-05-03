@@ -2,222 +2,123 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT ✨ Dreamy Universe Full Ver.</title>
+    <title>ILLIT ✨ Dreamy Multi-Universe</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <style>
-        /* --- 1. 基础与导航 --- */
+        /* --- 1. 基础与全局装饰 --- */
         html { scroll-behavior: smooth; }
-        body { margin: 0; padding: 0; overflow-x: hidden; font-family: "MS UI Gothic", sans-serif; }
+        body { 
+            margin: 0; padding: 0; overflow-x: hidden; 
+            font-family: "MS UI Gothic", sans-serif;
+            cursor: url('https://img.icons8.com/fluency/24/star-burst.png'), auto; /* 自定义鼠标 */
+        }
         
+        /* 梦幻极光背景 */
         .aurora-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(-45deg, #fce4ec, #e1f5fe, #f3e5f5, #e8f5e9);
-            background-size: 400% 400%; animation: aurora 15s infinite; z-index: -2;
+            background-size: 400% 400%; animation: aurora 15s infinite; z-index: -3;
         }
         @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
+        /* Y2K 点阵遮罩 */
+        .grid-mask {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(255,255,255,0.3) 1px, transparent 1px);
+            background-size: 25px 25px; z-index: -2; pointer-events: none;
+        }
+
+        /* --- 2. 导航栏装饰 --- */
         .top-nav {
             position: fixed; top: 20px; right: 20px; z-index: 9999;
-            background: rgba(255,255,255,0.4); backdrop-filter: blur(10px);
-            padding: 10px 20px; border-radius: 25px; border: 2px solid #fff;
-            display: flex; gap: 15px; box-shadow: 0 4px 15px rgba(255,128,171,0.2);
+            background: rgba(255,255,255,0.3); backdrop-filter: blur(12px);
+            padding: 8px 18px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.8);
+            display: flex; gap: 12px; box-shadow: 0 8px 32px rgba(255,105,180,0.2);
         }
-        .top-nav a { text-decoration: none; color: #ff4081; font-weight: bold; font-size: 12px; }
+        .top-nav a { text-decoration: none; color: #ff4081; font-weight: bold; font-size: 12px; transition: 0.3s; }
+        .top-nav a:hover { transform: scale(1.2); text-shadow: 0 0 8px #ff80ab; }
 
-        /* --- 2. 悬浮播放器 --- */
-        #music-box {
-            position: fixed; bottom: 20px; left: 20px; z-index: 10000; width: 220px;
-            background: rgba(255,255,255,0.5) !important; backdrop-filter: blur(10px);
+        /* --- 3. 窗口高级特效 (根据你的 style.css 强化) --- */
+        .glass-win {
+            background: rgba(255,255,255,0.4) !important;
+            backdrop-filter: blur(15px); border-radius: 12px !important;
+            border: 2px solid rgba(255,255,255,0.6) !important;
+            animation: glow 3s infinite alternate, float 5s ease-in-out infinite;
         }
+        @keyframes glow {
+            from { box-shadow: 0 0 10px #fff, 0 0 20px #fce4ec; }
+            to { box-shadow: 0 0 20px #fff, 0 0 40px #ff80ab; }
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* --- 3. 布局板块 --- */
+        /* --- 4. 动态装饰元素 --- */
+        .floating-deco { position: absolute; pointer-events: none; animation: pulse 2s infinite ease-in-out; z-index: 1; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.2); opacity: 1; } }
+        
+        .star { position: fixed; background: white; border-radius: 50%; opacity: 0.5; animation: twinkle var(--d) infinite; z-index: -1; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+        /* --- 5. 功能板块布局 --- */
         section { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; }
-        .glass-win { background: rgba(255,255,255,0.4) !important; backdrop-filter: blur(15px); border-radius: 10px !important; }
-
-        /* 成员介绍卡片 */
-        .member-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; width: 100%; }
-        .m-card { background: white; padding: 5px; border: 1px solid #ffb2d1; text-align: center; font-size: 11px; }
-        .m-card img { width: 100%; border-radius: 5px; }
-
-        /* 相机与贴纸 */
-        #cam-area { width: 320px; height: 380px; background: #000; position: relative; overflow: hidden; border: 2px solid #ff80ab; }
-        .sticker { position: absolute; cursor: move; width: 130px; z-index: 100; }
+        
+        /* 音乐 CD 旋转 */
+        .cd-wrap { position: relative; width: 220px; height: 220px; margin: 0 auto; }
+        .cd-rotate { width: 100%; height: 100%; border-radius: 50%; border: 8px solid rgba(255,255,255,0.8); animation: rotate 6s linear infinite; animation-play-state: paused; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <div class="aurora-bg"></div>
-
-    <!-- 导航栏 -->
-    <nav class="top-nav">
-        <a href="#home">🏠 HOME</a>
-        <a href="#members">🎀 MEMBERS</a>
-        <a href="#camera">📸 PHOTO</a>
-        <a href="#game">🎮 DRESSUP</a>
-        <a href="#community">✨ SQUARE</a>
-    </nav>
-
-    <!-- 播放器 -->
-    <div id="music-box" class="window">
-        <div class="title-bar"><div class="title-bar-text">Magnetic.mp3</div></div>
-        <div class="window-body" style="text-align: center;">
-            <button onclick="document.getElementById('m-audio').play()">▶️</button>
-            <button onclick="document.getElementById('m-audio').pause()">⏸️</button>
-            <audio id="m-audio" loop src="bgm.mp3"></audio>
-        </div>
-    </div>
-
-    <!-- 1. 首页 -->
-    <section id="home">
-        <div class="window glass-win" style="width: 400px;">
-            <div class="title-bar"><div class="title-bar-text">Super_Real.exe</div></div>
-            <div class="window-body" style="text-align: center;">
-                <img src="image_32.png" style="width: 100%; border-radius: 10px;">
-                <h2 style="color: #ff4081;">ILLIT WORLD</h2>
-                <p>滑动滚轮向下，探索成员魅力 ✨</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 2. 成员介绍 (新增版) -->
-    <section id="members">
-        <div class="window glass-win" style="width: 850px;">
-            <div class="title-bar"><div class="title-bar-text">Member_Profile.txt</div></div>
-            <div class="window-body">
-                <div class="member-grid">
-                    <!-- YUNAH -->
-                    <div class="m-card">
-                        <img src="yunah_face.png">
-                        <b>YUNAH</b><br>队内大姐姐
-                    </div>
-                    <!-- MINJU -->
-                    <div class="m-card">
-                        <img src="minju_face.png">
-                        <b>MINJU</b><br>空灵嗓音
-                    </div>
-                    <!-- MOKA -->
-                    <div class="m-card">
-                        <img src="moka_face.png">
-                        <b>MOKA</b><br>表情天才
-                    </div>
-                    <!-- WONHEE -->
-                    <div class="m-card">
-                        <img src="wonhee_face.png">
-                        <b>WONHEE</b><br>国民萌妹
-                    </div>
-                    <!-- IROHA -->
-                    <div class="m-card">
-                        <img src="iroha_face.png">
-                        <b>IROHA</b><br>主舞忙内
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. 合照区 (五人补齐) -->
-    <section id="camera">
-        <div class="window glass-win" style="width: 600px;">
-            <div class="title-bar"><div class="title-bar-text">Lucky_Girl_Photo.exe</div></div>
-            <div class="window-body" style="display: flex; gap: 20px;">
-                <div id="cam-area">
-                    <video id="v" autoplay playsinline style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1);"></video>
-                </div>
-                <div style="flex:1;">
-                    <p>点击邀请成员合照：</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
-                        <button onclick="addM('yunah_pose.png')">YUNAH</button>
-                        <button onclick="addM('minju_pose.png')">MINJU</button>
-                        <button onclick="addM('moka_pose.png')">MOKA</button>
-                        <button onclick="addM('wonhee_pose.png')">WONHEE</button>
-                        <button onclick="addM('iroha_pose.png')">IROHA</button>
-                    </div>
-                    <p style="font-size:10px; margin-top:10px;">(双击贴纸删除)</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. 换装小游戏 -->
-    <section id="game">
-        <div class="window glass-win" style="width: 500px;">
-            <div class="title-bar"><div class="title-bar-text">Stylist_Mode.exe</div></div>
-            <div class="window-body" style="display: flex; gap: 15px;">
-                <div id="doll-box" style="width:200px; height:350px; background:#fff; position:relative; border:1px solid #ddd;">
-                    <img src="base_doll.png" style="width:100%;">
-                </div>
-                <div style="flex:1;">
-                    <p>试衣间：</p>
-                    <img src="dress1.png" style="width:50px; cursor:pointer;" onclick="clone('dress1.png')">
-                    <img src="hair_acc.png" style="width:40px; cursor:pointer;" onclick="clone('hair_acc.png')">
-                    <button style="width:100%; margin-top:20px;" onclick="location.reload()">重置</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. 社区广场 -->
-    <section id="community">
-        <div class="window glass-win" style="width: 500px;">
-            <div class="title-bar"><div class="title-bar-text">Super_Real_Talk.exe</div></div>
-            <div class="window-body">
-                <div id="posts" style="height:250px; overflow-y:auto; background:#fff; padding:10px; border:1px solid #ddd;">
-                    <div><b>Admin:</b> 欢迎来到全员版本！</div>
-                </div>
-                <div style="display:flex; margin-top:10px; gap:5px;">
-                    <input id="post-in" style="flex:1;" placeholder="说点什么...">
-                    <button onclick="doPost()">发送</button>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="grid-mask"></div>
 
     <script>
-        // 相机启动
-        const v = document.getElementById('v');
-        navigator.mediaDevices.getUserMedia({video:true}).then(s => v.srcObject=s);
-
-        // 拖拽逻辑
-        function drag(el) {
-            let p1=0, p2=0, p3=0, p4=0;
-            el.onmousedown = (e) => {
-                p3=e.clientX; p4=e.clientY;
-                document.onmouseup = () => { document.onmousemove = null; };
-                document.onmousemove = (e) => {
-                    p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
-                    el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
-                };
-            };
-        }
-
-        // 添加合照成员
-        function addM(src) {
-            const img = document.createElement('img');
-            img.src = src; img.className = 'sticker';
-            img.style.top = '100px'; img.style.left = '50px';
-            img.ondblclick = () => img.remove();
-            document.getElementById('cam-area').appendChild(img);
-            drag(img);
-        }
-
-        // 换装克隆
-        function clone(src) {
-            const img = document.createElement('img');
-            img.src = src; img.style.position='absolute'; img.style.width='100px'; img.style.zIndex='200';
-            img.ondblclick = () => img.remove();
-            document.getElementById('doll-box').appendChild(img);
-            drag(img);
-        }
-
-        // 社区
-        function doPost() {
-            const val = document.getElementById('post-in').value;
-            if(!val) return;
-            const item = document.createElement('div');
-            item.innerHTML = `<b>GUEST:</b> ${val} <hr>`;
-            document.getElementById('posts').prepend(item);
-            document.getElementById('post-in').value = "";
+        for(let i=0; i<50; i++) {
+            let s = document.createElement('div');
+            s.className = 'star';
+            s.style.width = Math.random()*4+'px';
+            s.style.height = s.style.width;
+            s.style.top = Math.random()*100+'vh';
+            s.style.left = Math.random()*100+'vw';
+            s.style.setProperty('--d', (Math.random()*3+2)+'s');
+            document.body.appendChild(s);
         }
     </script>
-</body>
-</html>
+
+    <nav class="top-nav">
+        <a href="#home">HOME</a>
+        <a href="#music">MUSIC</a>
+        <a href="#members">MEMBERS</a>
+        <a href="#camera">PHOTO</a>
+        <a href="#game">GAME</a>
+        <a href="#square">SQUARE</a>
+    </nav>
+
+    <section id="home">
+        <img src="https://img.icons8.com/fluency/48/pixel-heart.png" class="floating-deco" style="top:15%; left:20%;">
+        <img src="https://img.icons8.com/fluency/48/rainbow.png" class="floating-deco" style="bottom:20%; right:15%; animation-delay: 1s;">
+        
+        <div class="window glass-win" style="width: 420px;">
+            <div class="title-bar" style="background: linear-gradient(90deg, #ff80ab, #ea80fc) !important;">
+                <div class="title-bar-text">Dream_System.exe</div>
+            </div>
+            <div class="window-body" style="text-align: center;">
+                <div style="background: white; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                    <img src="image_32.png" style="width: 100%; filter: drop-shadow(0 0 5px #ff80ab);">
+                </div>
+                <h1 style="color: #ff4081; font-family: 'Comic Sans MS'; text-shadow: 2px 2px #fff;">ILLIT WORLD</h1>
+                <p>Welcome to our dreamy space! 🎀✨</p>
+                <button onclick="document.getElementById('music').scrollIntoView()">ENTER</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="music">
+        <div class="window glass-win" style="width: 450px;">
+            <div class="title-bar" style="background: linear-gradient(90deg, #81d4fa, #ea80fc) !important;">
+                <div class="title-bar-text">Music_Player.mp3</div>
+            </div>
+            <div class="window-body" style="text-align: center;">
+                <div class="cd-wrap">
+                    <img id="cd" src="image_33.png" class="cd-rotate">
+                    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,
