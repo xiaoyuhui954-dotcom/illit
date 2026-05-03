@@ -2,218 +2,221 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT Dreamy Universe 🎀✨</title>
+    <title>ILLIT ✨ Dreamy Universe Full Ver.</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <style>
-        /* --- 1. 核心布局与平滑滚动 --- */
+        /* --- 1. 基础与导航 --- */
         html { scroll-behavior: smooth; }
-        body { margin: 0; padding: 0; overflow-x: hidden; font-family: "MS UI Gothic", "Courier New", sans-serif; cursor: url('https://img.icons8.com/fluency/24/cursor.png'), auto; }
-
-        /* --- 2. 梦幻极光动态背景 --- */
+        body { margin: 0; padding: 0; overflow-x: hidden; font-family: "MS UI Gothic", sans-serif; }
+        
         .aurora-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%; animation: aurora 15s ease infinite;
-            z-index: -2; opacity: 0.6;
+            background: linear-gradient(-45deg, #fce4ec, #e1f5fe, #f3e5f5, #e8f5e9);
+            background-size: 400% 400%; animation: aurora 15s infinite; z-index: -2;
         }
         @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* 网格纹理叠加，更有 Y2K 科技感 */
-        .grid-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(rgba(255,255,255,0.3) 1px, transparent 1px);
-            background-size: 30px 30px; z-index: -1;
-        }
-
-        /* --- 3. 右上角固定“糖果导航栏” --- */
         .top-nav {
-            position: fixed; top: 25px; right: 25px; z-index: 9999;
-            background: rgba(255, 255, 255, 0.3) !important;
-            backdrop-filter: blur(15px); border-radius: 30px !important;
-            border: 2px solid rgba(255, 255, 255, 0.6) !important;
-            padding: 10px 20px; display: flex; gap: 15px;
-            box-shadow: 0 8px 32px rgba(255, 105, 180, 0.3);
+            position: fixed; top: 20px; right: 20px; z-index: 9999;
+            background: rgba(255,255,255,0.4); backdrop-filter: blur(10px);
+            padding: 10px 20px; border-radius: 25px; border: 2px solid #fff;
+            display: flex; gap: 15px; box-shadow: 0 4px 15px rgba(255,128,171,0.2);
         }
-        .top-nav a { 
-            text-decoration: none; color: #fff; font-weight: bold; font-size: 14px; 
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2); transition: 0.3s;
-        }
-        .top-nav a:hover { color: #ff80ab; transform: scale(1.1); }
+        .top-nav a { text-decoration: none; color: #ff4081; font-weight: bold; font-size: 12px; }
 
-        /* --- 4. 全屏区域设定 --- */
-        section {
-            width: 100vw; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            position: relative;
+        /* --- 2. 悬浮播放器 --- */
+        #music-box {
+            position: fixed; bottom: 20px; left: 20px; z-index: 10000; width: 220px;
+            background: rgba(255,255,255,0.5) !important; backdrop-filter: blur(10px);
         }
 
-        /* 装饰用的小星星 */
-        .star { position: absolute; animation: blink 2s infinite ease-in-out; pointer-events: none; }
-        @keyframes blink { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+        /* --- 3. 布局板块 --- */
+        section { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; }
+        .glass-win { background: rgba(255,255,255,0.4) !important; backdrop-filter: blur(15px); border-radius: 10px !important; }
 
-        /* --- 5. 板块通用：磨砂玻璃窗口 --- */
-        .glass-window {
-            background: rgba(255, 255, 255, 0.4) !important;
-            backdrop-filter: blur(12px); border-radius: 15px !important;
-            border: 2px solid rgba(255, 255, 255, 0.7) !important;
-            box-shadow: 15px 15px 40px rgba(0,0,0,0.1) !important;
-            animation: float 4s ease-in-out infinite;
-        }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        /* 成员介绍卡片 */
+        .member-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; width: 100%; }
+        .m-card { background: white; padding: 5px; border: 1px solid #ffb2d1; text-align: center; font-size: 11px; }
+        .m-card img { width: 100%; border-radius: 5px; }
 
-        /* 列表区域样式 */
-        .scroll-list {
-            height: 200px; overflow-y: auto; background: rgba(255,255,255,0.5);
-            border: 1px solid #ffb2d1; border-radius: 8px; padding: 10px; margin: 10px 0;
-        }
-        .card { background: white; padding: 10px; margin-bottom: 8px; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
-
-        /* --- 6. 相机区域 --- */
-        #cam-box { width: 320px; height: 240px; border: 3px solid #ff80ab; border-radius: 10px; overflow: hidden; position: relative; background: #000; }
-        .sticker { position: absolute; cursor: move; width: 80px; z-index: 10; }
+        /* 相机与贴纸 */
+        #cam-area { width: 320px; height: 380px; background: #000; position: relative; overflow: hidden; border: 2px solid #ff80ab; }
+        .sticker { position: absolute; cursor: move; width: 130px; z-index: 100; }
     </style>
 </head>
 <body>
 
     <div class="aurora-bg"></div>
-    <div class="grid-overlay"></div>
 
-    <!-- 顶栏 -->
+    <!-- 导航栏 -->
     <nav class="top-nav">
         <a href="#home">🏠 HOME</a>
-        <a href="#photos">📸 PHOTO</a>
-        <a href="#square">✨ SQUARE</a>
-        <a href="#guestbook">💌 MSG</a>
+        <a href="#members">🎀 MEMBERS</a>
+        <a href="#camera">📸 PHOTO</a>
+        <a href="#game">🎮 DRESSUP</a>
+        <a href="#community">✨ SQUARE</a>
     </nav>
 
-    <!-- SECTION 1: 首页 -->
+    <!-- 播放器 -->
+    <div id="music-box" class="window">
+        <div class="title-bar"><div class="title-bar-text">Magnetic.mp3</div></div>
+        <div class="window-body" style="text-align: center;">
+            <button onclick="document.getElementById('m-audio').play()">▶️</button>
+            <button onclick="document.getElementById('m-audio').pause()">⏸️</button>
+            <audio id="m-audio" loop src="bgm.mp3"></audio>
+        </div>
+    </div>
+
+    <!-- 1. 首页 -->
     <section id="home">
-        <!-- 装饰星星 -->
-        <img src="https://img.icons8.com/fluency/48/star-burst.png" class="star" style="top:20%; left:15%;">
-        <img src="https://img.icons8.com/fluency/48/filled-star.png" class="star" style="bottom:25%; right:15%; animation-delay: 1s;">
-
-        <div class="window glass-window" style="width: 450px;">
-            <div class="title-bar" style="background: linear-gradient(90deg, #ff80ab, #ea80fc) !important;">
-                <div class="title-bar-text">System_Boot.exe</div>
-            </div>
+        <div class="window glass-win" style="width: 400px;">
+            <div class="title-bar"><div class="title-bar-text">Super_Real.exe</div></div>
             <div class="window-body" style="text-align: center;">
-                <h1 style="font-family: 'Comic Sans MS'; color: #ff4081; text-shadow: 2px 2px #fff;">ILLIT UNIVERSE</h1>
-                <div style="padding: 10px; background: white; border-radius: 10px; margin-bottom: 15px;">
-                    <img src="image_32.png" style="width: 100%; border: 1px solid #eee;">
-                </div>
-                <p>滑动滚轮，进入梦幻空间 🎀</p>
-                <button onclick="document.getElementById('photos').scrollIntoView()" style="padding: 5px 20px;">ENTER</button>
+                <img src="image_32.png" style="width: 100%; border-radius: 10px;">
+                <h2 style="color: #ff4081;">ILLIT WORLD</h2>
+                <p>滑动滚轮向下，探索成员魅力 ✨</p>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 2: 合照区 -->
-    <section id="photos">
-        <div class="window glass-window" style="width: 650px;">
-            <div class="title-bar" style="background: linear-gradient(90deg, #81d4fa, #ea80fc) !important;">
-                <div class="title-bar-text">Dreamy_Camera.exe</div>
-            </div>
-            <div class="window-body" style="display: flex; gap: 20px; align-items: center;">
-                <div id="cam-box">
-                    <video id="v" autoplay playsinline style="width:100%; height:100%; object-fit:cover; transform: scaleX(-1);"></video>
-                </div>
-                <div style="flex:1; text-align: center;">
-                    <h3 style="color: #ff4081;">贴纸仓库</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <button onclick="addS('yunah_pose.png')">YUNAH</button>
-                        <button onclick="addS('wonhee_pose.png')">WONHEE</button>
-                        <button onclick="addS('https://img.icons8.com/fluency/48/sparkling-diamond.png')">✨</button>
-                        <button onclick="addS('https://img.icons8.com/fluency/48/heart-balloon.png')">💖</button>
+    <!-- 2. 成员介绍 (新增版) -->
+    <section id="members">
+        <div class="window glass-win" style="width: 850px;">
+            <div class="title-bar"><div class="title-bar-text">Member_Profile.txt</div></div>
+            <div class="window-body">
+                <div class="member-grid">
+                    <!-- YUNAH -->
+                    <div class="m-card">
+                        <img src="yunah_face.png">
+                        <b>YUNAH</b><br>队内大姐姐
                     </div>
-                    <p style="font-size: 10px; margin-top: 10px;">(双击贴纸删除)</p>
+                    <!-- MINJU -->
+                    <div class="m-card">
+                        <img src="minju_face.png">
+                        <b>MINJU</b><br>空灵嗓音
+                    </div>
+                    <!-- MOKA -->
+                    <div class="m-card">
+                        <img src="moka_face.png">
+                        <b>MOKA</b><br>表情天才
+                    </div>
+                    <!-- WONHEE -->
+                    <div class="m-card">
+                        <img src="wonhee_face.png">
+                        <b>WONHEE</b><br>国民萌妹
+                    </div>
+                    <!-- IROHA -->
+                    <div class="m-card">
+                        <img src="iroha_face.png">
+                        <b>IROHA</b><br>主舞忙内
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 3: 广场区 -->
-    <section id="square">
-        <div class="window glass-window" style="width: 500px;">
-            <div class="title-bar" style="background: linear-gradient(90deg, #b2ff59, #81d4fa) !important;">
-                <div class="title-bar-text">Fan_Square.exe</div>
-            </div>
-            <div class="window-body">
-                <textarea id="sq-in" placeholder="分享今天的快乐..." style="width: 100%; height: 60px; margin-bottom: 10px;"></textarea>
-                <button class="default" onclick="sendSq()" style="width: 100%;">POST IT! ✨</button>
-                <div class="scroll-list" id="sq-list">
-                    <div class="card">📸 欢迎来到粉丝广场！这里可以分享你的心情。</div>
+    <!-- 3. 合照区 (五人补齐) -->
+    <section id="camera">
+        <div class="window glass-win" style="width: 600px;">
+            <div class="title-bar"><div class="title-bar-text">Lucky_Girl_Photo.exe</div></div>
+            <div class="window-body" style="display: flex; gap: 20px;">
+                <div id="cam-area">
+                    <video id="v" autoplay playsinline style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1);"></video>
+                </div>
+                <div style="flex:1;">
+                    <p>点击邀请成员合照：</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                        <button onclick="addM('yunah_pose.png')">YUNAH</button>
+                        <button onclick="addM('minju_pose.png')">MINJU</button>
+                        <button onclick="addM('moka_pose.png')">MOKA</button>
+                        <button onclick="addM('wonhee_pose.png')">WONHEE</button>
+                        <button onclick="addM('iroha_pose.png')">IROHA</button>
+                    </div>
+                    <p style="font-size:10px; margin-top:10px;">(双击贴纸删除)</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 4: 留言区 -->
-    <section id="guestbook">
-        <div class="window glass-window" style="width: 450px;">
-            <div class="title-bar" style="background: linear-gradient(90deg, #ffeb3b, #ff80ab) !important;">
-                <div class="title-bar-text">Guestbook.exe</div>
+    <!-- 4. 换装小游戏 -->
+    <section id="game">
+        <div class="window glass-win" style="width: 500px;">
+            <div class="title-bar"><div class="title-bar-text">Stylist_Mode.exe</div></div>
+            <div class="window-body" style="display: flex; gap: 15px;">
+                <div id="doll-box" style="width:200px; height:350px; background:#fff; position:relative; border:1px solid #ddd;">
+                    <img src="base_doll.png" style="width:100%;">
+                </div>
+                <div style="flex:1;">
+                    <p>试衣间：</p>
+                    <img src="dress1.png" style="width:50px; cursor:pointer;" onclick="clone('dress1.png')">
+                    <img src="hair_acc.png" style="width:40px; cursor:pointer;" onclick="clone('hair_acc.png')">
+                    <button style="width:100%; margin-top:20px;" onclick="location.reload()">重置</button>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <!-- 5. 社区广场 -->
+    <section id="community">
+        <div class="window glass-win" style="width: 500px;">
+            <div class="title-bar"><div class="title-bar-text">Super_Real_Talk.exe</div></div>
             <div class="window-body">
-                <div class="scroll-list" id="gb-list">
-                    <div class="card">💌 给 ILLIT 留个言吧~</div>
+                <div id="posts" style="height:250px; overflow-y:auto; background:#fff; padding:10px; border:1px solid #ddd;">
+                    <div><b>Admin:</b> 欢迎来到全员版本！</div>
                 </div>
-                <div style="display: flex; gap: 5px;">
-                    <input id="gb-in" type="text" style="flex:1;" placeholder="输入留言...">
-                    <button onclick="sendGb()">SEND</button>
+                <div style="display:flex; margin-top:10px; gap:5px;">
+                    <input id="post-in" style="flex:1;" placeholder="说点什么...">
+                    <button onclick="doPost()">发送</button>
                 </div>
-                <center style="margin-top:20px;">
-                    <button onclick="window.scrollTo(0,0)">BACK TO TOP 🏠</button>
-                </center>
             </div>
         </div>
     </section>
 
     <script>
-        // 1. 相机
+        // 相机启动
         const v = document.getElementById('v');
         navigator.mediaDevices.getUserMedia({video:true}).then(s => v.srcObject=s);
 
-        // 2. 贴纸
-        function addS(src) {
-            const img = document.createElement('img');
-            img.src = src; img.className = 'sticker';
-            img.style.left = '50px'; img.style.top = '50px';
-            img.ondblclick = () => img.remove();
-            document.getElementById('cam-box').appendChild(img);
-            drag(img);
-        }
-
+        // 拖拽逻辑
         function drag(el) {
             let p1=0, p2=0, p3=0, p4=0;
             el.onmousedown = (e) => {
                 p3=e.clientX; p4=e.clientY;
                 document.onmouseup = () => { document.onmousemove = null; };
                 document.onmousemove = (e) => {
-                    p1=p3-e.clientX; p2=p4-e.clientY;
-                    p3=e.clientX; p4=e.clientY;
-                    el.style.top = (el.offsetTop-p2)+"px";
-                    el.style.left = (el.offsetLeft-p1)+"px";
+                    p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
+                    el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
                 };
             };
         }
 
-        // 3. 广场和留言
-        function sendSq() {
-            const val = document.getElementById('sq-in').value;
-            if(!val) return;
-            const d = document.createElement('div'); d.className='card';
-            d.innerHTML = `🌈 ${val} <button style="float:right; border:none; background:none; cursor:pointer;" onclick="this.parentElement.remove()">×</button>`;
-            document.getElementById('sq-list').prepend(d);
-            document.getElementById('sq-in').value = "";
+        // 添加合照成员
+        function addM(src) {
+            const img = document.createElement('img');
+            img.src = src; img.className = 'sticker';
+            img.style.top = '100px'; img.style.left = '50px';
+            img.ondblclick = () => img.remove();
+            document.getElementById('cam-area').appendChild(img);
+            drag(img);
         }
 
-        function sendGb() {
-            const val = document.getElementById('gb-in').value;
+        // 换装克隆
+        function clone(src) {
+            const img = document.createElement('img');
+            img.src = src; img.style.position='absolute'; img.style.width='100px'; img.style.zIndex='200';
+            img.ondblclick = () => img.remove();
+            document.getElementById('doll-box').appendChild(img);
+            drag(img);
+        }
+
+        // 社区
+        function doPost() {
+            const val = document.getElementById('post-in').value;
             if(!val) return;
-            const d = document.createElement('div'); d.className='card';
-            d.innerHTML = `🌸 ${val} <button style="float:right; border:none; background:none; cursor:pointer;" onclick="this.parentElement.remove()">×</button>`;
-            document.getElementById('gb-list').prepend(d);
-            document.getElementById('gb-in').value = "";
+            const item = document.createElement('div');
+            item.innerHTML = `<b>GUEST:</b> ${val} <hr>`;
+            document.getElementById('posts').prepend(item);
+            document.getElementById('post-in').value = "";
         }
     </script>
 </body>
