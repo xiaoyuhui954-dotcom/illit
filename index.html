@@ -2,216 +2,322 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ILLIT | SUPER REAL ME</title>
+    <title>ILLIT ✨ Dreamy Universe Full Ver.</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <style>
-        :root {
-            --pink: #ffc1e3; --blue: #b3e5fc; --purple: #e1bee7;
-            --glass: rgba(255, 255, 255, 0.25);
+        /* 1. 基础样式与极光背景 */
+        html { scroll-behavior: smooth; }
+        body { margin: 0; padding: 0; overflow-x: hidden; font-family: "MS UI Gothic", sans-serif; background: #fce4ec; }
+        .aurora-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(-45deg, #fce4ec, #e1f5fe, #f3e5f5, #e8f5e9);
+            background-size: 400% 400%; animation: aurora 15s infinite; z-index: -2;
         }
+        @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* 1. 高级背景：动态磨砂渐变 */
-        body {
-            margin: 0; padding: 0; overflow-x: hidden;
-            font-family: 'Segoe UI', 'MS UI Gothic', sans-serif;
-            background: linear-gradient(135deg, var(--pink), var(--blue), var(--purple));
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+        /* 2. 导航栏 */
+        .top-nav {
+            position: fixed; top: 15px; right: 20px; z-index: 9999;
+            background: rgba(255,255,255,0.6); backdrop-filter: blur(10px);
+            padding: 8px 15px; border-radius: 20px; border: 2px solid #fff;
+            display: flex; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        @keyframes gradientBG { 0% {background-position: 0% 50%} 50% {background-position: 100% 50%} 100% {background-position: 0% 50%} }
+        .top-nav a { text-decoration: none; color: #ff4081; font-weight: bold; font-size: 12px; }
 
-        /* 2. 侧边悬浮导航栏 */
-        .side-nav {
-            position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
-            z-index: 1000; display: flex; flex-direction: column; gap: 20px;
-        }
-        .nav-dot {
-            width: 12px; height: 12px; background: white; border-radius: 50%;
-            border: 2px solid var(--pink); cursor: pointer; transition: 0.3s;
-        }
-        .nav-dot:hover { transform: scale(1.5); background: var(--pink); }
+        /* 3. 板块通用布局 */
+        section { width: 100vw; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 0; border-bottom: 2px dashed #fff; }
+        .glass-win { background: rgba(255,255,255,0.4) !important; backdrop-filter: blur(15px); border-radius: 10px !important; }
 
-        /* 3. 全屏板块架构 */
-        section {
-            height: 100vh; width: 100vw; display: flex;
-            justify-content: center; align-items: center;
-            perspective: 1000px;
-        }
-
-        /* 4. 音乐空间：3D 悬浮效果 */
-        .music-island {
-            background: var(--glass); backdrop-filter: blur(20px);
-            border-radius: 30px; border: 1px solid rgba(255,255,255,0.4);
-            padding: 40px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            transform: rotateY(-10deg); transition: 0.5s;
-        }
-        .music-island:hover { transform: rotateY(0deg) scale(1.02); }
-        .cd-disk {
-            width: 240px; height: 240px; border-radius: 50%;
-            background: url('image_33.png') center/cover;
-            border: 10px solid #fff; box-shadow: 0 0 20px rgba(0,0,0,0.2);
-            animation: spin 6s linear infinite; animation-play-state: paused;
-        }
+        /* 4. 翻盖手机播放器样式 */
+        .phone-player { display: flex; align-items: flex-end; gap: 30px; }
+        .flip-phone { width: 200px; background: #ff85a1; border-radius: 15px; padding: 12px; border: 3px solid #fff; box-shadow: 8px 8px 0 rgba(0,0,0,0.05); }
+        .phone-screen { background: #222; border-radius: 8px; padding: 8px; text-align: center; color: white; }
+        .cd-art { width: 140px; height: 140px; margin: 5px auto; border-radius: 5px; overflow: hidden; border: 2px solid #fff; }
+        .cd-art img { width: 100%; height: 100%; object-fit: cover; animation: spin 8s linear infinite; animation-play-state: paused; }
         @keyframes spin { from {transform: rotate(0deg)} to {transform: rotate(360deg)} }
+        .phone-keys { margin-top: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+        .p-key { background: #ffacc0; height: 25px; border-radius: 4px; border: 1px solid #fff; font-size: 9px; color: white; display: flex; align-items: center; justify-content: center; }
 
-        /* 5. 拍立得区域：叠加层次感 */
-        .pola-container { position: relative; width: 400px; height: 500px; }
-        .pola-frame {
-            background: white; padding: 15px 15px 60px 15px;
-            box-shadow: 10px 10px 0px var(--pink); transform: rotate(-3deg);
-        }
-        .pola-video { width: 100%; height: 380px; background: #222; object-fit: cover; }
-        .pola-controls { position: absolute; right: -150px; bottom: 0; }
+        /* 5. 成员卡片 */
+        .member-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+        .m-card { background: white; padding: 8px; border: 1px solid #ffb2d1; border-radius: 8px; text-align: center; }
+        .m-card img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
 
-        /* 6. 成员网格：悬浮卡片 */
-        .member-grid {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
-            max-width: 1100px;
-        }
-        .m-profile {
-            background: white; border-radius: 20px; padding: 15px;
-            transition: 0.4s; cursor: pointer; text-align: center;
-        }
-        .m-profile:hover { transform: translateY(-20px); box-shadow: 0 15px 30px var(--pink); }
-        .m-img { width: 150px; height: 150px; border-radius: 15px; object-fit: cover; }
-
-        /* 通用按钮美化 */
-        button {
-            background: white; border: none; padding: 8px 15px;
-            border-radius: 15px; color: #ff80ab; font-weight: bold;
-            cursor: pointer; box-shadow: 0 4px 0 #f8bbd0; margin: 5px;
-        }
-        button:active { transform: translateY(3px); box-shadow: none; }
-        
-        .sticker { position: absolute; cursor: move; width: 140px; z-index: 100; filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.2)); }
+        /* 6. 拍立得与贴纸 */
+        .p-frame { width: 280px; padding: 12px 12px 35px 12px; background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 4px; }
+        .cam-box { width: 100%; height: 320px; background: #000; position: relative; overflow: hidden; }
+        .sticker { position: absolute; cursor: move; width: 110px; z-index: 100; }
     </style>
 </head>
 <body>
 
-    <div class="side-nav">
-        <a href="#home" class="nav-dot" title="Home"></a>
-        <a href="#music" class="nav-dot" title="Music"></a>
-        <a href="#members" class="nav-dot" title="Members"></a>
-        <a href="#camera" class="nav-dot" title="Camera"></a>
-        <a href="#game" class="nav-dot" title="DressUp"></a>
-    </div>
+    <div class="aurora-bg"></div>
 
-    <!-- 首页板块 -->
+    <nav class="top-nav">
+        <a href="#home">🏠 Home</a>
+        <a href="#music">🎵 Music</a>
+        <a href="#members">🎀 Members</a>
+        <a href="#photo">📸 Photo</a>
+        <a href="#game">🎮 DressUp</a>
+        <a href="#square">✨ Square</a>
+    </nav>
+
+    <!-- 1. 首页 -->
     <section id="home">
-        <div style="text-align: center;">
-            <img src="image_32.png" style="width: 500px; filter: drop-shadow(0 0 20px #fff);">
-            <h1 style="font-size: 4rem; color: white; text-shadow: 4px 4px var(--pink);">SUPER REAL ME</h1>
-            <p style="color: white; font-weight: bold; letter-spacing: 2px;">ILLIT OFFICIAL FAN SITE</p>
-        </div>
-    </section>
-
-    <!-- 音乐空间 -->
-    <section id="music">
-        <div class="music-island">
-            <div class="cd-disk" id="disk"></div>
-            <h2 style="margin-top:20px; color: white;">Magnetic - ILLIT</h2>
-            <audio id="player" loop src="bgm.mp3"></audio>
-            <div class="controls">
-                <button onclick="playMusic()">PLAY</button>
-                <button onclick="pauseMusic()">PAUSE</button>
-                <input type="range" style="display:block; margin: 20px auto; width: 80%;" oninput="document.getElementById('player').volume=this.value/100">
+        <div class="window glass-win" style="width: 420px;">
+            <div class="title-bar"><div class="title-bar-text">Welcome.exe</div></div>
+            <div class="window-body" style="text-align: center;">
+                <img src="image_32.png" style="width: 100%; border-radius: 8px;">
+                <h1 style="color: #ff4081; font-size: 24px;">ILLIT DREAM WORLD</h1>
+                <p>滑动查看所有版块 ✨</p>
             </div>
         </div>
     </section>
 
-    <!-- 成员档案 -->
-    <section id="members">
-        <div class="member-grid">
-            <div class="m-profile"><img src="yunah_face.png" class="m-img"><h3>YUNAH</h3></div>
-            <div class="m-profile"><img src="minju_face.png" class="m-img"><h3>MINJU</h3></div>
-            <div class="m-profile"><img src="moka_face.png" class="m-img"><h3>MOKA</h3></div>
-            <div class="m-profile"><img src="wonhee_face.png" class="m-img"><h3>WONHEE</h3></div>
-            <div class="m-profile"><img src="iroha_face.png" class="m-img"><h3>IROHA</h3></div>
+    <!-- 2. 翻盖手机播放器板块 (模仿 image_35.png) -->
+    <section id="music">
+        <h2 style="color: #ffeb3b; text-shadow: 2px 2px #ff85a1; font-style: italic;">✨ CD_PLAYER.mp3 ✨</h2>
+        <div class="phone-player">
+            <div class="flip-phone">
+                <div class="phone-screen">
+                    <div style="font-size: 9px; display: flex; justify-content: space-between;"><span>♡♡♡</span><span>03:00</span></div>
+                    <div class="cd-art"><img id="cd" src="image_33.png"></div>
+                    <div style="font-size: 11px; margin: 3px 0;">Magnetic</div>
+                    <audio id="audio" loop src="bgm.mp3"></audio>
+                    <button onclick="toggleM()" style="background:white; border-radius:50%; border:none; width:30px; height:30px; cursor:pointer; color:#ff85a1;">▶</button>
+                </div>
+                <div class="phone-keys">
+                    <div class="p-key">1</div><div class="p-key">2</div><div class="p-key">3</div>
+                    <div class="p-key">4</div><div class="p-key">5</div><div class="p-key">6</div>
+                    <div class="p-key">7</div><div class="p-key">8</div><div class="p-key">9</div>
+                </div>
+            </div>
+            <div class="window glass-win" style="width: 320px; height: 360px;">
+                <div class="title-bar"><div class="title-bar-text">♫ TRACKLIST</div></div>
+                <div class="window-body" style="height: 300px; overflow-y: auto; padding: 10px;">
+                    <div style="background:#ff85a1; color:white; padding:8px; border-radius:5px; margin-bottom:5px;">01 🎧 Magnetic</div>
+                    <div style="padding:8px; color:#ff4081;">02 🔥 My World</div>
+                    <div style="padding:8px; color:#ff4081;">03 🍪 Midnight Fiction</div>
+                    <div style="padding:8px; color:#ff4081;">04 💖 Lucky Girl</div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- 拍立得合照 -->
-    <section id="camera">
-        <div class="pola-container">
-            <div class="pola-frame" id="p-frame">
-                <div class="pola-video" id="video-box">
+        <!-- 3. 成员档案 (升级版：大图+浮动特效) -->
+    <section id="members">
+        <div class="window glass-win" style="width: 90%; max-width: 1200px;">
+            <div class="title-bar">
+                <div class="title-bar-text">ILLIT_Official_Profiles.doc</div>
+            </div>
+            <div class="window-body">
+                <h2 style="text-align: center; color: #ff4081; text-shadow: 1px 1px #fff; margin-bottom: 30px;">🌟 MEET THE MEMBERS 🌟</h2>
+                
+                <div class="member-grid-large">
+                    <!-- 成员 1: YUNAH -->
+                    <div class="m-card-large">
+                        <div class="img-container">
+                            <img src="yunah_face.png" alt="YUNAH">
+                        </div>
+                        <div class="m-info">
+                            <h3>YUNAH</h3>
+                            <p>卢允雅</p>
+                            <span class="m-tag">Leader</span>
+                        </div>
+                    </div>
+
+                    <!-- 成员 2: MINJU -->
+                    <div class="m-card-large">
+                        <div class="img-container">
+                            <img src="minju_face.png" alt="MINJU">
+                        </div>
+                        <div class="m-info">
+                            <h3>MINJU</h3>
+                            <p>朴敏珠</p>
+                            <span class="m-tag">Vocal</span>
+                        </div>
+                    </div>
+
+                    <!-- 成员 3: MOKA -->
+                    <div class="m-card-large">
+                        <div class="img-container">
+                            <img src="moka_face.png" alt="MOKA">
+                        </div>
+                        <div class="m-info">
+                            <h3>MOKA</h3>
+                            <p>摩卡</p>
+                            <span class="m-tag">Dance</span>
+                        </div>
+                    </div>
+
+                    <!-- 成员 4: WONHEE -->
+                    <div class="m-card-large">
+                        <div class="img-container">
+                            <img src="wonhee_face.png" alt="WONHEE">
+                        </div>
+                        <div class="m-info">
+                            <h3>WONHEE</h3>
+                            <p>李沅禧</p>
+                            <span class="m-tag">Center</span>
+                        </div>
+                    </div>
+
+                    <!-- 成员 5: IROHA -->
+                    <div class="m-card-large">
+                        <div class="img-container">
+                            <img src="iroha_face.png" alt="IROHA">
+                        </div>
+                        <div class="m-info">
+                            <h3>IROHA</h3>
+                            <p>外园彩羽</p>
+                            <span class="m-tag">Maknae</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        /* 成员板块专属高级样式 */
+        .member-grid-large {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .m-card-large {
+            width: 200px;
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            border: 2px solid #ffb2d1;
+            box-shadow: 0 10px 20px rgba(255, 128, 171, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 回弹动画 */
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* 重点：鼠标悬停时的浮动和放大效果 */
+        .m-card-large:hover {
+            transform: translateY(-20px) scale(1.1); /* 向上浮动并放大 */
+            box-shadow: 0 20px 40px rgba(255, 64, 129, 0.3);
+            border-color: #ff4081;
+        }
+
+        .img-container {
+            width: 170px;
+            height: 170px;
+            margin: 0 auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #fce4ec;
+            transition: border-color 0.4s;
+        }
+
+        .m-card-large:hover .img-container {
+            border-color: #ff85a1;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .m-info h3 {
+            margin: 15px 0 5px 0;
+            color: #ff4081;
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .m-info p {
+            font-size: 14px;
+            color: #888;
+            margin: 0;
+        }
+
+        .m-tag {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 3px 10px;
+            background: #ff85a1;
+            color: white;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+    </style>
+
+
+    <!-- 4. 拍立得合照 -->
+    <section id="photo">
+        <div style="display: flex; gap: 20px;">
+            <div class="p-frame" id="p-box">
+                <div class="cam-box" id="cam-box">
                     <video id="v" autoplay playsinline style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1);"></video>
                 </div>
-                <p style="font-family: 'Comic Sans MS'; font-size: 20px; margin-top: 15px;">Our Moment ✨</p>
+                <p style="text-align:center; font-family:cursive; margin-top:10px;">Our Moment ✨</p>
             </div>
-            <div class="pola-controls window glass-win" style="width: 200px;">
+            <div class="window glass-win" style="width: 200px;">
                 <div class="title-bar"><div class="title-bar-text">Stickers</div></div>
                 <div class="window-body">
-                    <button onclick="addM('yunah_pose.png')">YUNAH</button>
-                    <button onclick="addM('wonhee_pose.png')">WONHEE</button>
-                    <button onclick="addM('iroha_pose.png')">IROHA</button>
+                    <button onclick="addS('wonhee_pose.png')" style="width:100%; margin-bottom:5px;">WONHEE</button>
+                    <button onclick="addS('iroha_pose.png')" style="width:100%;">IROHA</button>
                     <hr>
-                    <button style="background: #e1f5fe;" onclick="document.getElementById('p-frame').style.background='#e1f5fe'">BLUE</button>
-                    <button style="background: #fce4ec;" onclick="document.getElementById('p-frame').style.background='#fce4ec'">PINK</button>
+                    <button onclick="document.getElementById('p-box').style.background='#e1f5fe'" style="width:100%;">BLUE FRAME</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 换装游戏板块 -->
+    <!-- 5. 换装与社区 -->
     <section id="game">
-        <div class="window glass-win" style="width: 700px; height: 500px;">
-            <div class="title-bar"><div class="title-bar-text">ILLIT_Stylist_v2.0.exe</div></div>
-            <div class="window-body" style="display:flex; height: 90%;">
-                <div id="doll-area" style="flex:1; background:white; position:relative; overflow:hidden; border-radius:10px;">
-                    <img src="base_doll.png" style="height:100%; display:block; margin: 0 auto;">
-                </div>
-                <div style="width: 200px; padding-left: 20px;">
-                    <p>衣柜菜单:</p>
-                    <img src="dress1.png" style="width:80px; cursor:pointer;" onclick="cloth('dress1.png')">
-                    <button onclick="location.reload()" style="margin-top: 200px; width: 100%;">重置</button>
-                </div>
-            </div>
+        <div class="window glass-win" style="width: 500px;">
+            <div class="title-bar"><div class="title-bar-text">DressUp.exe</div></div>
+            <div class="window-body">在此区域添加你的换装逻辑...</div>
+        </div>
+    </section>
+
+    <section id="square">
+        <div class="window glass-win" style="width: 500px;">
+            <div class="title-bar"><div class="title-bar-text">Community.exe</div></div>
+            <div class="window-body">留言板功能已就绪...</div>
         </div>
     </section>
 
     <script>
-        // 音乐交互
-        const audio = document.getElementById('player');
-        const disk = document.getElementById('disk');
-        function playMusic() { audio.play(); disk.style.animationPlayState = 'running'; }
-        function pauseMusic() { audio.pause(); disk.style.animationPlayState = 'paused'; }
+        const audio = document.getElementById('audio');
+        const cd = document.getElementById('cd');
+        function toggleM() {
+            if(audio.paused) { audio.play(); cd.style.animationPlayState='running'; }
+            else { audio.pause(); cd.style.animationPlayState='paused'; }
+        }
 
-        // 相机
-        navigator.mediaDevices.getUserMedia({video:true}).then(s => document.getElementById('v').srcObject=s);
+        const v = document.getElementById('v');
+        navigator.mediaDevices.getUserMedia({video:true}).then(s => v.srcObject=s);
 
-        // 核心：通用拖拽与克隆逻辑
-        function makeDraggable(el) {
+        function drag(el) {
             let p1=0, p2=0, p3=0, p4=0;
             el.onmousedown = (e) => {
-                e.preventDefault();
-                p3 = e.clientX; p4 = e.clientY;
+                p3=e.clientX; p4=e.clientY;
                 document.onmouseup = () => { document.onmousemove = null; };
                 document.onmousemove = (e) => {
-                    p1 = p3 - e.clientX; p2 = p4 - e.clientY;
-                    p3 = e.clientX; p4 = e.clientY;
-                    el.style.top = (el.offsetTop - p2) + "px";
-                    el.style.left = (el.offsetLeft - p1) + "px";
+                    p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
+                    el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
                 };
             };
         }
 
-        function addM(src) {
-            const img = document.createElement('img');
-            img.src = src; img.className = 'sticker';
-            img.style.top = '50px'; img.style.left = '20px';
-            img.ondblclick = () => img.remove();
-            document.getElementById('video-box').appendChild(img);
-            makeDraggable(img);
-        }
-
-        function cloth(src) {
-            const img = document.createElement('img');
-            img.src = src; img.className = 'sticker';
-            img.style.top = '100px'; img.style.left = '50px';
-            document.getElementById('doll-area').appendChild(img);
-            makeDraggable(img);
+        function addS(s) {
+            const i = document.createElement('img'); i.src=s; i.className='sticker';
+            i.style.top='50px'; i.style.left='50px';
+            i.ondblclick = () => i.remove();
+            document.getElementById('cam-box').appendChild(i);
+            drag(i);
         }
     </script>
 </body>
