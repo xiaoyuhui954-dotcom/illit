@@ -54,6 +54,125 @@
     .member-photo { width: 100%; height: 200px; object-fit: cover; border-bottom: 3px solid var(--hot-pink); }
     .member-info { padding: 15px; font-size: 12px; line-height: 1.5; color: #333; }
     .m-name { font-size: 14px; color: var(--hot-pink); margin-bottom: 8px; display: block; font-weight: bold; }
+/* 成员介绍专用：梦核与Y2K融合风格 */
+#members {
+    background: linear-gradient(135deg, #b2f2e8 0%, #ffb2d1 100%); /* 渐变梦幻背景 */
+    position: relative;
+    overflow: hidden;
+}
+
+.member-container {
+    width: 100%;
+    max-width: 1200px;
+    z-index: 2;
+}
+
+/* 3+2 核心布局结构 */
+.row-3, .row-2 {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+/* 个人档案卡片：复原 .doc 文件窗口感 */
+.member-card {
+    width: 300px;
+    background: rgba(255, 255, 255, 0.85); /* 半透明毛玻璃 */
+    backdrop-filter: blur(10px);
+    border: 3px solid #000;
+    box-shadow: 10px 10px 0px rgba(0, 0, 0, 1);
+    transition: all 0.2s ease-in-out;
+    position: relative;
+}
+
+.member-card:hover {
+    transform: translate(-5px, -5px);
+    box-shadow: 15px 15px 0px var(--hot-pink);
+}
+
+/* 窗口顶部条 */
+.card-header {
+    background: #000;
+    color: #fff;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Press Start 2P';
+    font-size: 9px;
+}
+
+.window-controls span {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+/* 照片区域：带复古滤镜感 */
+.photo-frame {
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+    border-bottom: 3px solid #000;
+    background: #f0f0f0;
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(1.2) contrast(1.1); /* Y2K 高饱和感 */
+}
+
+/* 档案文字区 */
+.profile-details {
+    padding: 20px;
+    background: #fff;
+}
+
+.profile-name-group {
+    border-bottom: 2px solid #000;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+}
+
+.zh-name {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--hot-pink);
+    display: block;
+    letter-spacing: 2px;
+}
+
+.en-name {
+    font-family: 'Press Start 2P';
+    font-size: 11px;
+    color: #444;
+}
+
+/* 详细数据列表 */
+.info-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 15px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.info-label {
+    background: #000;
+    color: #fff;
+    padding: 0 6px;
+    font-weight: bold;
+    height: fit-content;
+}
+
+.info-value {
+    color: #333;
+    font-weight: 600;
+}
+
 
     /* --- P3: 播放器 & 歌单 (功能修复) --- */
     .player-container { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; justify-content: center; }
