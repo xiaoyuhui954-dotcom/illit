@@ -2,133 +2,173 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ILLIT WORLD 🎀</title>
+    <title>ILLIT Dream World ✨</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
-    <link rel="stylesheet" href="style.css">
-    
     <style>
-        #loading-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #fce4ec;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 10000;
-            transition: opacity 0.5s;
+        /* --- 1. 基础布局 --- */
+        html { scroll-behavior: smooth; } /* 平滑滚动核心 */
+        body { margin: 0; padding: 0; overflow-x: hidden; }
+
+        /* --- 2. 极光流动背景 --- */
+        .section {
+            width: 100vw; height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: relative;
+            background: linear-gradient(-45deg, #fce4ec, #e1f5fe, #f3e5f5, #e8f5e9);
+            background-size: 400% 400%;
+            animation: aurora 15s ease infinite;
         }
-        .loading-content { text-align: center; }
-        .bar-border {
-            width: 200px; height: 15px; 
-            background: #fff; border: 2px solid #ff80ab; 
-            border-radius: 10px; margin: 10px auto; overflow: hidden;
+        @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* --- 3. 右上角玻璃导航栏 --- */
+        .glass-nav {
+            position: fixed; top: 20px; right: 20px; z-index: 9999;
+            background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px);
+            border-radius: 20px; border: 2px solid #fff; padding: 10px 20px;
+            display: flex; gap: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
+        .glass-nav a { text-decoration: none; color: #ff80ab; font-weight: bold; font-size: 14px; }
+        .glass-nav a:hover { color: #ea80fc; }
+
+        /* --- 4. 合照区相机与贴纸 --- */
+        #sticker-zone { width: 300px; height: 380px; background: #000; position: relative; overflow: hidden; }
+        .movable { position: absolute; cursor: move; z-index: 100; touch-action: none; width: 150px; }
+        
+        /* --- 5. 广场与留言列表通用样式 --- */
+        .content-box {
+            width: 100%; max-width: 500px; height: 250px; 
+            overflow-y: auto; background: rgba(255,255,255,0.6);
+            border: 2px solid #ff80ab; border-radius: 10px; padding: 15px; margin: 10px 0;
+        }
+        .item-card { background: white; padding: 10px; margin-bottom: 10px; border-radius: 5px; position: relative; }
+        .del-btn { position: absolute; top: 5px; right: 5px; cursor: pointer; color: #ccc; border:none; background:none; }
+        .del-btn:hover { color: red; }
     </style>
 </head>
 <body>
 
-    <div id="loading-screen">
-        <div class="loading-content">
-            <div style="font-size: 50px; margin-bottom: 15px;">🎀</div>
-            <h2 style="color: #ff80ab; text-shadow: 1px 1px #fff;">ILLIT World Loading...</h2>
-            <div class="bar-border">
-                <div id="progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #ff80ab, #ce93d8); transition: width 0.1s;"></div>
-            </div>
-            <p id="progress-text" style="color: #ff80ab; font-weight: bold;">0%</p>
-        </div>
-    </div>
+    <!-- 导航栏 -->
+    <nav class="glass-nav">
+        <a href="#home">首页</a>
+        <a href="#photos">合照</a>
+        <a href="#square">广场</a>
+        <a href="#messages">留言</a>
+    </nav>
 
-    <div class="desktop-icons">
-        <p>ILLIT_Project_v1.exe</p>
-    </div>
-
-    <div class="window" style="width: 400px; margin: 50px auto;">
-        <div class="title-bar">
-            <div class="title-bar-text">WELCOME_TO_ILLIT.txt</div>
-            <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
+    <!-- SECTION 1: 首页 -->
+    <section class="section" id="home">
+        <div class="window" style="width: 350px;">
+            <div class="title-bar"><div class="title-bar-text">Welcome.exe</div></div>
+            <div class="window-body" style="text-align: center;">
+                <h2 style="color: #ff4081;">ILLIT WORLD</h2>
+                <img src="image_32.png" style="width: 100%; border-radius: 5px; margin: 10px 0;">
+                <p>向下滑动探索每一个梦幻角落 ✨</p>
+                <button onclick="document.getElementById('photos').scrollIntoView()">开始旅程</button>
             </div>
         </div>
-        <div class="window-body">
-            <h2 style="text-align: center;">Magnetic Love! 🎧</h2>
-            <div class="image-container">
-                <img src="IMG_4415.jpeg" alt="ILLIT" style="width: 100%;">
+    </section>
+
+    <!-- SECTION 2: 合照区 -->
+    <section class="section" id="photos">
+        <div class="window" style="width: 600px;">
+            <div class="title-bar"><div class="title-bar-text">Photo_Booth.exe</div></div>
+            <div class="window-body" style="display: flex; gap: 20px;">
+                <div id="sticker-zone">
+                    <video id="video" autoplay playsinline style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1);"></video>
+                </div>
+                <div style="flex: 1;">
+                    <p>点击添加贴纸 (双击删除):</p>
+                    <button onclick="addSticker('yunah_pose.png')">YUNAH</button>
+                    <button onclick="addSticker('wonhee_pose.png')">WONHEE</button>
+                    <hr>
+                    <button style="width:100%" onclick="alert('拍照功能需要连接Canvas，现已保存截图！')">📸 拍摄截图</button>
+                </div>
             </div>
-            <p>欢迎来到 ILLIT WORLD。</p>
-            
-            <hr>
-            <p>快速访问：</p>
-            <div class="field-row" style="justify-content: center; gap: 8px;">
-    <button onclick="window.location.href='music.html'">🎶 音乐频道</button>
-    <button onclick="window.location.href='menu.html'">📂 档案库</button>
-    <button onclick="window.location.href='game.html'">🎮 换装游戏</button>
-    <button onclick="window.location.href='photos.html'">📸 合照区</button>
-    <button onclick="window.location.href='messages.html'">💬 留言区</button>
-                <button onclick="window.location.href='square.html'">✨ 粉丝广场</button>
-
-</div>
-
-
         </div>
-        <div class="status-bar">
-            <p class="status-bar-field">Status: Online</p>
-            <p class="status-bar-field">Members: 5</p>
+    </section>
+
+    <!-- SECTION 3: 广场区 -->
+    <section class="section" id="square">
+        <div class="window" style="width: 450px;">
+            <div class="title-bar"><div class="title-bar-text">Square.exe</div></div>
+            <div class="window-body">
+                <p>分享你的今日瞬间：</p>
+                <textarea id="sq-text" style="width:100%; height:50px;"></textarea>
+                <button onclick="addSquare()">发布到广场</button>
+                <div class="content-box" id="square-list">
+                    <div class="item-card">✨ 今天也要加油呀！</div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- SECTION 4: 留言板 -->
+    <section class="section" id="messages">
+        <div class="window" style="width: 450px;">
+            <div class="title-bar"><div class="title-bar-text">Guestbook.exe</div></div>
+            <div class="window-body">
+                <div class="content-box" id="msg-list">
+                    <div class="item-card">💖 永远支持 ILLIT！</div>
+                </div>
+                <div style="display: flex; gap: 5px;">
+                    <input id="msg-in" type="text" style="flex:1;" placeholder="写下留言...">
+                    <button onclick="addMsg()">提交</button>
+                </div>
+                <center style="margin-top:20px;"><button onclick="window.scrollTo(0,0)">回到顶部 🏠</button></center>
+            </div>
+        </div>
+    </section>
 
     <script>
-        // 检测是否是从内部返回的
-        const urlParams = new URLSearchParams(window.location.search);
-        const screen = document.getElementById('loading-screen');
+        // 1. 相机逻辑
+        const video = document.getElementById('video');
+        navigator.mediaDevices.getUserMedia({ video: true }).then(s => video.srcObject = s);
 
-        if (urlParams.get('from') === 'internal') {
-            // 如果链接里有 ?from=internal，直接关掉加载层，不跑进度条
-            screen.style.display = 'none';
-        } else {
-            // 否则正常跑进度条
-            window.onload = function() {
-                let bar = document.getElementById('progress-bar');
-                let text = document.getElementById('progress-text');
-                let width = 0;
+        // 2. 贴纸逻辑 (拖拽与添加)
+        function addSticker(src) {
+            const img = document.createElement('img');
+            img.src = src; img.className = 'movable';
+            img.style.left = '50px'; img.style.top = '50px';
+            img.ondblclick = () => img.remove();
+            document.getElementById('sticker-zone').appendChild(img);
+            makeDraggable(img);
+        }
 
-                let timer = setInterval(() => {
-                    width += Math.floor(Math.random() * 10) + 5; 
-                    if (width >= 100) {
-                        width = 100;
-                        clearInterval(timer);
-                        setTimeout(() => {
-                            if(screen) {
-                                screen.style.opacity = '0';
-                                setTimeout(() => screen.style.display = 'none', 500);
-                            }
-                        }, 500);
-                    }
-                    if(bar) bar.style.width = width + '%';
-                    if(text) text.innerText = width + '%';
-                }, 80);
+        function makeDraggable(el) {
+            let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
+            el.onmousedown = (e) => {
+                p3 = e.clientX; p4 = e.clientY;
+                document.onmouseup = () => { document.onmousemove = null; };
+                document.onmousemove = (e) => {
+                    p1 = p3 - e.clientX; p2 = p4 - e.clientY;
+                    p3 = e.clientX; p4 = e.clientY;
+                    el.style.top = (el.offsetTop - p2) + "px";
+                    el.style.left = (el.offsetLeft - p1) + "px";
+                };
             };
         }
 
-        // 星星特效逻辑
-        document.addEventListener('mousemove', function(e) {
-            var star = document.createElement('div');
-            star.innerHTML = '✨';
-            star.style.position = 'fixed';
-            star.style.left = e.clientX + 'px';
-            star.style.top = e.clientY + 'px';
-            star.style.fontSize = '20px';
-            star.style.pointerEvents = 'none';
-            star.style.zIndex = '10001'; 
-            document.body.appendChild(star);
-            var speed = 0;
-            var interval = setInterval(function() {
-                speed += 2;
-                star.style.top = (parseInt(star.style.top) + speed) + 'px';
-                star.style.opacity = star.style.opacity ? star.style.opacity - 0.05 : 1;
-                if (star.style.opacity <= 0) { clearInterval(interval); star.remove(); }
-            }, 30);
-        });
+        // 3. 广场发布 (本地模拟)
+        function addSquare() {
+            const text = document.getElementById('sq-text').value;
+            if(!text) return;
+            const item = document.createElement('div');
+            item.className = 'item-card';
+            item.innerHTML = `🖼️ ${text} <button class="del-btn" onclick="this.parentElement.remove()">×</button>`;
+            document.getElementById('square-list').prepend(item);
+            document.getElementById('sq-text').value = "";
+        }
+
+        // 4. 留言发布 (本地模拟)
+        function addMsg() {
+            const val = document.getElementById('msg-in').value;
+            if(!val) return;
+            const item = document.createElement('div');
+            item.className = 'item-card';
+            item.innerHTML = `💌 ${val} <button class="del-btn" onclick="this.parentElement.remove()">×</button>`;
+            document.getElementById('msg-list').prepend(item);
+            document.getElementById('msg-in').value = "";
+        }
     </script>
 </body>
 </html>
