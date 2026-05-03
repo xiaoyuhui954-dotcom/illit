@@ -56,3 +56,20 @@ img:hover {
     50% { transform: translateY(-10px); }
     100% { transform: translateY(0px); }
 }
+/* --- 粉丝广场专属：星形呼吸灯特效 --- */
+.square-icon img {
+    filter: drop-shadow(0 0 5px rgba(255, 128, 171, 0.8));
+    animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+    0% { filter: drop-shadow(0 0 2px rgba(255, 128, 171, 0.5)); }
+    50% { filter: drop-shadow(0 0 12px rgba(234, 128, 252, 0.9)); transform: scale(1.05); }
+    100% { filter: drop-shadow(0 0 2px rgba(255, 128, 171, 0.5)); }
+}
+
+/* 确保图标排列整齐 */
+.desktop-icons {
+    display: flex;
+    flex-wrap: wrap;
+}
