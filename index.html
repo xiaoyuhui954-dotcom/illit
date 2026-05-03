@@ -2,294 +2,189 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT ✨ Dreamy Universe Full Ver.</title>
+    <title>ILLIT ✨ Sparkling Hand-Account World</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <style>
-        /* 1. 基础样式与极光背景 */
+        /* 1. 字体引入：手写感与娃娃体 */
+        @import url('https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&family=Ma+Shan+Zheng&display=swap');
+
+        /* 2. 融合背景：梦核渐变 + 扫描线 */
         html { scroll-behavior: smooth; }
-        body { margin: 0; padding: 0; overflow-x: hidden; font-family: "MS UI Gothic", sans-serif; background: #fce4ec; }
-        .aurora-bg {
+        body { margin: 0; padding: 0; overflow-x: hidden; font-family: "MS UI Gothic", "Comic Sans MS", cursive; background: #fce4ec; }
+        .dreamy-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(-45deg, #fce4ec, #e1f5fe, #f3e5f5, #e8f5e9);
-            background-size: 400% 400%; animation: aurora 15s infinite; z-index: -2;
+            background: linear-gradient(135deg, #008080 0%, #b3e5fc 50%, #ffc1e3 100%);
+            background-size: 400% 400%; animation: dreamyGradient 15s ease infinite; z-index: -2;
         }
-        @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes dreamyGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* 2. 导航栏 */
+        /* 3. 装饰：水钻闪烁效果 */
+        .rhinestone {
+            position: absolute; width: 8px; height: 8px; background: #fff; border-radius: 50%;
+            box-shadow: 0 0 10px 2px #fff, 0 0 5px #ff4081; animation: twinkle 1.5s infinite ease-in-out; pointer-events: none; z-index: 10;
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
+
+        /* 4. 装饰：卡通便签 */
+        .memo-note {
+            background: #fff9c4; border: 2px solid #333; padding: 15px; box-shadow: 5px 5px 0px #ff85a1;
+            transform: rotate(-1deg); font-family: 'Ma Shan Zheng', cursive; color: #ff4081;
+        }
+
+        /* 5. 导航栏 */
         .top-nav {
-            position: fixed; top: 15px; right: 20px; z-index: 9999;
-            background: rgba(255,255,255,0.6); backdrop-filter: blur(10px);
-            padding: 8px 15px; border-radius: 20px; border: 2px solid #fff;
-            display: flex; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: fixed; top: 20px; right: 30px; z-index: 9999;
+            background: rgba(255,255,255,0.7); border: 3px solid #fff; padding: 10px 25px; border-radius: 30px;
+            display: flex; gap: 15px; font-weight: bold;
         }
-        .top-nav a { text-decoration: none; color: #ff4081; font-weight: bold; font-size: 12px; }
+        .top-nav a { text-decoration: none; color: #ff4081; }
 
-        /* 3. 板块通用布局 */
-        section { width: 100vw; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 0; border-bottom: 2px dashed #fff; }
-        .glass-win { background: rgba(255,255,255,0.4) !important; backdrop-filter: blur(15px); border-radius: 10px !important; }
+        /* 6. 板块布局 */
+        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 100px 0; position: relative; border-bottom: 2px dashed #fff; }
+        .glass-win { background: rgba(255,255,255,0.5) !important; backdrop-filter: blur(10px); border-radius: 15px !important; }
 
-        /* 4. 翻盖手机播放器样式 */
-        .phone-player { display: flex; align-items: flex-end; gap: 30px; }
-        .flip-phone { width: 200px; background: #ff85a1; border-radius: 15px; padding: 12px; border: 3px solid #fff; box-shadow: 8px 8px 0 rgba(0,0,0,0.05); }
-        .phone-screen { background: #222; border-radius: 8px; padding: 8px; text-align: center; color: white; }
-        .cd-art { width: 140px; height: 140px; margin: 5px auto; border-radius: 5px; overflow: hidden; border: 2px solid #fff; }
-        .cd-art img { width: 100%; height: 100%; object-fit: cover; animation: spin 8s linear infinite; animation-play-state: paused; }
-        @keyframes spin { from {transform: rotate(0deg)} to {transform: rotate(360deg)} }
-        .phone-keys { margin-top: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
-        .p-key { background: #ffacc0; height: 25px; border-radius: 4px; border: 1px solid #fff; font-size: 9px; color: white; display: flex; align-items: center; justify-content: center; }
+        /* --- 手机播放器定制 --- */
+        .phone-case { transform: scale(1.2); width: 220px; background: #ff85a1; border: 4px solid #fff; border-radius: 20px; padding: 15px; position: relative; }
+        .phone-screen { background: #222; border-radius: 10px; padding: 10px; text-align: center; color: white; border: 2px solid #444; }
 
-        /* 5. 成员卡片 */
-        .member-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-        .m-card { background: white; padding: 8px; border: 1px solid #ffb2d1; border-radius: 8px; text-align: center; }
-        .m-card img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
+        /* --- 成员卡片手写体 --- */
+        .m-card-large { 
+            width: 200px; background: white; padding: 15px; border-radius: 25px; border: 2px solid #ffb2d1;
+            transition: 0.4s; text-align: center; font-family: 'Zhi Mang Xing', cursive;
+        }
+        .m-card-large:hover { transform: translateY(-20px) scale(1.05); border-color: #ff4081; }
+        .m-card-large img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 4px solid #fce4ec; }
 
-        /* 6. 拍立得与贴纸 */
-        .p-frame { width: 280px; padding: 12px 12px 35px 12px; background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 4px; }
-        .cam-box { width: 100%; height: 320px; background: #000; position: relative; overflow: hidden; }
-        .sticker { position: absolute; cursor: move; width: 110px; z-index: 100; }
+        /* --- 换装/合照 通用 --- */
+        .editor-container { display: flex; gap: 10px; background: #c0c0c0; padding: 5px; border: 2px solid #fff; box-shadow: 4px 4px 0 #000; }
+        .sticker { position: absolute; cursor: move; z-index: 100; transform: translate(-50%, -50%); }
     </style>
 </head>
 <body>
 
-    <div class="aurora-bg"></div>
+    <div class="dreamy-bg"></div>
 
     <nav class="top-nav">
-        <a href="#home">🏠 Home</a>
-        <a href="#music">🎵 Music</a>
-        <a href="#members">🎀 Members</a>
-        <a href="#photo">📸 Photo</a>
-        <a href="#game">🎮 DressUp</a>
-        <a href="#square">✨ Square</a>
+        <a href="#home">🏠 HOME</a>
+        <a href="#music">🎵 MUSIC</a>
+        <a href="#members">🎀 MEMBERS</a>
+        <a href="#photo">📸 PHOTO</a>
+        <a href="#game">👗 DRESSUP</a>
+        <a href="#square">💌 SQUARE</a>
     </nav>
 
-    <!-- 1. 首页 -->
+    <!-- 1. 首页：大头贴欢迎区 -->
     <section id="home">
-        <div class="window glass-win" style="width: 420px;">
-            <div class="title-bar"><div class="title-bar-text">Welcome.exe</div></div>
-            <div class="window-body" style="text-align: center;">
-                <img src="image_32.png" style="width: 100%; border-radius: 8px;">
-                <h1 style="color: #ff4081; font-size: 24px;">ILLIT DREAM WORLD</h1>
-                <p>滑动查看所有版块 ✨</p>
-            </div>
+        <div style="border: 10px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transform: rotate(-2deg); background: #000; width: 500px;">
+            <img src="image_32.png" style="width: 100%; display: block;">
         </div>
+        <div class="memo-note" style="margin-top: -40px; z-index: 5; width: 300px; font-size: 1.5rem;">
+            💖 欢迎来到 ILLIT <br> 的梦幻手账本 💖
+        </div>
+        <div class="rhinestone" style="top:25%; left:20%;"></div>
+        <div class="rhinestone" style="top:20%; right:20%;"></div>
     </section>
 
-    <!-- 2. 翻盖手机播放器板块 (模仿 image_35.png) -->
+    <!-- 2. 音乐播放器：翻盖手机版 -->
     <section id="music">
-        <h2 style="color: #ffeb3b; text-shadow: 2px 2px #ff85a1; font-style: italic;">✨ CD_PLAYER.mp3 ✨</h2>
-        <div class="phone-player">
-            <div class="flip-phone">
+        <div style="display: flex; gap: 50px; align-items: flex-end;">
+            <div class="phone-case">
                 <div class="phone-screen">
-                    <div style="font-size: 9px; display: flex; justify-content: space-between;"><span>♡♡♡</span><span>03:00</span></div>
-                    <div class="cd-art"><img id="cd" src="image_33.png"></div>
-                    <div style="font-size: 11px; margin: 3px 0;">Magnetic</div>
+                    <div style="font-size: 10px; margin-bottom: 5px;">❤️ CONNECTING...</div>
+                    <div style="width: 150px; height: 150px; margin: 0 auto; border: 2px solid #fff; overflow:hidden;">
+                        <img id="cd" src="image_33.png" style="width:100%; animation: spin 8s linear infinite; animation-play-state: paused;">
+                    </div>
+                    <p style="font-size: 11px; margin: 8px 0;">Magnetic</p>
+                    <button onclick="toggleM()" style="background:#fff; border:none; width:35px; height:35px; border-radius:50%; color:#ff85a1; cursor:pointer;">▶</button>
                     <audio id="audio" loop src="bgm.mp3"></audio>
-                    <button onclick="toggleM()" style="background:white; border-radius:50%; border:none; width:30px; height:30px; cursor:pointer; color:#ff85a1;">▶</button>
                 </div>
-                <div class="phone-keys">
-                    <div class="p-key">1</div><div class="p-key">2</div><div class="p-key">3</div>
-                    <div class="p-key">4</div><div class="p-key">5</div><div class="p-key">6</div>
-                    <div class="p-key">7</div><div class="p-key">8</div><div class="p-key">9</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 15px;">
+                    <div style="background:#ffacc0; height:25px; border:1px solid #fff; border-radius:5px;"></div>
+                    <div style="background:#ffacc0; height:25px; border:1px solid #fff; border-radius:5px;"></div>
+                    <div style="background:#ffacc0; height:25px; border:1px solid #fff; border-radius:5px;"></div>
                 </div>
+                <div class="rhinestone" style="top: -5px; left: -5px;"></div>
             </div>
-            <div class="window glass-win" style="width: 320px; height: 360px;">
-                <div class="title-bar"><div class="title-bar-text">♫ TRACKLIST</div></div>
-                <div class="window-body" style="height: 300px; overflow-y: auto; padding: 10px;">
-                    <div style="background:#ff85a1; color:white; padding:8px; border-radius:5px; margin-bottom:5px;">01 🎧 Magnetic</div>
-                    <div style="padding:8px; color:#ff4081;">02 🔥 My World</div>
-                    <div style="padding:8px; color:#ff4081;">03 🍪 Midnight Fiction</div>
-                    <div style="padding:8px; color:#ff4081;">04 💖 Lucky Girl</div>
-                </div>
+            <div class="memo-note" style="width: 250px; transform: rotate(2deg);">
+                ★ PLAYLIST ★ <br>
+                1. Magnetic ✨ <br>
+                2. My World 🔥 <br>
+                3. Midnight Fiction 🍪
             </div>
         </div>
     </section>
 
-        <!-- 3. 成员档案 (升级版：大图+浮动特效) -->
+    <!-- 3. 成员介绍：手写体大卡片 -->
     <section id="members">
-        <div class="window glass-win" style="width: 90%; max-width: 1200px;">
-            <div class="title-bar">
-                <div class="title-bar-text">ILLIT_Official_Profiles.doc</div>
-            </div>
-            <div class="window-body">
-                <h2 style="text-align: center; color: #ff4081; text-shadow: 1px 1px #fff; margin-bottom: 30px;">🌟 MEET THE MEMBERS 🌟</h2>
-                
-                <div class="member-grid-large">
-                    <!-- 成员 1: YUNAH -->
-                    <div class="m-card-large">
-                        <div class="img-container">
-                            <img src="yunah_face.png" alt="YUNAH">
-                        </div>
-                        <div class="m-info">
-                            <h3>YUNAH</h3>
-                            <p>卢允雅</p>
-                            <span class="m-tag">Leader</span>
-                        </div>
-                    </div>
-
-                    <!-- 成员 2: MINJU -->
-                    <div class="m-card-large">
-                        <div class="img-container">
-                            <img src="minju_face.png" alt="MINJU">
-                        </div>
-                        <div class="m-info">
-                            <h3>MINJU</h3>
-                            <p>朴敏珠</p>
-                            <span class="m-tag">Vocal</span>
-                        </div>
-                    </div>
-
-                    <!-- 成员 3: MOKA -->
-                    <div class="m-card-large">
-                        <div class="img-container">
-                            <img src="moka_face.png" alt="MOKA">
-                        </div>
-                        <div class="m-info">
-                            <h3>MOKA</h3>
-                            <p>摩卡</p>
-                            <span class="m-tag">Dance</span>
-                        </div>
-                    </div>
-
-                    <!-- 成员 4: WONHEE -->
-                    <div class="m-card-large">
-                        <div class="img-container">
-                            <img src="wonhee_face.png" alt="WONHEE">
-                        </div>
-                        <div class="m-info">
-                            <h3>WONHEE</h3>
-                            <p>李沅禧</p>
-                            <span class="m-tag">Center</span>
-                        </div>
-                    </div>
-
-                    <!-- 成员 5: IROHA -->
-                    <div class="m-card-large">
-                        <div class="img-container">
-                            <img src="iroha_face.png" alt="IROHA">
-                        </div>
-                        <div class="m-info">
-                            <h3>IROHA</h3>
-                            <p>外园彩羽</p>
-                            <span class="m-tag">Maknae</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <h2 style="color: #fff; text-shadow: 2px 2px #ff4081; font-size: 3rem; margin-bottom: 50px;">🎀 Members 🎀</h2>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+            <div class="m-card-large"><img src="wonhee_face.png"><h3>沅禧 WONHEE</h3></div>
+            <div class="m-card-large"><img src="minju_face.png"><h3>敏珠 MINJU</h3></div>
+            <div class="m-card-large"><img src="iroha_face.png"><h3>彩羽 IROHA</h3></div>
+            <div class="m-card-large"><img src="moka_face.png"><h3>摩卡 MOKA</h3></div>
+            <div class="m-card-large"><img src="yunah_face.png"><h3>允雅 YUNAH</h3></div>
         </div>
     </section>
 
-    <style>
-        /* 成员板块专属高级样式 */
-        .member-grid-large {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 30px;
-            padding: 20px;
-        }
-
-        .m-card-large {
-            width: 200px;
-            background: white;
-            padding: 15px;
-            border-radius: 20px;
-            border: 2px solid #ffb2d1;
-            box-shadow: 0 10px 20px rgba(255, 128, 171, 0.15);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 回弹动画 */
-            text-align: center;
-            cursor: pointer;
-        }
-
-        /* 重点：鼠标悬停时的浮动和放大效果 */
-        .m-card-large:hover {
-            transform: translateY(-20px) scale(1.1); /* 向上浮动并放大 */
-            box-shadow: 0 20px 40px rgba(255, 64, 129, 0.3);
-            border-color: #ff4081;
-        }
-
-        .img-container {
-            width: 170px;
-            height: 170px;
-            margin: 0 auto;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 4px solid #fce4ec;
-            transition: border-color 0.4s;
-        }
-
-        .m-card-large:hover .img-container {
-            border-color: #ff85a1;
-        }
-
-        .img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .m-info h3 {
-            margin: 15px 0 5px 0;
-            color: #ff4081;
-            font-size: 20px;
-            letter-spacing: 1px;
-        }
-
-        .m-info p {
-            font-size: 14px;
-            color: #888;
-            margin: 0;
-        }
-
-        .m-tag {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 3px 10px;
-            background: #ff85a1;
-            color: white;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-    </style>
-
-
-    <!-- 4. 拍立得合照 -->
+    <!-- 4. 合照区：拍立得 DIY -->
     <section id="photo">
-        <div style="display: flex; gap: 20px;">
-            <div class="p-frame" id="p-box">
-                <div class="cam-box" id="cam-box">
-                    <video id="v" autoplay playsinline style="width:100%; height:100%; object-fit:cover; transform:scaleX(-1);"></video>
+        <div class="window glass-win" style="width: 800px;">
+            <div class="title-bar"><div class="title-bar-text">Sticker_Camera.exe</div></div>
+            <div class="window-body" style="display: flex; gap: 20px;">
+                <div id="photo-stage" style="width: 500px; height: 400px; background: #000; border: 10px solid #fff; position: relative; overflow: hidden;">
+                    <video id="v" autoplay playsinline style="width:100%; height:100%; object-fit:cover; transform: scaleX(-1);"></video>
                 </div>
-                <p style="text-align:center; font-family:cursive; margin-top:10px;">Our Moment ✨</p>
-            </div>
-            <div class="window glass-win" style="width: 200px;">
-                <div class="title-bar"><div class="title-bar-text">Stickers</div></div>
-                <div class="window-body">
-                    <button onclick="addS('wonhee_pose.png')" style="width:100%; margin-bottom:5px;">WONHEE</button>
-                    <button onclick="addS('iroha_pose.png')" style="width:100%;">IROHA</button>
-                    <hr>
-                    <button onclick="document.getElementById('p-box').style.background='#e1f5fe'" style="width:100%;">BLUE FRAME</button>
+                <div class="memo-note" style="flex: 1; font-size: 14px;">
+                    ★ 点击添加装饰 ★ <br><br>
+                    <button onclick="addSticker('wonhee_pose.png')" style="width:100%; margin-bottom:10px;">Wonhee Sticker</button>
+                    <button onclick="addSticker('iroha_pose.png')" style="width:100%;">Iroha Sticker</button>
+                    <p style="margin-top: 20px;">* 双击贴纸删除</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 5. 换装与社区 -->
+    <!-- 5. 换装区：仿 image_36.png 像素编辑器 -->
     <section id="game">
-        <div class="window glass-win" style="width: 500px;">
-            <div class="title-bar"><div class="title-bar-text">DressUp.exe</div></div>
-            <div class="window-body">在此区域添加你的换装逻辑...</div>
+        <div class="window" style="width: 900px; background: #c0c0c0; border: 3px solid #fff;">
+            <div class="title-bar"><div class="title-bar-text">OUTFIT_EDITOR.EXE v1.0</div></div>
+            <div class="window-body editor-container">
+                <div style="width: 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; align-content: start;">
+                    <div style="border: 2px outset #fff; height: 20px; background: #c0c0c0; text-align:center;">✏️</div>
+                    <div style="border: 2px outset #fff; height: 20px; background: #c0c0c0; text-align:center;">🎨</div>
+                </div>
+                <div id="doll-stage" style="flex: 1; background: #fff; border: 2px inset #fff; height: 500px; position: relative; overflow: hidden;">
+                    <img src="base_doll.png" style="height: 100%; display: block; margin: 0 auto; opacity: 0.7;">
+                </div>
+                <div style="width: 220px; padding: 10px;">
+                    <div class="memo-note" style="font-size: 14px; margin-bottom: 10px;">WARDROBE 衣橱</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <img src="top.png" style="width: 80px; cursor: pointer; border: 1px solid #ccc;" onclick="addStickerTo('top.png', 'doll-stage')">
+                        <img src="skirt.png" style="width: 80px; cursor: pointer; border: 1px solid #ccc;" onclick="addStickerTo('skirt.png', 'doll-stage')">
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
+    <!-- 6. 社区留言板：古早便签墙 -->
     <section id="square">
-        <div class="window glass-win" style="width: 500px;">
-            <div class="title-bar"><div class="title-bar-text">Community.exe</div></div>
-            <div class="window-body">留言板功能已就绪...</div>
+        <div class="window glass-win" style="width: 850px; height: 600px;">
+            <div class="title-bar"><div class="title-bar-text">Guestbook.exe</div></div>
+            <div class="window-body" style="padding: 20px;">
+                <div id="post-list" style="height: 400px; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 15px; padding: 10px; background: rgba(255,255,255,0.3); border: 2px inset #fff;">
+                    <div class="memo-note" style="width: 180px; height: 100px;">欢迎大家留言呀！✨</div>
+                </div>
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <input id="msg-input" placeholder="输入你想说的话..." style="flex: 1; padding: 10px; border: 2px solid #ffb2d1;">
+                    <button class="win7-btn" onclick="sendMsg()">POST IT!</button>
+                </div>
+            </div>
         </div>
     </section>
 
     <script>
+        // 音乐控制
         const audio = document.getElementById('audio');
         const cd = document.getElementById('cd');
         function toggleM() {
@@ -297,27 +192,49 @@
             else { audio.pause(); cd.style.animationPlayState='paused'; }
         }
 
+        // 相机启动
         const v = document.getElementById('v');
-        navigator.mediaDevices.getUserMedia({video:true}).then(s => v.srcObject=s);
+        navigator.mediaDevices.getUserMedia({video: true}).then(s => v.srcObject = s);
 
-        function drag(el) {
+        // 拖拽逻辑
+        function makeDraggable(el) {
             let p1=0, p2=0, p3=0, p4=0;
             el.onmousedown = (e) => {
-                p3=e.clientX; p4=e.clientY;
+                e.preventDefault(); p3 = e.clientX; p4 = e.clientY;
                 document.onmouseup = () => { document.onmousemove = null; };
                 document.onmousemove = (e) => {
-                    p1=p3-e.clientX; p2=p4-e.clientY; p3=e.clientX; p4=e.clientY;
-                    el.style.top = (el.offsetTop-p2)+"px"; el.style.left = (el.offsetLeft-p1)+"px";
+                    p1 = p3 - e.clientX; p2 = p4 - e.clientY; p3 = e.clientX; p4 = e.clientY;
+                    el.style.top = (el.offsetTop - p2) + "px"; el.style.left = (el.offsetLeft - p1) + "px";
                 };
             };
         }
 
-        function addS(s) {
-            const i = document.createElement('img'); i.src=s; i.className='sticker';
-            i.style.top='50px'; i.style.left='50px';
-            i.ondblclick = () => i.remove();
-            document.getElementById('cam-box').appendChild(i);
-            drag(i);
+        // 添加贴纸功能
+        function addSticker(src) { addStickerTo(src, 'photo-stage'); }
+        function addStickerTo(src, targetId) {
+            const img = document.createElement('img'); img.src = src; img.className = 'sticker';
+            img.style.width = '150px'; img.style.top = '50%'; img.style.left = '50%';
+            img.ondblclick = () => img.remove();
+            document.getElementById(targetId).appendChild(img);
+            makeDraggable(img);
+        }
+
+        // 留言板逻辑
+        function sendMsg() {
+            const val = document.getElementById('msg-input').value; if(!val) return;
+            const note = document.createElement('div'); note.className = 'memo-note';
+            note.style.width = '180px'; note.style.transform = `rotate(${Math.random()*6-3}deg)`;
+            note.innerHTML = val;
+            document.getElementById('post-list').prepend(note);
+            document.getElementById('msg-input').value = '';
+        }
+
+        // 自动生成水钻
+        for(let i=0; i<30; i++) {
+            let r = document.createElement('div'); r.className = 'rhinestone';
+            r.style.left = Math.random()*100 + "vw"; r.style.top = Math.random()*100 + "vh";
+            r.style.animationDelay = Math.random()*2 + "s";
+            document.body.appendChild(r);
         }
     </script>
 </body>
