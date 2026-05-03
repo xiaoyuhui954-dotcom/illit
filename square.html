@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>ILLIT Fan Square 🫧</title>
+    <link rel="stylesheet" href="https://unpkg.com/7.css">
+    <style>
+        :root {
+            --y2k-pink: #ff80ab;
+            --y2k-purple: #ea80fc;
+            --y2k-blue: #81d4fa;
+        }
+
+        /* --- 1. 延续极光背景 --- */
+        body {
+            margin: 0; padding: 0; min-height: 100vh;
+            background: linear-gradient(-45deg, #fce4ec, #e1f5fe, #f3e5f5, #e8f5e9);
+            background-size: 400% 400%;
+            animation: aurora 15s ease infinite;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden; font-family: sans-serif;
+        }
+        @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* --- 2. 发布区域 (玻璃拟态) --- */
+        .post-box {
+            width: 500px; margin: 40px 0;
+            background: rgba(255, 255, 255, 0.5) !important;
+            backdrop-filter: blur(15px);
+            border-radius: 20px !important;
+            border: 2px solid rgba(255, 255, 255, 0.7) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            z-index: 100;
+        }
+        .title-bar { background: linear-gradient(90deg, var(--y2k-blue), var(--y2k-purple)) !important; border-radius: 18px 18px 0 0 !important; }
+
+        /* --- 3. 动态展示广场 --- */
+        .square-grid {
+            width: 90%; max-width: 1000px;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 30px; padding-bottom: 100px;
+        }
+
+        /* 每一条动态卡片 (拍立得风格) */
+        .post-card {
+            background: #fff; padding: 12px 12px 40px 12px;
+            width: 260px; box-shadow: 5px 10px 20px rgba(0,0,0,0.1);
+            border: 1px solid #eee; position: relative;
+            transform: rotate(calc(var(--r) * 1deg)); /* 随机旋转 */
+            transition: 0.3s; cursor: pointer;
+        }
+        .post-card:hover { transform: rotate(0deg) scale(1.05); z-index: 50; }
+
+        .post-img { width: 100%; height: 260px; object-fit: cover; background: #fafafa; border: 1px solid #f0f0f0; }
+        
+        .post-content {
+            padding-top: 15px; font-family: 'Comic Sans MS', cursive;
+            font-size: 13px; color: #555; word-wrap: break-word;
+        }
+
+        /* 装饰贴纸 */
+        .card-sticker { position: absolute; top: -10px; right: -10px; font-size: 30px; pointer-events: none; }
+
+        /* 交互按钮 */
+        .upload-label {
+            display: inline-block; padding: 8px 15px; background: #fff;
+            border: 2px dashed var(--y2k-pink); border-radius: 10px;
+            cursor: pointer; font-size: 12px; color: var(--y2k-pink);
+        }
+        .share-btn {
+            background: var(--y2k-pink); color: white; border: none;
+            padding: 10px 25px; border-radius: 20px; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="window post-box">
+        <div class="title-bar"><div class="title-bar-text">Share_Your_Life.exe</div></div>
+        <div class="window-body">
+            <textarea id="post-text" placeholder="分享你的生活点滴..." style="width: 100%; height: 60px; border-radius: 10px; padding: 10px; border: 1px solid #ddd;"></textarea>
+            
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px;">
+                <label class="upload-label">
+                    📷 选择照片
+                    <input type="file" id="post-file" accept="image/*" style="display: none;" onchange="previewFile()">
+                </label>
+                <div id="file-name" style="font-size: 10px; color: #999;">尚未选择图片</div>
+                <button class="share-btn" onclick="addPost()">POST ✨</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="square-grid" id="square-grid">
+        <div class="post-card" style="--r: -2">
+            <div class="card-sticker">🍬</div>
+            <img class="post-img" src="https://img.freepik.com/free-photo/vibrant-pink-clouds-sky_23-2148824933.jpg" alt="demo">
+            <div class="post-content">今天的天空也是粉色的！🎀 #Daily</div>
+        </div>
+        <div class="post-card" style="--r: 3">
+            <div class="card-sticker">🌈</div>
+            <img class="post-img" src="https://img.freepik.com/free-photo/cute-cat-concept-illustration_23-2151745233.jpg" alt="demo">
+            <div class="post-content">和猫咪一起午睡~ 🐱✨</div>
+        </div>
+    </div>
+
+    <center>
+        <button class="choice-btn" style="position: fixed; bottom: 30px; right: 30px; padding: 10px 20px; background: #fff; border: 2px solid #333; cursor: pointer; z-index: 1000;" onclick="window.location.href='index.html'">返回桌面</button>
+    </center>
+
+    <script>
+        function previewFile() {
+            const file = document.getElementById('post-file').files[0];
+            const nameDisplay = document.getElementById('file-name');
+            if (file) nameDisplay.innerText = "已选择: " + file.name;
+        }
+
+        function addPost() {
+            const text = document.getElementById('post-text').value;
+            const fileInput = document.getElementById('post-file');
+            const grid = document.getElementById('square-grid');
+
+            if (!text && !fileInput.files[0]) {
+                alert("总得写点什么或传张图吧~");
+                return;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'post-card';
+            // 随机旋转度数，更有手账乱放的感觉
+            const randomRotate = Math.floor(Math.random() * 10 - 5);
+            card.style.setProperty('--r', randomRotate);
+
+            // 随机贴纸
+            const stickers = ['✨', '💖', '🍀', '🐰', '🍭', '🌸'];
+            const randomSticker = stickers[Math.floor(Math.random() * stickers.length)];
+
+            let imgHtml = '';
+            if (fileInput.files[0]) {
+                const url = URL.createObjectURL(fileInput.files[0]);
+                imgHtml = `<img class="post-img" src="${url}">`;
+            } else {
+                imgHtml = `<div class="post-img" style="background:#fefefe; display:flex; align-items:center; justify-content:center; color:#ccc;">No Image</div>`;
+            }
+
+            card.innerHTML = `
+                <div class="card-sticker">${randomSticker}</div>
+                ${imgHtml}
+                <div class="post-content">${text}</div>
+            `;
+
+            // 将新动态插入到第一个
+            grid.insertBefore(card, grid.firstChild);
+
+            // 清空输入
+            document.getElementById('post-text').value = "";
+            fileInput.value = "";
+            document.getElementById('file-name').innerText = "尚未选择图片";
+        }
+    </script>
+</body>
+</html>
