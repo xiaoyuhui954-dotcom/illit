@@ -2,351 +2,272 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT Dreamcore World - Ultra Full Edition</title>
+    <title>ILLIT ✨ Dreamcore World V6</title>
+    <link rel="stylesheet" href="https://unpkg.com/7.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+SC:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+SC:wght@500;700&family=Ma+Shan+Zheng&display=swap');
 
         :root {
-            --theme-bg: #b2f2e8; 
-            --phone-pink: #ff8ab4;
+            --theme-bg: #b2f2e8; /* 统一薄荷绿背景 */
             --y2k-pink: #ffb2d1;
             --hot-pink: #ff4081;
-            --ig-gray: #fafafa;
+            --soft-blue: #7d96ff;
         }
 
-        body { margin: 0; background: var(--theme-bg); font-family: 'Noto Sans SC', sans-serif; scroll-behavior: smooth; overflow-x: hidden; color: #000; }
+        body { margin: 0; background: var(--theme-bg); font-family: "Noto Sans SC", sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+        header { position:fixed; top:20px; right:30px; z-index:999; display:flex; gap:8px; }
+        .nav-btn { background:#fff; border:2px solid #000; padding:6px 12px; text-decoration:none; color:#000; font-family: 'Press Start 2P'; font-size: 9px; box-shadow: 3px 3px 0 #000; }
         
-        /* 右上角导航 (参考 image_43.png 风格) */
-        header { position:fixed; top:20px; right:30px; z-index:999; display:flex; gap:10px; }
-        .nav-btn { 
-            background:#fff; border:2px solid #000; padding:6px 12px; text-decoration:none; color:#000; 
-            font-family: 'Press Start 2P'; font-size: 9px; box-shadow: 3px 3px 0 #000;
-        }
-        .nav-btn:hover { background: var(--y2k-pink); transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
+        section { min-height: 100vh; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; position: relative; border-bottom: 2px dashed rgba(255,255,255,0.4); box-sizing: border-box; }
+        .pixel-title { font-family: 'Press Start 2P'; font-size: 2rem; color: var(--soft-blue); text-shadow: 3px 3px var(--y2k-pink); margin-bottom: 30px; text-align: center; }
 
-        section { min-height: 100vh; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
-        .pixel-title { font-family: 'Press Start 2P'; font-size: 1.8rem; color: #fff; text-shadow: 3px 3px var(--hot-pink); margin-bottom: 40px; text-align: center; }
+        /* --- P1: 首页合照框 --- */
+        .big-frame { background: #fff; padding: 15px 15px 60px 15px; border: 4px solid #000; box-shadow: 12px 12px 0px var(--y2k-pink); width: 85%; max-width: 800px; }
+        .big-frame img { width: 100%; height: auto; border: 2px solid #000; display: block; }
 
-        /* --- P1: 首页大框 --- */
-        .big-frame { 
-            background: #fff; padding: 15px; border: 4px solid #000; box-shadow: 12px 12px 0px var(--y2k-pink); 
-            width: 90%; max-width: 1000px; animation: floating 4s ease-in-out infinite;
-        }
-        .big-frame img { width: 100%; display: block; }
+        /* --- P2: 成员档案 (3+2) --- */
+        .members-grid { display: flex; flex-direction: column; gap: 30px; width: 100%; max-width: 1000px; }
+        .row-top, .row-bottom { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .member-card { width: 220px; background: #fff; border: 4px solid var(--hot-pink); border-radius: 20px; overflow: hidden; box-shadow: 6px 6px 0px rgba(0,0,0,0.1); }
+        .member-photo { width: 100%; height: 180px; object-fit: cover; border-bottom: 3px solid var(--hot-pink); }
+        .member-info { padding: 12px; font-size: 13px; line-height: 1.6; }
+        .m-name { font-family: 'Press Start 2P'; font-size: 11px; color: var(--hot-pink); margin-bottom: 5px; display: block; }
 
-        /* --- P2: 成员卡片 (3+2 布局) --- */
-     <section id="members">
-    <div class="pixel-title">MEMBER PROFILES</div>
-    <div class="member-container">
-        <!-- 第一排：3位成员 -->
-        <div class="row-3" style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 30px;">
-            <div class="member-card">
-                <div class="card-header"><span>MEMBER_01.doc</span><span>[X]</span></div>
-                <div class="photo-frame"><img src="yunah.png" style="width:100%; height:260px; object-fit:cover;"></div>
-                <div class="profile-body" style="padding:15px;">
-                    <span class="name-zh" style="font-size:22px; font-weight:900; color:#ff4081; display:block;">卢允雅</span>
-                    <span class="name-en" style="font-family:'Press Start 2P'; font-size:10px; color:#666; display:block; margin-bottom:10px;">YUNAH</span>
-                    <div class="detail-list" style="font-size:13px; line-height:1.8; border-top:2px dashed #ddd; padding-top:10px;">
-                        <div><b>BIRTH</b> 2004.01.15</div>
-                        <div><b>MBTI</b> ENFP</div>
-                        <div><b>NATION</b> 韩国</div>
-                    </div>
-                </div>
-            </div>
+        /* --- P3: 播放器 --- */
+        .cd-disk { width: 150px; height: 150px; border-radius: 50%; border: 5px solid #fff; overflow: hidden; animation: spin 5s linear infinite; animation-play-state: paused; cursor: pointer; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        .song-list { background:#fff; padding:20px; border:3px solid #000; width:320px; box-shadow: 8px 8px 0 var(--soft-blue); }
+        .song-item { cursor: pointer; padding: 10px; border-bottom: 1px dashed #ccc; font-family: 'Ma Shan Zheng'; font-size: 1.4rem; }
+        .song-item:hover { color: var(--hot-pink); }
+        .song-item.active { color: var(--hot-pink); font-weight: bold; border-left: 4px solid var(--hot-pink); padding-left: 15px; }
 
-            <div class="member-card">
-                <div class="card-header"><span>MEMBER_02.doc</span><span>[X]</span></div>
-                <div class="photo-frame"><img src="minju.png" style="width:100%; height:260px; object-fit:cover;"></div>
-                <div class="profile-body" style="padding:15px;">
-                    <span class="name-zh" style="font-size:22px; font-weight:900; color:#ff4081; display:block;">朴敏珠</span>
-                    <span class="name-en" style="font-family:'Press Start 2P'; font-size:10px; color:#666; display:block; margin-bottom:10px;">MINJU</span>
-                    <div class="detail-list" style="font-size:13px; line-height:1.8; border-top:2px dashed #ddd; padding-top:10px;">
-                        <div><b>BIRTH</b> 2004.05.11</div>
-                        <div><b>MBTI</b> ISTP</div>
-                        <div><b>NATION</b> 韩国</div>
-                    </div>
-                </div>
-            </div>
+        /* --- P4: 贴纸合照区 --- */
+        #capture-zone { position: relative; width: 600px; height: 400px; border: 5px solid #000; background: #000; overflow:hidden; box-shadow: 10px 10px 0 #333; }
+        .sticker-wrapper { position: absolute; cursor: move; z-index: 100; transform: translate(-50%, -50%); }
+        .sticker-img { width: 100px; filter: drop-shadow(2px 2px 0 #fff); pointer-events: none; }
+        .sticker-btn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 20px; width: 600px; }
+        .sticker-btn-grid button { font-family: 'Noto Sans SC'; font-weight: bold; padding: 8px; cursor: pointer; }
 
-            <div class="member-card">
-                <div class="card-header"><span>MEMBER_03.doc</span><span>[X]</span></div>
-                <div class="photo-frame"><img src="moka.png" style="width:100%; height:260px; object-fit:cover;"></div>
-                <div class="profile-body" style="padding:15px;">
-                    <span class="name-zh" style="font-size:22px; font-weight:900; color:#ff4081; display:block;">境 露亚</span>
-                    <span class="name-en" style="font-family:'Press Start 2P'; font-size:10px; color:#666; display:block; margin-bottom:10px;">MOKA</span>
-                    <div class="detail-list" style="font-size:13px; line-height:1.8; border-top:2px dashed #ddd; padding-top:10px;">
-                        <div><b>BIRTH</b> 2004.10.08</div>
-                        <div><b>MBTI</b> ISFP</div>
-                        <div><b>NATION</b> 日本</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        /* --- P5: 弹幕区 --- */
+        #danmaku-stage { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+        .danmaku-text { position: absolute; white-space: nowrap; font-weight: bold; font-size: 2.2rem; animation: fly linear forwards; font-family: 'Ma Shan Zheng'; color: #fff; text-shadow: 2px 2px 0 #000; }
 
-        <!-- 第二排：2位成员 -->
-        <div class="row-2" style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
-            <div class="member-card">
-                <div class="card-header"><span>MEMBER_04.doc</span><span>[X]</span></div>
-                <div class="photo-frame"><img src="wonhee.png" style="width:100%; height:260px; object-fit:cover;"></div>
-                <div class="profile-body" style="padding:15px;">
-                    <span class="name-zh" style="font-size:22px; font-weight:900; color:#ff4081; display:block;">李沅禧</span>
-                    <span class="name-en" style="font-family:'Press Start 2P'; font-size:10px; color:#666; display:block; margin-bottom:10px;">WONHEE</span>
-                    <div class="detail-list" style="font-size:13px; line-height:1.8; border-top:2px dashed #ddd; padding-top:10px;">
-                        <div><b>BIRTH</b> 2007.06.26</div>
-                        <div><b>MBTI</b> ISFP</div>
-                        <div><b>NATION</b> 韩国</div>
-                    </div>
-                </div>
-            </div>
+        /* --- P6: IG 社区 --- */
+        .ig-post { background: #fff; border: 2px solid #000; border-radius: 12px; overflow: hidden; width: 100%; max-width: 450px; margin-bottom: 25px; box-shadow: 8px 8px 0 rgba(0,0,0,0.05); }
+        .post-header { padding: 12px; font-weight: bold; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #eee; }
+        .post-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-bottom: 1px solid #eee; }
+        .post-content { padding: 15px; font-size: 14px; color: #333; }
 
-            <div class="member-card">
-                <div class="card-header"><span>MEMBER_05.doc</span><span>[X]</span></div>
-                <div class="photo-frame"><img src="iroha.png" style="width:100%; height:260px; object-fit:cover;"></div>
-                <div class="profile-body" style="padding:15px;">
-                    <span class="name-zh" style="font-size:22px; font-weight:900; color:#ff4081; display:block;">外园 彩羽</span>
-                    <span class="name-en" style="font-family:'Press Start 2P'; font-size:10px; color:#666; display:block; margin-bottom:10px;">IROHA</span>
-                    <div class="detail-list" style="font-size:13px; line-height:1.8; border-top:2px dashed #ddd; padding-top:10px;">
-                        <div><b>BIRTH</b> 2008.02.04</div>
-                        <div><b>MBTI</b> ISFP</div>
-                        <div><b>NATION</b> 日本</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-        /* --- P3: 翻盖手机播放器 (复原 image_43.png) --- */
-        .player-flex { display: flex; gap: 30px; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
-        .flip-phone { width: 260px; background: var(--phone-pink); border: 4px solid #000; border-radius: 30px; padding: 15px; }
-        .phone-screen { background: #1a1a1a; border: 3px solid #000; border-radius: 15px; padding: 15px; display: flex; flex-direction: column; align-items: center; color: #fff; height: 280px; }
-        .album-spin { width: 130px; height: 130px; border: 2px solid #fff; margin-bottom: 10px; border-radius: 50%; animation: rotate 5s linear infinite; animation-play-state: paused; }
-        .progress-container { width: 100%; margin: 10px 0; }
-        .progress-bar { width: 100%; height: 6px; background: #333; border: 1px solid #fff; position: relative; cursor: pointer; }
-        #progress-fill { height: 100%; background: var(--hot-pink); width: 0%; }
-        .phone-keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 15px; }
-        .key { background: #ffcce0; border: 2px solid #000; height: 30px; border-radius: 5px; font-family: 'Press Start 2P'; font-size: 8px; display: flex; align-items: center; justify-content: center; }
-        .track-box { width: 300px; background: #fff; border: 3px solid var(--phone-pink); border-radius: 15px; height: 400px; overflow: hidden; }
-        .track-list { height: 350px; overflow-y: auto; }
-        .track-list::-webkit-scrollbar { width: 8px; }
-        .track-list::-webkit-scrollbar-thumb { background: var(--hot-pink); border-radius: 4px; }
-        .track-item { padding: 12px; border-bottom: 1px dashed #eee; display: flex; justify-content: space-between; font-size: 13px; cursor: pointer; }
-        .track-item.active { background: #fff0f5; color: var(--hot-pink); font-weight: bold; }
-
-        /* --- P4: 合照贴纸区 (支持本地上传) --- */
-        .photo-area-wrapper { position: relative; width: 800px; height: 500px; background: #eee; border: 5px solid #000; background-image: radial-gradient(#ccc 1px, transparent 1px); background-size: 20px 20px; overflow: hidden; }
-        #base-photo { max-width: 100%; max-height: 100%; pointer-events: none; }
-        .sticker { position: absolute; cursor: move; width: 100px; z-index: 10; }
-        .controls { margin-top: 15px; display: flex; gap: 10px; }
-
-        /* --- P5: 弹幕区 (彩色滚动) --- */
-        .danmaku-wall { width: 100%; height: 400px; background: #000; position: relative; overflow: hidden; border: 5px solid #fff; box-shadow: 0 0 20px var(--hot-pink); }
-        .danmaku-item { position: absolute; white-space: nowrap; font-size: 24px; font-weight: 800; animation: scroll-left linear forwards; }
-
-        /* --- P6: Instagram 风格墙 --- */
-        .ig-feed { display: grid; grid-template-columns: repeat(2, 400px); gap: 30px; }
-        .ig-post { background: #fff; border: 1px solid #dbdbdb; border-radius: 3px; }
-        .ig-header { padding: 10px; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
-        .ig-avatar { width: 30px; height: 30px; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); border-radius: 50%; }
-        .ig-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
-        .ig-footer { padding: 12px; font-size: 14px; }
-        .ig-icons { font-size: 20px; margin-bottom: 8px; color: var(--hot-pink); }
-
-        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes scroll-left { from { left: 100%; } to { left: -100%; } }
+        @keyframes fly { from { left: 100%; } to { left: -150%; } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#home" class="nav-btn">START.exe</a>
-        <a href="#members" class="nav-btn">PROFILE.doc</a>
-        <a href="#music" class="nav-btn">MUSIC.mp3</a>
-        <a href="#stickers" class="nav-btn">PHOTO.png</a>
-        <a href="#danmaku" class="nav-btn">CHAT.txt</a>
-        <a href="#community" class="nav-btn">IG.app</a>
+        <a href="#home" class="nav-btn">P1</a>
+        <a href="#members" class="nav-btn">P2</a>
+        <a href="#music" class="nav-btn">P3</a>
+        <a href="#camera" class="nav-btn">P4</a>
+        <a href="#danmaku" class="nav-btn">P5</a>
+        <a href="#community" class="nav-btn">P6</a>
     </header>
 
+    <!-- P1: 首页 -->
     <section id="home">
-        <div class="big-frame"><img src="group_photo.png" alt="Main Group"></div>
+        <div class="pixel-title">ILLIT DREAMCORE</div>
+        <div class="big-frame">
+            <img src="group_photo.png" alt="ILLIT GROUP PHOTO">
+            <div style="text-align:center; font-family:'Ma Shan Zheng'; font-size:2rem; margin-top:20px;">Sparkling Girls! 我们是 ILLIT ✨</div>
+        </div>
     </section>
 
+    <!-- P2: 成员档案 (3+2) -->
     <section id="members">
-        <div class="pixel-title">MEMBERS</div>
-        <div class="member-grid">
-            <div class="row">
-                <div class="member-card"><img src="yunah.png"><div class="member-info">YUNAH</div></div>
-                <div class="member-card"><img src="minju.png"><div class="member-info">MINJU</div></div>
-                <div class="member-card"><img src="moka.png"><div class="member-info">MOKA</div></div>
+        <div class="pixel-title" style="color:#fff;">MEMBERS</div>
+        <div class="members-grid">
+            <div class="row-top">
+                <div class="member-card">
+                    <img src="yunah.png" class="member-photo">
+                    <div class="member-info"><span class="m-name">YUNAH (卢玧我)</span>🎂 2004.01.15<br>🇰🇷 韩国 | 🧬 ENFP</div>
+                </div>
+                <div class="member-card" style="border-color:var(--soft-blue);">
+                    <img src="minju.png" class="member-photo">
+                    <div class="member-info"><span class="m-name" style="color:var(--soft-blue);">MINJU (朴敏珠)</span>🎂 2004.05.11<br>🇰🇷 韩国 | 🧬 ISTP</div>
+                </div>
+                <div class="member-card">
+                    <img src="moka.png" class="member-photo">
+                    <div class="member-info"><span class="m-name">MOKA (境萌花)</span>🎂 2004.10.08<br>🇯🇵 日本 | 🧬 ISFP</div>
+                </div>
             </div>
-            <div class="row">
-                <div class="member-card"><img src="wonhee.png"><div class="member-info">WONHEE</div></div>
-                <div class="member-card"><img src="iroha.png"><div class="member-info">IROHA</div></div>
+            <div class="row-bottom">
+                <div class="member-card" style="border-color:var(--soft-blue);">
+                    <img src="wonhee.png" class="member-photo">
+                    <div class="member-info"><span class="m-name" style="color:var(--soft-blue);">WONHEE (李沅禧)</span>🎂 2007.06.26<br>🇰🇷 韩国 | 🧬 ISFP</div>
+                </div>
+                <div class="member-card">
+                    <img src="iroha.png" class="member-photo">
+                    <div class="member-info"><span class="m-name">IROHA (外园彩羽)</span>🎂 2008.02.04<br>🇯🇵 日本 | 🧬 ISFP</div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- P3: 播放器 -->
     <section id="music">
-        <div class="pixel-title">CD_PLAYER.mp3</div>
-        <div class="player-flex">
-            <div class="flip-phone">
-                <div class="phone-screen">
-                    <img src="album.png" id="album-img" class="album-spin">
-                    <div id="song-title" style="font-size: 14px; font-weight: bold;">Magnetic</div>
-                    <div class="progress-container">
-                        <div class="progress-bar" onclick="seek(event)"><div id="progress-fill"></div></div>
-                    </div>
-                    <button onclick="togglePlay()" class="nav-btn" style="font-family:'Noto Sans SC'">播放/暂停</button>
-                </div>
-                <div class="phone-keys">
-                    <div class="key">1</div><div class="key">2</div><div class="key">3</div>
-                    <div class="key">4</div><div class="key">5</div><div class="key">6</div>
-                    <div class="key">7</div><div class="key">8</div><div class="key">9</div>
-                </div>
+        <div class="pixel-title">MUSIC BOX</div>
+        <div style="display:flex; gap:50px; align-items:center; flex-wrap:wrap; justify-content:center;">
+            <div class="cd-disk" id="cd-img" onclick="toggleM()">
+                <img src="album_art.png" style="width:100%; height:100%; object-fit:cover;">
             </div>
-            <div class="track-box">
-                <div style="background:var(--y2k-pink); padding:10px; font-weight:bold; border-bottom:3px solid #000;">PLAYLIST</div>
-                <div class="track-list" id="track-list">
-                    <div class="track-item active" onclick="changeSong(0, 'Magnetic')"><span>01 Magnetic</span><span>03:00</span></div>
-                    <div class="track-item" onclick="changeSong(1, 'Lucky Girl Syndrome')"><span>02 Lucky Girl</span><span>02:50</span></div>
-                </div>
+            <div class="song-list">
+                <div id="track-name" style="font-weight:bold; color:var(--hot-pink); margin-bottom:15px; font-family:'Press Start 2P'; font-size:10px;">NOW: STOPPED</div>
+                <div class="song-item" onclick="playSong(0, 'Magnetic')">★ Magnetic</div>
+                <div class="song-item" onclick="playSong(1, 'My World')">★ My World</div>
+                <div class="song-item" onclick="playSong(2, 'Midnight Fiction')">★ Midnight Fiction</div>
+                <div class="song-item" onclick="playSong(3, 'Lucky Girl Syndrome')">★ Lucky Girl Syndrome</div>
             </div>
         </div>
+        <audio id="audio" loop></audio>
     </section>
 
-    <section id="stickers">
-        <div class="pixel-title">PHOTO EDIT</div>
-        <div class="photo-area-wrapper" id="photo-area">
-            <img id="user-upload-img" src="" style="display:none;">
-            <p id="tip-text" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#999;">请先导入照片 ↓</p>
+    <!-- P4: 贴纸相机 (含导入导出) -->
+    <section id="camera">
+        <div class="pixel-title" style="color:#fff;">STICKER CAMERA</div>
+        <div id="capture-zone">
+            <video id="v" autoplay playsinline style="width:100%; height:100%; object-fit:cover;"></video>
         </div>
-        <div class="controls">
-            <input type="file" id="img-input" accept="image/*" style="display:none;" onchange="handleUpload(event)">
-            <button class="nav-btn" onclick="document.getElementById('img-input').click()">导入照片</button>
-            <button class="nav-btn" onclick="addSticker('sticker1.png')">添加贴纸</button>
+        <div class="sticker-btn-grid">
+            <button onclick="addSticker('yunah_s.png')">玧我</button>
+            <button onclick="addSticker('minju_s.png')">敏珠</button>
+            <button onclick="addSticker('moka_s.png')">萌花</button>
+            <button onclick="addSticker('wonhee_s.png')">沅禧</button>
+            <button onclick="addSticker('iroha_s.png')">彩羽</button>
+            <button onclick="document.getElementById('local-sticker').click()" style="background:#eee;">📂 导入贴纸</button>
+            <input type="file" id="local-sticker" hidden onchange="importSticker(this)">
+            <button onclick="takePhoto()" style="grid-column: span 3; background:var(--hot-pink); color:#fff; border:2px solid #000; height:50px;">📸 保存并导出合照</button>
         </div>
+        <canvas id="photo-canvas" hidden></canvas>
     </section>
 
+    <!-- P5: 弹幕区 -->
     <section id="danmaku">
-        <div class="pixel-title">FAN MESSAGE</div>
-        <div class="danmaku-wall" id="dan-wall"></div>
-        <div class="controls">
-            <input type="text" id="dan-msg" placeholder="发送应援..." style="padding:10px; width:300px; border:3px solid #000;">
-            <button class="nav-btn" onclick="sendDanmaku()">SEND</button>
+        <div id="danmaku-stage"></div>
+        <div class="pixel-title">MESSAGE WALL</div>
+        <div style="z-index:10; background:#fff; padding:20px; border:4px solid #000; display:flex; gap:10px; box-shadow:8px 8px 0 #000;">
+            <input type="text" id="dk-input" placeholder="输入应援弹幕..." style="width:350px; font-family:'Ma Shan Zheng'; font-size:1.5rem;">
+            <button onclick="sendDk()" style="background:var(--soft-blue); color:#fff; border:none; padding:0 25px; cursor:pointer;">SEND</button>
         </div>
     </section>
 
+    <!-- P6: IG 社区 -->
     <section id="community">
-        <div class="pixel-title">IG FEED</div>
-        <div class="ig-feed">
+        <div class="pixel-title" style="color:#fff;">COMMUNITY FEED</div>
+        <div style="background:#fff; padding:20px; border:3px solid #000; margin-bottom:30px; width:450px; box-sizing:border-box;">
+            <input type="file" id="post-img-input" accept="image/*" style="width:100%; margin-bottom:10px;">
+            <textarea id="post-text-input" placeholder="分享今天的 ILLIT 瞬间..." style="width:100%; height:80px; font-family:'Noto Sans SC'; padding:10px; box-sizing:border-box;"></textarea>
+            <button onclick="uploadPost()" style="width:100%; margin-top:10px; background:var(--hot-pink); color:#fff; border:none; padding:10px; font-weight:bold; cursor:pointer;">POST TO FEED</button>
+        </div>
+        <div id="feed-container">
+            <!-- 默认帖子 -->
             <div class="ig-post">
-                <div class="ig-header"><div class="ig-avatar"></div><span>ILLIT_official</span></div>
-                <img src="post1.png" class="ig-img">
-                <div class="ig-footer">
-                    <div class="ig-icons">♥ 💬 ✈</div>
-                    <strong>1,202,604 likes</strong><br>
-                    <span>Sparkling and shining! ✨ #ILLIT</span>
-                </div>
-            </div>
-            <div class="ig-post">
-                <div class="ig-header"><div class="ig-avatar"></div><span>ILLIT_official</span></div>
-                <img src="post2.png" class="ig-img">
-                <div class="ig-footer">
-                    <div class="ig-icons">♥ 💬 ✈</div>
-                    <strong>985,000 likes</strong><br>
-                    <span>Ready for the stage. 🎀</span>
-                </div>
+                <div class="post-header">📸 Official_GLLIT</div>
+                <img src="sample_post.png" class="post-img">
+                <div class="post-content">欢迎来到 ILLIT 官方互动社区！在这里分享你的热爱吧 🌸</div>
             </div>
         </div>
     </section>
-
-    <audio id="main-audio"></audio>
 
     <script>
-        // --- 播放器逻辑 ---
-        const audio = document.getElementById('main-audio');
-        const fill = document.getElementById('progress-fill');
-        const album = document.getElementById('album-img');
-        const playlist = ["magnetic.mp3", "lucky.mp3"];
+        // --- P3: 播放器逻辑 ---
+        const audio = document.getElementById('audio');
+        const cd = document.getElementById('cd-img');
+        const songs = ["magnetic.mp3", "myworld.mp3", "midnight.mp3", "luckygirl.mp3"];
+        
+        function playSong(idx, name) {
+            audio.src = songs[idx]; audio.play();
+            cd.style.animationPlayState = "running";
+            document.getElementById('track-name').innerText = "NOW: " + name;
+            document.querySelectorAll('.song-item').forEach((el, i) => el.classList.toggle('active', i === idx));
+        }
+        function toggleM() {
+            if(audio.paused) { audio.play(); cd.style.animationPlayState="running"; }
+            else { audio.pause(); cd.style.animationPlayState="paused"; }
+        }
 
-        function togglePlay() {
-            if (audio.paused) {
-                audio.play();
-                album.style.animationPlayState = 'running';
-            } else {
-                audio.pause();
-                album.style.animationPlayState = 'paused';
+        // --- P4: 相机 & 贴纸逻辑 ---
+        navigator.mediaDevices.getUserMedia({video: true}).then(s => document.getElementById('v').srcObject = s).catch(e=>console.log("No camera"));
+        
+        function addSticker(src) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'sticker-wrapper';
+            wrapper.style.left = '50%'; wrapper.style.top = '50%';
+            wrapper.innerHTML = `<img src="${src}" class="sticker-img"><div style="color:red; background:#fff; border:1px solid #000; border-radius:50%; width:20px; height:20px; line-height:18px; text-align:center; font-size:12px; position:absolute; top:-10px; right:-10px; cursor:pointer;" onclick="this.parentElement.remove()">×</div>`;
+            document.getElementById('capture-zone').appendChild(wrapper);
+            initDrag(wrapper);
+        }
+
+        function importSticker(input) {
+            if(input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => addSticker(e.target.result);
+                reader.readAsDataURL(input.files[0]);
             }
         }
 
-        function changeSong(idx, title) {
-            audio.src = playlist[idx];
-            document.getElementById('song-title').innerText = title;
-            document.querySelectorAll('.track-item').forEach((it, i) => it.classList.toggle('active', i === idx));
-            audio.play();
-            album.style.animationPlayState = 'running';
+        function initDrag(el) {
+            let isDragging = false;
+            el.onmousedown = (e) => { isDragging = true; };
+            document.onmousemove = (e) => {
+                if(!isDragging) return;
+                const zone = document.getElementById('capture-zone').getBoundingClientRect();
+                el.style.left = (e.clientX - zone.left) + 'px';
+                el.style.top = (e.clientY - zone.top) + 'px';
+            };
+            document.onmouseup = () => isDragging = false;
         }
 
-        audio.ontimeupdate = () => {
-            const pct = (audio.currentTime / audio.duration) * 100;
-            fill.style.width = pct + '%';
-        };
-
-        function seek(e) {
-            const rect = e.currentTarget.getBoundingClientRect();
-            audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+        function takePhoto() {
+            const v = document.getElementById('v'), c = document.getElementById('photo-canvas'), ctx = c.getContext('2d');
+            const zone = document.getElementById('capture-zone');
+            c.width = zone.offsetWidth; c.height = zone.offsetHeight;
+            ctx.drawImage(v, 0, 0, c.width, c.height);
+            document.querySelectorAll('.sticker-wrapper').forEach(w => {
+                const img = w.querySelector('img');
+                const x = parseFloat(w.style.left) - 50, y = parseFloat(w.style.top) - 50;
+                ctx.drawImage(img, x, y, 100, 100);
+            });
+            const link = document.createElement('a');
+            link.download = 'ILLIT_STAMP.png'; link.href = c.toDataURL(); link.click();
         }
 
-        // --- 合照导入 & 拖拽 ---
-        function handleUpload(e) {
-            const file = e.target.files[0];
+        // --- P5: 弹幕逻辑 ---
+        function sendDk() {
+            const val = document.getElementById('dk-input').value; if(!val) return;
+            const el = document.createElement('div'); el.className = 'danmaku-text';
+            el.innerText = val; el.style.top = Math.random()*70 + 10 + '%';
+            el.style.animationDuration = Math.random()*3 + 5 + 's';
+            document.getElementById('danmaku-stage').appendChild(el);
+            document.getElementById('dk-input').value = '';
+            setTimeout(() => el.remove(), 8000);
+        }
+
+        // --- P6: 社区上传逻辑 ---
+        function uploadPost() {
+            const file = document.getElementById('post-img-input').files[0];
+            const text = document.getElementById('post-text-input').value;
+            if(!file || !text) return alert("请先上传图片并输入文字哦~");
+            
             const reader = new FileReader();
-            reader.onload = (event) => {
-                const img = document.getElementById('user-upload-img');
-                img.src = event.target.result;
-                img.style.display = 'block';
-                document.getElementById('tip-text').style.display = 'none';
+            reader.onload = (e) => {
+                const post = document.createElement('div');
+                post.className = 'ig-post';
+                post.innerHTML = `<div class="post-header">🌟 GLLIT_User</div>
+                                 <img src="${e.target.result}" class="post-img">
+                                 <div class="post-content">${text}</div>`;
+                document.getElementById('feed-container').prepend(post);
+                document.getElementById('post-text-input').value = "";
             };
             reader.readAsDataURL(file);
-        }
-
-        function addSticker(src) {
-            const s = document.createElement('img');
-            s.src = src; s.className = 'sticker';
-            s.style.left = '50px'; s.style.top = '50px';
-            s.onmousedown = dragMouseDown;
-            document.getElementById('photo-area').appendChild(s);
-        }
-
-        function dragMouseDown(e) {
-            e.preventDefault();
-            let el = e.target;
-            let pos1 = 0, pos2 = 0, pos3 = e.clientX, pos4 = e.clientY;
-            document.onmousemove = (e) => {
-                pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
-                pos3 = e.clientX; pos4 = e.clientY;
-                el.style.top = (el.offsetTop - pos2) + "px";
-                el.style.left = (el.offsetLeft - pos1) + "px";
-            };
-            document.onmouseup = () => { document.onmousemove = null; };
-        }
-
-        // --- 弹幕逻辑 ---
-        function sendDanmaku() {
-            const text = document.getElementById('dan-msg').value;
-            if(!text) return;
-            const d = document.createElement('div');
-            d.className = 'danmaku-item';
-            d.innerText = text;
-            d.style.color = ['#ff4081', '#7d96ff', '#fff', '#b2f2e8'][Math.floor(Math.random()*4)];
-            d.style.top = Math.random() * 80 + '%';
-            d.style.animationDuration = (Math.random() * 3 + 5) + 's';
-            document.getElementById('dan-wall').appendChild(d);
-            document.getElementById('dan-msg').value = '';
-            d.onanimationend = () => d.remove();
         }
     </script>
 </body>
