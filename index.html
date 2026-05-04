@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ILLIT WORLD 🎀</title>
     <style>
-        /* 全局鼠标样式修改 */
-html, body, a, button, input {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%2378FFB1" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), auto !important;
-}
+        /* --- 1. 全局鼠标样式修改：改为你指定的亮薄荷绿 #B2FFFF --- */
+        html, body, a, button, input {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%23B2FFFF" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), auto !important;
+        }
 
-/* 当鼠标移到按钮或链接上时，可以换成稍微深一点的青色，增加互动感 */
-a:hover, button:hover {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%2356D98E" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), pointer !important;
-}
+        /* 鼠标移到按钮上的悬停颜色（稍微深一点点） */
+        a:hover, button:hover {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%2399FFFF" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), pointer !important;
+        }
 
         /* 保持粉色波点背景 */
         body {
@@ -24,6 +24,7 @@ a:hover, button:hover {
             font-family: sans-serif;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh;
+            overflow: hidden; /* 防止浮动超出屏幕产生滚动条 */
         }
 
         .ver-tag {
@@ -31,22 +32,30 @@ a:hover, button:hover {
             color: rgba(255,255,255,0.6); font-size: 10px;
         }
 
-        /* 响应式窗口：核心修改点 */
+        /* --- 2. 浮动效果动画定义 --- */
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); } /* 向上浮动15像素 */
+            100% { transform: translateY(0px); }
+        }
+
+        /* 响应式窗口 + 应用浮动动画 */
         .window {
             background: #ffffff; 
             border: 2px solid #5a8bc1; 
-            /* 在手机上占 90% 宽度，在电脑上最大 600px（你可以根据喜好调整这个最大值） */
             width: 90%; 
             max-width: 550px; 
-            box-shadow: 2px 2px 0px #000;
+            box-shadow: 4px 4px 0px #000; /* 稍微加深阴影 */
             display: flex;
             flex-direction: column;
+            /* 运行动画：3秒一个来回，无限循环，平滑过渡 */
+            animation: floating 3s ease-in-out infinite; 
         }
 
         /* 蓝白渐变标题栏 */
         .win-header {
             background: linear-gradient(to right, #73a3d4, #b2d1f0);
-            height: 30px; /* 稍微加高了一点点，方便大屏操作 */
+            height: 30px;
             display: flex; justify-content: space-between;
             align-items: center; padding: 0 8px;
             border-bottom: 2px solid #5a8bc1;
@@ -61,7 +70,6 @@ a:hover, button:hover {
         .win-content { text-align: center; }
         .pink-title { color: #ff4081; font-weight: bold; margin: 20px 0; font-size: 24px; }
         
-        /* 图片随容器变大 */
         .photo-frame { 
             width: 90%; 
             height: auto;
@@ -114,7 +122,6 @@ a:hover, button:hover {
         <div class="win-content">
             <div class="pink-title">Magnetic Love! 🎧</div>
             
-            <!-- 这里确保引用你想要的那张五人图 -->
             <img src="IMG_4415.jpeg" class="photo-frame" alt="ILLIT">
 
             <div class="welcome-msg">欢迎来到 ILLIT WORLD。</div>
