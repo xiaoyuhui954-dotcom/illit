@@ -5,6 +5,16 @@
     <title>ILLIT Flip-Phone Player 🎀</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <style>
+        /* 全局鼠标样式修改 */
+html, body, a, button, input {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%2378FFB1" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), auto !important;
+}
+
+/* 当鼠标移到按钮或链接上时，可以换成稍微深一点的青色，增加互动感 */
+a:hover, button:hover {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%2356D98E" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), pointer !important;
+}
+
         :root {
             --phone-pink: #ff99cc;
             --screen-dark: #1a1a1a;
