@@ -41,16 +41,17 @@
         .welcome-text { font-size: 12px; text-align: left; padding: 0 20px 10px 20px; }
 
         /* 六格导航按钮区 */
-        .nav-section { border-top: 1px solid #ccc; padding: 10px; text-align: left; }
-        .nav-label { font-size: 11px; margin-bottom: 8px; }
-        .nav-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;
-        }
-        .btn-retro {
-            background: #efefef; border: 1px solid #999; padding: 5px 2px;
-            font-size: 11px; text-align: center; cursor: pointer; color: #000;
-            display: flex; align-items: center; justify-content: center; gap: 3px;
-        }
+        <div class="nav-grid">
+    <div class="btn-retro" onclick="location.href='music.html'">🎶 音乐频道</div>
+    <div class="btn-retro" onclick="location.href='member.html'">📁 档案库</div>
+    <div class="btn-retro" onclick="location.href='game.html'">🎮 换装游戏</div>
+    
+    <div class="btn-retro" onclick="location.href='photo.html'">📸 合照区</div>
+    
+    <div class="btn-retro" onclick="location.href='guestbook.html'">💬 留言区</div>
+    <div class="btn-retro" onclick="location.href='square.html'">✨ 粉丝广场</div>
+</div>
+
 
         /* 底部状态栏 */
         .status-bar {
