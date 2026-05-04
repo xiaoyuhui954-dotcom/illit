@@ -2,186 +2,204 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT Fan Square 🫧</title>
+    <title>ILLIT 社区广场 ✨</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <style>
-        :root {
-            --y2k-pink: #ff80ab;
-            --y2k-purple: #ea80fc;
-            --y2k-blue: #81d4fa;
-        }
-
-        /* --- 1. 延续极光背景 --- */
+        /* --- 沿用你的 Y2K 风格背景 --- */
         body {
             margin: 0; padding: 0; min-height: 100vh;
-            background: linear-gradient(-45deg, #fce4ec, #e1f5fe, #f3e5f5, #e8f5e9);
+            background: linear-gradient(135deg, #ffc1e3 0%, #e1bee7 50%, #b3e5fc 100%);
             background-size: 400% 400%;
             animation: aurora 15s ease infinite;
             display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden; font-family: sans-serif;
+            overflow-x: hidden; font-family: 'MS UI Gothic', 'Courier New', monospace;
         }
-        @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* --- 2. 发布区域 (玻璃拟态) --- */
+        @keyframes aurora {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .global-nav-bar {
+            width: 100%; background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px); border-bottom: 2px solid #ff80ab;
+            padding: 10px 0; display: flex; justify-content: center;
+            gap: 15px; position: fixed; top: 0; left: 0; z-index: 9999;
+        }
+        .global-nav-bar a { text-decoration: none; color: #ff4081; font-size: 14px; font-weight: bold; padding: 3px 8px; }
+
+        /* --- 广场内容区 --- */
+        .window {
+            margin-top: 80px !important;
+            width: 95% !important;
+            max-width: 800px !important;
+            background: rgba(255, 255, 255, 0.6) !important;
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 10px 10px 0px rgba(255, 128, 171, 0.2);
+        }
+
+        /* 发布区域 */
         .post-box {
-            width: 500px; margin: 40px 0;
-            background: rgba(255, 255, 255, 0.5) !important;
-            backdrop-filter: blur(15px);
-            border-radius: 20px !important;
-            border: 2px solid rgba(255, 255, 255, 0.7) !important;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            margin: 20px; padding: 15px;
+            border: 2px dashed #ff80ab; border-radius: 10px;
         }
-        .title-bar { background: linear-gradient(90deg, var(--y2k-blue), var(--y2k-purple)) !important; border-radius: 18px 18px 0 0 !important; }
-
-        /* --- 3. 动态展示广场 --- */
-        .square-grid {
-            width: 90%; max-width: 1000px;
-            display: flex; flex-wrap: wrap; justify-content: center;
-            gap: 30px; padding-bottom: 100px;
+        textarea {
+            width: 100%; height: 80px; border: 1px solid #ffb2d1;
+            border-radius: 5px; padding: 10px; resize: none; outline: none;
+            font-family: inherit;
         }
+        .post-btn {
+            margin-top: 10px; background: #ff80ab; color: white;
+            border: none; padding: 5px 20px; border-radius: 15px;
+            cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .post-btn:hover { background: #ff4081; transform: scale(1.05); }
 
-        /* 每一条动态卡片 (拍立得风格) */
-        .post-card {
-            background: #fff; padding: 12px 12px 40px 12px;
-            width: 260px; box-shadow: 5px 10px 20px rgba(0,0,0,0.1);
+        /* 广场动态列表 */
+        #feed-container {
+            padding: 0 20px 20px 20px;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .feed-item {
+            background: white; padding: 15px; border-radius: 10px;
             border: 1px solid #eee; position: relative;
-            transform: rotate(calc(var(--r) * 1deg)); /* 随机旋转 */
-            transition: 0.3s; cursor: pointer;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease;
         }
-        .post-card:hover { transform: rotate(0deg) scale(1.05); z-index: 50; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .post-img { width: 100%; height: 260px; object-fit: cover; background: #fafafa; border: 1px solid #f0f0f0; }
-        
-        .post-content {
-            padding-top: 15px; font-family: 'Comic Sans MS', cursive;
-            font-size: 13px; color: #555; word-wrap: break-word;
+        .user-info { color: #ff4081; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
+        .post-content { color: #555; line-height: 1.4; }
+        .post-time { font-size: 10px; color: #999; margin-top: 8px; }
+
+        /* 删除按钮 */
+        .del-btn {
+            position: absolute; top: 10px; right: 10px;
+            background: none; border: none; color: #ccc;
+            cursor: pointer; font-size: 14px;
         }
+        .del-btn:hover { color: #ff4081; }
 
-        /* 装饰贴纸 */
-        .card-sticker { position: absolute; top: -10px; right: -10px; font-size: 30px; pointer-events: none; }
-
-        /* 交互按钮 */
-        .upload-label {
-            display: inline-block; padding: 8px 15px; background: #fff;
-            border: 2px dashed var(--y2k-pink); border-radius: 10px;
-            cursor: pointer; font-size: 12px; color: var(--y2k-pink);
+        /* 动态装饰 */
+        .floating-deco {
+            position: fixed; pointer-events: none; opacity: 0.25; z-index: -1;
+            animation: drift linear infinite;
         }
-        .share-btn {
-            background: var(--y2k-pink); color: white; border: none;
-            padding: 10px 25px; border-radius: 20px; font-weight: bold; cursor: pointer;
-        }
-        /* 索引条样式 */
-.global-nav-bar {
-    width: 100%; background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(5px); border-bottom: 2px solid #ff80ab;
-    padding: 8px 0; display: flex; justify-content: center;
-    gap: 15px; position: fixed; top: 0; left: 0; z-index: 9999;
-}
-.global-nav-bar a {
-    text-decoration: none; color: #ff4081; font-size: 12px;
-    font-weight: bold; padding: 3px 8px;
-}
-/* 适配广场布局，防止顶部内容被遮挡 */
-body { padding-top: 60px !important; }
+        @keyframes drift { from { transform: translateY(110vh) rotate(0deg); } to { transform: translateY(-20vh) rotate(360deg); } }
 
+        @media (max-width: 600px) { .window { margin-top: 60px !important; } }
     </style>
 </head>
 <body>
-    <!-- 全局导航条 -->
-<div class="global-nav-bar">
-    <a href="index.html">🏠 首页</a>
-    <a href="music.html">🎶 音乐</a>
-    <a href="menu.html">📁 档案</a>
-    <a href="game.html">🎮 游戏</a>
-    <a href="photo.html">📸 合照</a>
-    <a href="messages.html">💬 留言</a>
-    <a href="square.html">✨ 广场</a>
-</div>
 
+    <div class="global-nav-bar">
+        <a href="index.html">🏠 首页</a>
+        <a href="music.html">🎶 音乐</a>
+        <a href="menu.html">📁 档案</a>
+        <a href="game.html">🎮 游戏</a>
+        <a href="photo.html">📸 合照</a>
+        <a href="messages.html">💬 消息</a>
+        <a href="square.html">✨ 广场</a>
+    </div>
 
-    <div class="window post-box">
-        <div class="title-bar"><div class="title-bar-text">Share_Your_Life.exe</div></div>
+    <div id="deco-layer"></div>
+
+    <div class="window">
+        <div class="title-bar">
+            <div class="title-bar-text">ILLIT_Community_Square.exe</div>
+        </div>
         <div class="window-body">
-            <textarea id="post-text" placeholder="分享你的生活点滴..." style="width: 100%; height: 60px; border-radius: 10px; padding: 10px; border: 1px solid #ddd;"></textarea>
+            <p style="text-align: center; font-weight: bold; color: #ff4081; margin-top: 10px;">🌟 欢迎来到 ILLIT 广场！分享你的心情 🌟</p>
             
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px;">
-                <label class="upload-label">
-                    📷 选择照片
-                    <input type="file" id="post-file" accept="image/*" style="display: none;" onchange="previewFile()">
-                </label>
-                <div id="file-name" style="font-size: 10px; color: #999;">尚未选择图片</div>
-                <button class="share-btn" onclick="addPost()">POST ✨</button>
+            <!-- 发布区 -->
+            <div class="post-box">
+                <textarea id="post-input" placeholder="输入你想说的话... ( Magnetic! )"></textarea>
+                <div style="text-align: right;">
+                    <button class="post-btn" onclick="publishPost()">发布动态</button>
+                </div>
+            </div>
+
+            <!-- 动态流区 -->
+            <div id="feed-container">
+                <!-- 动态将在这里生成 -->
+            </div>
+
+            <div style="text-align: center; padding: 20px;">
+                <button onclick="window.location.href='index.html'">返回桌面</button>
             </div>
         </div>
     </div>
 
-    <div class="square-grid" id="square-grid">
-        <div class="post-card" style="--r: -2">
-            <div class="card-sticker">🍬</div>
-            <img class="post-img" src="https://img.freepik.com/free-photo/vibrant-pink-clouds-sky_23-2148824933.jpg" alt="demo">
-            <div class="post-content">今天的天空也是粉色的！🎀 #Daily</div>
-        </div>
-        <div class="post-card" style="--r: 3">
-            <div class="card-sticker">🌈</div>
-            <img class="post-img" src="https://img.freepik.com/free-photo/cute-cat-concept-illustration_23-2151745233.jpg" alt="demo">
-            <div class="post-content">和猫咪一起午睡~ 🐱✨</div>
-        </div>
-    </div>
-
-    <center>
-        <button class="choice-btn" style="position: fixed; bottom: 30px; right: 30px; padding: 10px 20px; background: #fff; border: 2px solid #333; cursor: pointer; z-index: 1000;" onclick="window.location.href='index.html'">返回桌面</button>
-    </center>
-
     <script>
-        function previewFile() {
-            const file = document.getElementById('post-file').files[0];
-            const nameDisplay = document.getElementById('file-name');
-            if (file) nameDisplay.innerText = "已选择: " + file.name;
+        // 初始化广场数据（从 localStorage 读取）
+        let posts = JSON.parse(localStorage.getItem('illit_square_posts')) || [
+            { id: 1, user: "System", content: "欢迎来到广场！这里可以分享你的 Magnetic 时刻 ✨", time: "2026-05-04", isSystem: true }
+        ];
+
+        function renderPosts() {
+            const container = document.getElementById('feed-container');
+            container.innerHTML = '';
+            
+            // 倒序排列，最新的在上面
+            [...posts].reverse().forEach(post => {
+                const item = document.createElement('div');
+                item.className = 'feed-item';
+                item.innerHTML = `
+                    <div class="user-info">💖 @${post.user}</div>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-time">${post.time}</div>
+                    ${!post.isSystem ? `<button class="del-btn" onclick="deletePost(${post.id})">×</button>` : ''}
+                `;
+                container.appendChild(item);
+            });
         }
 
-        function addPost() {
-            const text = document.getElementById('post-text').value;
-            const fileInput = document.getElementById('post-file');
-            const grid = document.getElementById('square-grid');
+        function publishPost() {
+            const input = document.getElementById('post-input');
+            if (!input.value.trim()) return alert("写点什么吧~");
 
-            if (!text && !fileInput.files[0]) {
-                alert("总得写点什么或传张图吧~");
-                return;
-            }
+            const newPost = {
+                id: Date.now(),
+                user: "User_" + Math.floor(Math.random()*1000), // 模拟用户名
+                content: input.value,
+                time: new Date().toLocaleString(),
+                isSystem: false
+            };
 
-            const card = document.createElement('div');
-            card.className = 'post-card';
-            // 随机旋转度数，更有手账乱放的感觉
-            const randomRotate = Math.floor(Math.random() * 10 - 5);
-            card.style.setProperty('--r', randomRotate);
-
-            // 随机贴纸
-            const stickers = ['✨', '💖', '🍀', '🐰', '🍭', '🌸'];
-            const randomSticker = stickers[Math.floor(Math.random() * stickers.length)];
-
-            let imgHtml = '';
-            if (fileInput.files[0]) {
-                const url = URL.createObjectURL(fileInput.files[0]);
-                imgHtml = `<img class="post-img" src="${url}">`;
-            } else {
-                imgHtml = `<div class="post-img" style="background:#fefefe; display:flex; align-items:center; justify-content:center; color:#ccc;">No Image</div>`;
-            }
-
-            card.innerHTML = `
-                <div class="card-sticker">${randomSticker}</div>
-                ${imgHtml}
-                <div class="post-content">${text}</div>
-            `;
-
-            // 将新动态插入到第一个
-            grid.insertBefore(card, grid.firstChild);
-
-            // 清空输入
-            document.getElementById('post-text').value = "";
-            fileInput.value = "";
-            document.getElementById('file-name').innerText = "尚未选择图片";
+            posts.push(newPost);
+            localStorage.setItem('illit_square_posts', JSON.stringify(posts));
+            input.value = '';
+            renderPosts();
         }
+
+        function deletePost(id) {
+            if(confirm("确定要删除这条动态吗？")) {
+                posts = posts.filter(p => p.id !== id);
+                localStorage.setItem('illit_square_posts', JSON.stringify(posts));
+                renderPosts();
+            }
+        }
+
+        // 沿用你的背景装饰脚本
+        const decoLayer = document.getElementById('deco-layer');
+        const icons = ['🌸', '✨', '☁️', '💖', '⭐'];
+        for (let i = 0; i < 20; i++) {
+            const el = document.createElement('div');
+            el.className = 'floating-deco';
+            el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            el.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            el.style.animationDelay = (Math.random() * 5) + 's';
+            el.style.top = '110vh';
+            decoLayer.appendChild(el);
+        }
+
+        // 初始渲染
+        renderPosts();
     </script>
 </body>
 </html>
