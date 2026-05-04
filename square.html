@@ -73,30 +73,47 @@
 
         /* 广场动态列表 */
         #feed-container { padding: 0 20px 20px 20px; display: flex; flex-direction: column; gap: 15px; }
-        .feed-item {
-            background: white; padding: 15px; border-radius: 10px;
-            border: 1px solid #eee; position: relative;
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.05);
-            animation: fadeIn 0.5s ease;
-        }
-.post-media-grid {
+        /* 广场容器：变成网格布局 */
+#feed-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 这一行决定了：一行放3个 */
-    gap: 8px;
-    margin-top: 10px;
+    grid-template-columns: repeat(3, 1fr); /* 一行三格 */
+    gap: 5px; /* 格子之间的缝隙 */
+    padding: 10px;
 }
 
-.post-img { 
-    width: 100%; 
-    aspect-ratio: 1 / 1; /* 强制变成正方形 */
-    object-fit: cover;   /* 自动裁剪，保证图片不变形 */
-    border-radius: 8px; 
-    border: 1px solid #f0f0f0;
+/* 每一条动态：现在是一个正方形格子 */
+.feed-item {
+    position: relative;
+    aspect-ratio: 1 / 1; /* 强制正方形 */
+    background: #eee;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 4px;
 }
 
-        .user-info { color: #ff4081; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
-        .post-content { color: #555; line-height: 1.4; white-space: pre-wrap; }
-        .post-time { font-size: 10px; color: #999; margin-top: 8px; }
+/* 格子里的图片：铺满整个格子 */
+.post-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 自动裁剪，保证不变形 */
+}
+
+/* 隐藏原本的文字信息，只有点开才看（或者悬停显示） */
+.user-info, .post-content, .post-time, .del-btn {
+    display: none; 
+}
+
+/* 装饰：如果是纯文字动态，显示一个气泡图标 */
+.text-only-post {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: #ffe1ee;
+    font-size: 12px;
+    color: #ff4081;
+}
+
 
         /* 删除按钮 */
         .del-btn {
