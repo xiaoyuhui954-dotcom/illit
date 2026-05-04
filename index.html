@@ -5,17 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ILLIT WORLD 🎀</title>
     <style>
-        /* --- 1. 全局鼠标样式修改：改为你指定的亮薄荷绿 #B2FFFF --- */
+        /* --- 1. 全局鼠标样式 (亮薄荷绿 #B2FFFF) --- */
         html, body, a, button, input {
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%23B2FFFF" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), auto !important;
         }
 
-        /* 鼠标移到按钮上的悬停颜色（稍微深一点点） */
-        a:hover, button:hover {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%2399FFFF" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), pointer !important;
+        /* --- 2. 加载遮罩层 --- */
+        #loader-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffb2d1; display: flex; justify-content: center; align-items: center;
+            z-index: 10000; transition: opacity 0.5s ease;
+        }
+        .loader-window { width: 300px; background: #c0c0c0; border: 2px solid #fff; box-shadow: 2px 2px 0px #000; padding: 2px; }
+        .loader-title { background: linear-gradient(to right, #000080, #1084d0); color: white; padding: 3px 8px; font-size: 12px; font-weight: bold; }
+        .loader-body { padding: 20px; text-align: center; font-size: 12px; }
+        .progress-container { width: 100%; height: 20px; background: #fff; border: 2px inset #fff; margin-top: 10px; }
+        #progress-bar { width: 0%; height: 100%; background-color: #B2FFFF; transition: width 0.1s linear; }
+
+        /* --- 3. 浮动动画 --- */
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
         }
 
-        /* 保持粉色波点背景 */
+        /* --- 4. 页面主体 (保留粉色波点) --- */
         body {
             margin: 0; padding: 0;
             background-color: #ffb2d1;
@@ -23,72 +37,26 @@
             background-size: 20px 20px;
             font-family: sans-serif;
             display: flex; justify-content: center; align-items: center;
-            min-height: 100vh;
-            overflow: hidden; /* 防止浮动超出屏幕产生滚动条 */
+            min-height: 100vh; overflow: hidden;
         }
 
-        .ver-tag {
-            position: fixed; top: 10px; left: 15px;
-            color: rgba(255,255,255,0.6); font-size: 10px;
-        }
-
-        /* --- 2. 浮动效果动画定义 --- */
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); } /* 向上浮动15像素 */
-            100% { transform: translateY(0px); }
-        }
-
-        /* 响应式窗口 + 应用浮动动画 */
         .window {
-            background: #ffffff; 
-            border: 2px solid #5a8bc1; 
-            width: 90%; 
-            max-width: 550px; 
-            box-shadow: 4px 4px 0px #000; /* 稍微加深阴影 */
-            display: flex;
-            flex-direction: column;
-            /* 运行动画：3秒一个来回，无限循环，平滑过渡 */
+            background: #ffffff; border: 2px solid #5a8bc1; 
+            width: 90%; max-width: 550px; box-shadow: 4px 4px 0px #000;
+            display: flex; flex-direction: column;
             animation: floating 3s ease-in-out infinite; 
         }
 
-        /* 蓝白渐变标题栏 */
-        .win-header {
-            background: linear-gradient(to right, #73a3d4, #b2d1f0);
-            height: 30px;
-            display: flex; justify-content: space-between;
-            align-items: center; padding: 0 8px;
-            border-bottom: 2px solid #5a8bc1;
-        }
+        .win-header { background: linear-gradient(to right, #73a3d4, #b2d1f0); height: 30px; display: flex; justify-content: space-between; align-items: center; padding: 0 8px; border-bottom: 2px solid #5a8bc1; }
         .win-title { color: white; font-size: 14px; font-weight: bold; }
-        .win-controls span {
-            border: 1px solid #fff; background: #eee;
-            font-size: 11px; padding: 1px 5px; margin-left: 2px; box-shadow: 1px 1px 0px #000;
-        }
-
-        /* 内容区 */
+        .win-controls span { border: 1px solid #fff; background: #eee; font-size: 11px; padding: 1px 5px; margin-left: 2px; box-shadow: 1px 1px 0px #000; }
         .win-content { text-align: center; }
-        .pink-title { color: #ff4081; font-weight: bold; margin: 20px 0; font-size: 24px; }
-        
-        .photo-frame { 
-            width: 90%; 
-            height: auto;
-            border: 1px solid #888; 
-            margin: 0 auto; 
-            display: block; 
-        }
+        .pink-title { color: #ff4081; font-weight: bold; margin: 15px 0; font-size: 24px; }
+        .photo-frame { width: 85%; height: auto; border: 1px solid #888; margin: 0 auto; display: block; }
+        .welcome-msg { text-align: left; font-size: 14px; padding: 10px 25px; border-bottom: 1px solid #ccc; line-height: 1.5; }
 
-        .welcome-msg { text-align: left; font-size: 14px; padding: 15px 25px; border-bottom: 1px solid #ccc; line-height: 1.5; }
-
-        /* 快速访问：响应式布局 */
         .quick-access { padding: 15px 25px; text-align: left; }
-        .access-label { font-size: 12px; margin-bottom: 10px; color: #333; font-weight: bold; }
-
-        .nav-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 8px; 
-        }
+        .nav-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         
         .btn-retro {
             background: #e1e1e1; border: 1px solid #999;
@@ -98,52 +66,68 @@
             transition: 0.2s;
         }
         .btn-retro:hover { background: #eee; transform: translate(-1px, -1px); box-shadow: 3px 3px 0px #888; }
-        .btn-retro:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0px #999; }
-
-        /* 底部状态栏 */
-        .status-bar {
-            background: #f0f0f0; border-top: 2px solid #5a8bc1;
-            display: flex; justify-content: space-between;
-            padding: 5px 15px; font-size: 12px; color: #444;
-        }
+        .status-bar { background: #f0f0f0; border-top: 2px solid #5a8bc1; display: flex; justify-content: space-between; padding: 5px 15px; font-size: 12px; color: #444; }
     </style>
 </head>
 <body>
 
-    <div class="ver-tag">ILLIT_Project_v1.exe</div>
+    <!-- 加载层 -->
+    <div id="loader-wrapper">
+        <div class="loader-window">
+            <div class="loader-title">System Loading...</div>
+            <div class="loader-body">
+                <div>正在同步 ILLIT 核心数据...</div>
+                <div class="progress-container"><div id="progress-bar"></div></div>
+                <div id="status-text" style="margin-top: 5px;">0%</div>
+            </div>
+        </div>
+    </div>
 
+    <!-- 首页窗口 -->
     <div class="window">
-        <!-- 标题栏 -->
         <div class="win-header">
-            <div class="win-title">WELCOME_TO_ILLIT.txt</div>
+            <div class="win-title">WELCOME_TO_ILLIT.exe</div>
             <div class="win-controls"><span>_</span><span>▢</span><span>X</span></div>
         </div>
-
         <div class="win-content">
             <div class="pink-title">Magnetic Love! 🎧</div>
-            
-            <img src="IMG_4415.jpeg" class="photo-frame" alt="ILLIT">
-
-            <div class="welcome-msg">欢迎来到 ILLIT WORLD。</div>
-
+            <img src="IMG_4415.jpeg" class="photo-frame">
+            <div class="welcome-msg">欢迎回来！所有频道已准备就绪。</div>
             <div class="quick-access">
-                <div class="access-label">快速访问:</div>
                 <div class="nav-grid">
+                    <!-- 这里帮你把 5 个链接全部找回来并对齐了 -->
                     <div class="btn-retro" onclick="location.href='music.html'">🎶 音乐频道</div>
                     <div class="btn-retro" onclick="location.href='menu.html'">📁 档案库</div>
                     <div class="btn-retro" onclick="location.href='photos.html'">📸 合照区</div>
                     <div class="btn-retro" onclick="location.href='messages.html'">💬 留言区</div>
-                    <div class="btn-retro" onclick="location.href='square.html'">✨ 粉丝广场</div>
+                    <div class="btn-retro" style="grid-column: span 2;" onclick="location.href='square.html'">✨ 粉丝广场</div>
                 </div>
             </div>
         </div>
-
-        <!-- 状态栏 -->
-        <div class="status-bar">
-            <span>Status: Online</span>
-            <span>Members: 5</span>
-        </div>
+        <div class="status-bar"><span>Status: Floating</span><span>Members: 5</span></div>
     </div>
 
+    <script>
+        let progress = 0;
+        const progressBar = document.getElementById('progress-bar');
+        const statusText = document.getElementById('status-text');
+        const loaderWrapper = document.getElementById('loader-wrapper');
+
+        function startLoading() {
+            progress += Math.random() * 10; 
+            if (progress > 100) progress = 100;
+            progressBar.style.width = progress + '%';
+            statusText.innerText = Math.floor(progress) + '%';
+            if (progress < 100) {
+                setTimeout(startLoading, 70);
+            } else {
+                setTimeout(() => {
+                    loaderWrapper.style.opacity = '0';
+                    setTimeout(() => loaderWrapper.style.display = 'none', 500);
+                }, 400);
+            }
+        }
+        window.onload = startLoading;
+    </script>
 </body>
 </html>
