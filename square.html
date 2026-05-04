@@ -179,109 +179,97 @@
     </div>
 
     <script>
-        let posts = JSON.parse(localStorage.getItem('illit_square_posts_v2')) || [];
-        let currentImageData = ""; // 用于存储当前选中的图片 Base64
+    let posts = JSON.parse(localStorage.getItem('illit_square_posts_v2')) || [];
+    let currentImageData = ""; // 用于存储当前选中的图片 Base64
 
-        // 预览图片逻辑
-        function previewImage(input) {
-            const container = document.getElementById('img-preview-container');
-            const preview = document.getElementById('img-preview');
-            
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    currentImageData = e.target.result;
-                    preview.src = currentImageData;
-                    container.style.display = "block";
-                }
-                reader.readAsDataURL(input.files[0]);
+    // 1. 预览图片逻辑
+    function previewImage(input) {
+        const container = document.getElementById('img-preview-container');
+        const preview = document.getElementById('img-preview');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentImageData = e.target.result;
+                preview.src = currentImageData;
+                container.style.display = "block";
             }
+            reader.readAsDataURL(input.files[0]);
         }
+    }
 
-        function renderPosts() {
-    const container = document.getElementById('feed-container');
-    container.innerHTML = '';
-    
-    // 把帖子反转，让最新的排在前面
-    [...posts].reverse().forEach(post => {
-        const item = document.createElement('div');
-        item.className = 'feed-item';
+    // 2. 渲染帖子（IG九宫格模式）
+    function renderPosts() {
+        const container = document.getElementById('feed-container');
+        container.innerHTML = '';
         
-        // 如果有图就显示图，没图就显示提示文字
-        if (post.image) {
-            item.innerHTML = `<img src="${post.image}" class="post-img">`;
-        } else {
-            item.innerHTML = `<div class="text-only-post">📝 纯文字动态</div>`;
-        }
+        [...posts].reverse().forEach(post => {
+            const item = document.createElement('div');
+            item.className = 'feed-item';
+            
+            // 九宫格显示内容
+            if (post.image) {
+                item.innerHTML = `<img src="${post.image}" class="post-img">`;
+            } else {
+                item.innerHTML = `<div class="text-only-post">📝 纯文字</div>`;
+            }
+            
+            // 点击格子弹出详情，并询问是否删除
+            item.onclick = () => {
+                const action = confirm(`🎀 来自 @${post.user}\n\n内容：${post.content}\n\n发布于：${post.time}\n\n需要删除这条动态吗？`);
+                if (action) {
+                    deletePost(post.id);
+                }
+            };
+            
+            container.appendChild(item);
+        });
+    }
+
+    // 3. 发布帖子
+    function publishPost() {
+        const input = document.getElementById('post-input');
+        if (!input.value.trim() && !currentImageData) return alert("总得发点什么吧~");
         
-        // 点击小方块弹出详细内容
-        item.onclick = () => {
-            alert(`🎀 @${post.user}\n\n内容：${post.content}\n\n发布于：${post.time}`);
+        const newPost = {
+            id: Date.now(),
+            user: "Fan_" + Math.floor(Math.random() * 999),
+            content: input.value,
+            image: currentImageData,
+            time: new Date().toLocaleString()
         };
         
-        container.appendChild(item);
-    });
-}
-
-
-                    <div class="post-time">${post.time}</div>
-                    <button class="del-btn" onclick="deletePost(${post.id})">×</button>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        function publishPost() {
-            const input = document.getElementById('post-input');
-            if (!input.value.trim() && !currentImageData) return alert("总得发点什么吧~");
-
-            // 注意：localStorage 有容量限制（通常 5MB），图片不要太大
-            const newPost = {
-                id: Date.now(),
-                user: "Fan_" + Math.floor(Math.random()*999),
-                content: input.value,
-                image: currentImageData,
-                time: new Date().toLocaleString()
-            };
-
-            posts.push(newPost);
-            try {
-                localStorage.setItem('illit_square_posts_v2', JSON.stringify(posts));
-            } catch (e) {
-                alert("存储空间满了！请删除一些带图片的动态再试。");
-            }
-
-            // 重置表单
-            input.value = '';
-            currentImageData = '';
-            document.getElementById('img-preview-container').style.display = 'none';
-            document.getElementById('file-input').value = '';
-            renderPosts();
-        }
-
-        function deletePost(id) {
-            if(confirm("确定删除吗？")) {
-                posts = posts.filter(p => p.id !== id);
-                localStorage.setItem('illit_square_posts_v2', JSON.stringify(posts));
-                renderPosts();
-            }
-        }
-
-        // 背景装饰
-        const decoLayer = document.getElementById('deco-layer');
-        const icons = ['🌸', '✨', '💖', '⭐'];
-        for (let i = 0; i < 15; i++) {
-            const el = document.createElement('div');
-            el.className = 'floating-deco';
-            el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.fontSize = (Math.random() * 15 + 10) + 'px';
-            el.style.animationDuration = (Math.random() * 10 + 15) + 's';
-            el.style.top = '110vh';
-            decoLayer.appendChild(el);
-        }
-
+        posts.push(newPost);
+        localStorage.setItem('illit_square_posts_v2', JSON.stringify(posts));
+        
+        // 重置表单
+        input.value = '';
+        currentImageData = '';
+        document.getElementById('img-preview-container').style.display = 'none';
+        document.getElementById('file-input').value = '';
         renderPosts();
-    </script>
-</body>
-</html>
+    }
+
+    // 4. 删除帖子逻辑
+    function deletePost(id) {
+        posts = posts.filter(p => p.id !== id);
+        localStorage.setItem('illit_square_posts_v2', JSON.stringify(posts));
+        renderPosts();
+    }
+
+    // 5. 背景装饰小星星（找回来的装饰代码）
+    const decoLayer = document.getElementById('deco-layer');
+    const icons = ['🌸', '✨', '💕', '⭐'];
+    for (let i = 0; i < 15; i++) {
+        const el = document.createElement('div');
+        el.className = 'floating-deco';
+        el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.fontSize = (Math.random() * 15 + 10) + 'px';
+        el.style.animationDuration = (Math.random() * 10 + 15) + 's';
+        el.style.top = '110vh';
+        decoLayer.appendChild(el);
+    }
+
+    // 初始化运行
+    renderPosts();
+</script>
