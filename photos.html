@@ -2,215 +2,100 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT Photo Booth ✨ Y2K Edition</title>
-    <link rel="stylesheet" href="https://unpkg.com/7.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ILLIT WORLD 🎀</title>
     <style>
-        :root {
-            --y2k-pink: #ff80ab;
-            --y2k-purple: #ea80fc;
-        }
-
+        /* 核心 Y2K 审美背景：粉色波点纹理 */
         body {
-            margin: 0; padding: 0; min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(-45deg, #fce4ec, #e1f5fe, #f3e5f5, #e8f5e9);
-            background-size: 400% 400%;
-            animation: aurora 15s ease infinite;
-            overflow: hidden; position: relative;
-        }
-        @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        .container { display: flex; gap: 30px; z-index: 10; align-items: center; }
-
-        /* 拍立得区域 */
-        .polaroid {
-            background: #fff; padding: 15px 15px 80px 15px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            border: 1px solid #ddd; position: relative;
+            margin: 0; padding: 0;
+            background-color: #ffb2d1;
+            background-image: radial-gradient(#ffffff 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+            font-family: "Courier New", Courier, monospace;
+            display: flex; flex-direction: column; align-items: center;
+            height: 100vh;
         }
 
-        .cam-container {
-            width: 320px; height: 400px; background: #222;
-            position: relative; overflow: hidden; border: 2px solid #333;
+        /* 左上角版本标识 */
+        .version-label {
+            position: fixed; top: 20px; left: 20px;
+            color: #ffffff; font-size: 14px; opacity: 0.8;
         }
 
-        #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-
-        /* 可拖动元素样式 */
-        .movable {
-            position: absolute; 
-            cursor: move; 
-            user-select: none; 
-            z-index: 100;
-            touch-action: none;
+        /* 复古 Windows 窗口样式 */
+        .window {
+            background: #ffffff; border: 2px solid #5a8bc1; box-shadow: 2px 2px 0px #000;
+            width: 90%; max-width: 450px; margin-top: 80px; position: relative;
         }
-        .member-sticker { height: 70%; bottom: 0; }
-        .emoji-sticker { font-size: 50px; line-height: 1; }
-
-        /* 玻璃面板 */
-        .glass-ui {
-            width: 320px; background: rgba(255, 255, 255, 0.4) !important;
-            backdrop-filter: blur(12px); border-radius: 20px !important;
-            border: 2px solid rgba(255, 255, 255, 0.6) !important;
+        .win-header {
+            background: linear-gradient(to right, #73a3d4, #b2d1f0);
+            padding: 4px 8px; display: flex; justify-content: space-between;
+            color: white; font-size: 12px; border-bottom: 2px solid #5a8bc1;
         }
-        .title-bar { background: linear-gradient(90deg, var(--y2k-pink), var(--y2k-purple)) !important; }
+        .win-btns span { border: 1px solid #fff; padding: 0 5px; margin-left: 2px; background: #eee; color: #000; font-size: 10px; }
 
-        .grid-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
-        .choice-btn {
-            background: white; border: 2px solid var(--y2k-pink); border-radius: 10px;
-            padding: 5px; cursor: pointer; font-size: 10px; font-weight: bold; color: var(--y2k-pink);
+        /* 内容区 */
+        .win-body { text-align: center; }
+        .win-title-text { color: #ff4081; font-weight: bold; font-size: 20px; margin: 15px 0; }
+        .main-photo { width: 90%; border: 1px solid #999; margin-bottom: 10px; }
+        .welcome-text { font-size: 12px; text-align: left; padding: 0 20px 10px 20px; }
+
+        /* 六格导航按钮区 */
+        .nav-section { border-top: 1px solid #ccc; padding: 10px; text-align: left; }
+        .nav-label { font-size: 11px; margin-bottom: 8px; }
+        .nav-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;
         }
-        .choice-btn:hover { background: var(--y2k-pink); color: white; }
+        .btn-retro {
+            background: #efefef; border: 1px solid #999; padding: 5px 2px;
+            font-size: 11px; text-align: center; cursor: pointer; color: #000;
+            display: flex; align-items: center; justify-content: center; gap: 3px;
+        }
 
-        .snap-btn {
-            width: 100%; padding: 15px; margin-top: 20px;
-            background: linear-gradient(45deg, #ff4081, #ea80fc);
-            color: white; border: none; border-radius: 30px;
-            font-weight: bold; cursor: pointer;
+        /* 底部状态栏 */
+        .status-bar {
+            border-top: 2px solid #5a8bc1; background: #f0f0f0;
+            display: flex; justify-content: space-between; padding: 3px 10px; font-size: 11px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="polaroid" id="capture-area">
-            <div class="cam-container" id="sticker-zone">
-                <video id="video" autoplay playsinline></video>
+    <div class="version-label">ILLIT_Project_v1.exe</div>
+
+    <div class="window">
+        <!-- 窗口头部 -->
+        <div class="win-header">
+            <span>WELCOME_TO_ILLIT.txt</span>
+            <div class="win-btns"><span>_</span><span>▢</span><span>X</span></div>
+        </div>
+
+        <!-- 窗口主体内容 -->
+        <div class="win-body">
+            <div class="win-title-text">Magnetic Love! 🎧</div>
+            <img src="group_photo.png" class="main-photo" alt="ILLIT Members">
+            <div class="welcome-text">欢迎来到 ILLIT WORLD。</div>
+
+            <!-- 导航功能区 -->
+            <div class="nav-section">
+                <div class="nav-label">快速访问:</div>
+                <div class="nav-grid">
+                    <div class="btn-retro">🎶 音乐频道</div>
+                    <div class="btn-retro">📁 档案库</div>
+                    <div class="btn-retro">🎮 换装游戏</div>
+                    <div class="btn-retro">📸 合照区</div>
+                    <div class="btn-retro">💬 留言区</div>
+                    <div class="btn-retro">✨ 粉丝广场</div>
                 </div>
-            <div style="text-align: center; margin-top: 25px;">
-                <span style="font-family: 'Comic Sans MS'; color: #ff80ab; font-size: 18px;">✨ 双击贴纸可删除 ✨</span>
             </div>
         </div>
 
-        <div class="window glass-ui">
-            <div class="title-bar"><div class="title-bar-text">Dreamy_Studio.exe</div></div>
-            <div class="window-body">
-                <p><strong>✨ 选择成员：</strong></p>
-                <div class="grid-box">
-                    <button class="choice-btn" onclick="addItem('yunah_pose.png', 'img')">YUNAH</button>
-                    <button class="choice-btn" onclick="addItem('minju_pose.png', 'img')">MINJU</button>
-                    <button class="choice-btn" onclick="addItem('moka_pose.png', 'img')">MOKA</button>
-                    <button class="choice-btn" onclick="addItem('wonhee_pose.png', 'img')">WONHEE</button>
-                    <button class="choice-btn" onclick="addItem('iroha_pose.png', 'img')">IROHA</button>
-                </div>
-
-                <p style="margin-top:20px;"><strong>💖 添加贴纸：</strong></p>
-                <div class="grid-box">
-                    <button class="choice-btn" onclick="addItem('✨', 'text')">✨</button>
-                    <button class="choice-btn" onclick="addItem('🎀', 'text')">🎀</button>
-                    <button class="choice-btn" onclick="addItem('💖', 'text')">💖</button>
-                </div>
-                
-                <button class="snap-btn" id="take-photo">📸 拍摄并保存</button>
-                <center><p onclick="window.location.href='index.html'" style="cursor:pointer; font-size:10px; color:#999; text-decoration:underline; margin-top:10px;">返回桌面</p></center>
-            </div>
+        <!-- 底部状态 -->
+        <div class="status-bar">
+            <span>Status: Online</span>
+            <span>Members: 5</span>
         </div>
     </div>
 
-    <canvas id="photo-canvas" width="640" height="800" style="display:none;"></canvas>
-
-    <script>
-        const video = document.getElementById('video');
-        const zone = document.getElementById('sticker-zone');
-        let zIndexCounter = 100;
-
-        navigator.mediaDevices.getUserMedia({ video: true }).then(s => video.srcObject = s);
-
-        // 统一添加函数
-        function addItem(content, type) {
-            const el = document.createElement(type === 'img' ? 'img' : 'div');
-            if (type === 'img') {
-                el.src = content;
-                el.className = 'movable member-sticker';
-            } else {
-                el.innerHTML = content;
-                el.className = 'movable emoji-sticker';
-            }
-            
-            el.style.left = '50px';
-            el.style.top = '50px';
-            zone.appendChild(el);
-            
-            // 绑定拖拽
-            initDrag(el);
-            
-            // 绑定双击删除
-            el.addEventListener('dblclick', () => el.remove());
-        }
-
-        // 核心拖拽逻辑修复
-        function initDrag(el) {
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
-            el.onmousedown = dragMouseDown;
-
-            function dragMouseDown(e) {
-                e.preventDefault();
-                // 提升当前点击元素的图层
-                zIndexCounter++;
-                el.style.zOrder = zIndexCounter;
-                el.style.zIndex = zIndexCounter;
-
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-            }
-
-            function elementDrag(e) {
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                
-                // 设置新位置
-                let newTop = el.offsetTop - pos2;
-                let newLeft = el.offsetLeft - pos1;
-                
-                el.style.top = newTop + "px";
-                el.style.left = newLeft + "px";
-            }
-
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
-        }
-
-        // 拍照合成 (保持原样)
-        document.getElementById('take-photo').addEventListener('click', () => {
-            const canvas = document.getElementById('photo-canvas');
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, 640, 800);
-            
-            ctx.save();
-            ctx.translate(600, 40); 
-            ctx.scale(-1, 1);
-            ctx.drawImage(video, 0, 0, 560, 700);
-            ctx.restore();
-
-            const movables = zone.querySelectorAll('.movable');
-            movables.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                const zoneRect = zone.getBoundingClientRect();
-                const x = (rect.left - zoneRect.left) * 2 + 40;
-                const y = (rect.top - zoneRect.top) * 2 + 40;
-
-                if (el.tagName === 'IMG') {
-                    ctx.drawImage(el, x, y, el.clientWidth * 2, el.clientHeight * 2);
-                } else {
-                    ctx.font = "100px serif";
-                    ctx.fillText(el.innerHTML, x, y + 80);
-                }
-            });
-
-            const link = document.createElement('a');
-            link.download = 'ILLIT_Photo.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        });
-    </script>
 </body>
 </html>
