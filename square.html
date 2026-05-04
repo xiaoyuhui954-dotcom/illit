@@ -199,20 +199,30 @@
         }
 
         function renderPosts() {
-            const container = document.getElementById('feed-container');
-            container.innerHTML = '';
-            
-            [...posts].reverse().forEach(post => {
-                const item = document.createElement('div');
-                item.className = 'feed-item';
-                item.innerHTML = `
-                    <div class="user-info">🎀 @${post.user}</div>
-                    <div class="post-content">${post.content}</div>
-                ${post.image ? `
-    <div class="post-media-grid">
-        <img src="${post.image}" class="post-img" onclick="window.open(this.src)">
-    </div>
-` : ''}
+    const container = document.getElementById('feed-container');
+    container.innerHTML = '';
+    
+    // 把帖子反转，让最新的排在前面
+    [...posts].reverse().forEach(post => {
+        const item = document.createElement('div');
+        item.className = 'feed-item';
+        
+        // 如果有图就显示图，没图就显示提示文字
+        if (post.image) {
+            item.innerHTML = `<img src="${post.image}" class="post-img">`;
+        } else {
+            item.innerHTML = `<div class="text-only-post">📝 纯文字动态</div>`;
+        }
+        
+        // 点击小方块弹出详细内容
+        item.onclick = () => {
+            alert(`🎀 @${post.user}\n\n内容：${post.content}\n\n发布于：${post.time}`);
+        };
+        
+        container.appendChild(item);
+    });
+}
+
 
                     <div class="post-time">${post.time}</div>
                     <button class="del-btn" onclick="deletePost(${post.id})">×</button>
