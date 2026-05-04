@@ -139,12 +139,26 @@
             <p style="text-align: center; font-weight: bold; color: #ff4081;">🎀 搭配你的 Magnetic Style! 🎀</p>
             
             <div class="game-container">
-                <!-- 模特预览区 -->
-                <div class="model-area">
-                    <img id="body" src="model_base.png" class="layer">
-                    <img id="hair-layer" src="" class="layer" style="display: none;">
-                    <img id="outfit-layer" src="" class="layer" style="display: none;">
-                </div>
+               /* 模特区域的升级 */
+.model-area { 
+    position: relative; 
+    width: 350px; 
+    height: 500px; 
+    background: #ffffff; 
+    border: 4px inset #ff80ab; 
+    border-radius: 10px;
+    image-rendering: pixelated; /* 关键：强制像素平滑，保持清晰边缘 */
+}
+
+/* 模特底图：你可以先用下面这个占位图，或者上传你画好的像素素体 */
+.layer { 
+    position: absolute; 
+    top: 50%; left: 50%; 
+    transform: translate(-50%, -50%);
+    width: 240px; /* 适配 Everskies 的修长比例 */
+    height: auto;
+}
+
 
                 <!-- 交互衣柜区 -->
                 <div class="closet">
