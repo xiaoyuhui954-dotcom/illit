@@ -79,10 +79,21 @@
             box-shadow: 4px 4px 0px rgba(0,0,0,0.05);
             animation: fadeIn 0.5s ease;
         }
-        .post-img { 
-            width: 100%; max-height: 400px; object-fit: contain; 
-            margin-top: 10px; border-radius: 8px; border: 1px solid #f9f9f9;
-        }
+       /* --- 替换掉原来的 .post-img 部分 --- */
+.post-media-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 这一行决定了：一行放3个 */
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.post-img { 
+    width: 100%; 
+    aspect-ratio: 1 / 1; /* 强制变成正方形 */
+    object-fit: cover;   /* 自动裁剪，保证图片不变形 */
+    border-radius: 8px; 
+    border: 1px solid #f0f0f0;
+}
 
         .user-info { color: #ff4081; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
         .post-content { color: #555; line-height: 1.4; white-space: pre-wrap; }
@@ -181,7 +192,13 @@
                 item.innerHTML = `
                     <div class="user-info">🎀 @${post.user}</div>
                     <div class="post-content">${post.content}</div>
-                    ${post.image ? `<img src="${post.image}" class="post-img">` : ''}
+                    /* --- 找到这一行并替换 --- */
+${post.image ? `
+    <div class="post-media-grid">
+        <img src="${post.image}" class="post-img" onclick="window.open(this.src)">
+    </div>
+` : ''}
+
                     <div class="post-time">${post.time}</div>
                     <button class="del-btn" onclick="deletePost(${post.id})">×</button>
                 `;
