@@ -71,6 +71,20 @@
             background: var(--y2k-pink); color: white; border: none;
             padding: 10px 25px; border-radius: 20px; font-weight: bold; cursor: pointer;
         }
+        /* 索引条样式 */
+.global-nav-bar {
+    width: 100%; background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px); border-bottom: 2px solid #ff80ab;
+    padding: 8px 0; display: flex; justify-content: center;
+    gap: 15px; position: fixed; top: 0; left: 0; z-index: 9999;
+}
+.global-nav-bar a {
+    text-decoration: none; color: #ff4081; font-size: 12px;
+    font-weight: bold; padding: 3px 8px;
+}
+/* 修正内容下移，防止被导航条遮挡 */
+.player-container { margin-top: 60px; }
+
     </style>
 </head>
 <body>
