@@ -192,8 +192,7 @@
                 item.innerHTML = `
                     <div class="user-info">🎀 @${post.user}</div>
                     <div class="post-content">${post.content}</div>
-                    /* --- 找到这一行并替换 --- */
-${post.image ? `
+                ${post.image ? `
     <div class="post-media-grid">
         <img src="${post.image}" class="post-img" onclick="window.open(this.src)">
     </div>
