@@ -5,7 +5,7 @@
     <title>ILLIT 社区广场 ✨</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <style>
-        /* --- 沿用你的 Y2K 风格背景 --- */
+        /* --- 沿用 Y2K 风格背景 --- */
         body {
             margin: 0; padding: 0; min-height: 100vh;
             background: linear-gradient(135deg, #ffc1e3 0%, #e1bee7 50%, #b3e5fc 100%);
@@ -47,32 +47,45 @@
             border: 2px dashed #ff80ab; border-radius: 10px;
         }
         textarea {
-            width: 100%; height: 80px; border: 1px solid #ffb2d1;
+            width: 100%; height: 60px; border: 1px solid #ffb2d1;
             border-radius: 5px; padding: 10px; resize: none; outline: none;
-            font-family: inherit;
+            font-family: inherit; margin-bottom: 10px;
         }
+        
+        /* 图片上传控件样式 */
+        .upload-area { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .file-input-label {
+            background: #fff; border: 1px solid #ff80ab; color: #ff80ab;
+            padding: 5px 12px; border-radius: 15px; cursor: pointer; font-size: 12px;
+        }
+        #img-preview-container { 
+            width: 60px; height: 60px; border: 1px solid #eee; 
+            display: none; border-radius: 5px; overflow: hidden;
+        }
+        #img-preview-container img { width: 100%; height: 100%; object-fit: cover; }
+
         .post-btn {
-            margin-top: 10px; background: #ff80ab; color: white;
-            border: none; padding: 5px 20px; border-radius: 15px;
+            background: #ff80ab; color: white; border: none; 
+            padding: 8px 25px; border-radius: 15px;
             cursor: pointer; font-weight: bold; transition: 0.3s;
         }
         .post-btn:hover { background: #ff4081; transform: scale(1.05); }
 
         /* 广场动态列表 */
-        #feed-container {
-            padding: 0 20px 20px 20px;
-            display: flex; flex-direction: column; gap: 15px;
-        }
+        #feed-container { padding: 0 20px 20px 20px; display: flex; flex-direction: column; gap: 15px; }
         .feed-item {
             background: white; padding: 15px; border-radius: 10px;
             border: 1px solid #eee; position: relative;
             box-shadow: 4px 4px 0px rgba(0,0,0,0.05);
             animation: fadeIn 0.5s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .post-img { 
+            width: 100%; max-height: 400px; object-fit: contain; 
+            margin-top: 10px; border-radius: 8px; border: 1px solid #f9f9f9;
+        }
 
         .user-info { color: #ff4081; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
-        .post-content { color: #555; line-height: 1.4; }
+        .post-content { color: #555; line-height: 1.4; white-space: pre-wrap; }
         .post-time { font-size: 10px; color: #999; margin-top: 8px; }
 
         /* 删除按钮 */
@@ -101,31 +114,36 @@
         <a href="menu.html">📁 档案</a>
         <a href="game.html">🎮 游戏</a>
         <a href="photo.html">📸 合照</a>
-        <a href="messages.html">💬 消息</a>
-        <a href="square.html">✨ 广场</a>
+        <a href="messages.html">💬 留言</a>
     </div>
 
     <div id="deco-layer"></div>
 
     <div class="window">
         <div class="title-bar">
-            <div class="title-bar-text">ILLIT_Community_Square.exe</div>
+            <div class="title-bar-text">ILLIT_Media_Square.exe</div>
         </div>
         <div class="window-body">
-            <p style="text-align: center; font-weight: bold; color: #ff4081; margin-top: 10px;">🌟 欢迎来到 ILLIT 广场！分享你的心情 🌟</p>
+            <p style="text-align: center; font-weight: bold; color: #ff4081; margin-top: 10px;">📸 记录你的 Magnetic 瞬间！ 📸</p>
             
-            <!-- 发布区 -->
             <div class="post-box">
-                <textarea id="post-input" placeholder="输入你想说的话... ( Magnetic! )"></textarea>
-                <div style="text-align: right;">
-                    <button class="post-btn" onclick="publishPost()">发布动态</button>
+                <textarea id="post-input" placeholder="写下此刻的想法..."></textarea>
+                
+                <div class="upload-area">
+                    <label class="file-input-label">
+                        📁 选择图片
+                        <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                    </label>
+                    <div id="img-preview-container">
+                        <img id="img-preview" src="">
+                    </div>
+                    <div style="flex-grow: 1; text-align: right;">
+                        <button class="post-btn" onclick="publishPost()">发布动态</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 动态流区 -->
-            <div id="feed-container">
-                <!-- 动态将在这里生成 -->
-            </div>
+            <div id="feed-container"></div>
 
             <div style="text-align: center; padding: 20px;">
                 <button onclick="window.location.href='index.html'">返回桌面</button>
@@ -134,24 +152,38 @@
     </div>
 
     <script>
-        // 初始化广场数据（从 localStorage 读取）
-        let posts = JSON.parse(localStorage.getItem('illit_square_posts')) || [
-            { id: 1, user: "System", content: "欢迎来到广场！这里可以分享你的 Magnetic 时刻 ✨", time: "2026-05-04", isSystem: true }
-        ];
+        let posts = JSON.parse(localStorage.getItem('illit_square_posts_v2')) || [];
+        let currentImageData = ""; // 用于存储当前选中的图片 Base64
+
+        // 预览图片逻辑
+        function previewImage(input) {
+            const container = document.getElementById('img-preview-container');
+            const preview = document.getElementById('img-preview');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentImageData = e.target.result;
+                    preview.src = currentImageData;
+                    container.style.display = "block";
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
         function renderPosts() {
             const container = document.getElementById('feed-container');
             container.innerHTML = '';
             
-            // 倒序排列，最新的在上面
             [...posts].reverse().forEach(post => {
                 const item = document.createElement('div');
                 item.className = 'feed-item';
                 item.innerHTML = `
-                    <div class="user-info">💖 @${post.user}</div>
+                    <div class="user-info">🎀 @${post.user}</div>
                     <div class="post-content">${post.content}</div>
+                    ${post.image ? `<img src="${post.image}" class="post-img">` : ''}
                     <div class="post-time">${post.time}</div>
-                    ${!post.isSystem ? `<button class="del-btn" onclick="deletePost(${post.id})">×</button>` : ''}
+                    <button class="del-btn" onclick="deletePost(${post.id})">×</button>
                 `;
                 container.appendChild(item);
             });
@@ -159,46 +191,54 @@
 
         function publishPost() {
             const input = document.getElementById('post-input');
-            if (!input.value.trim()) return alert("写点什么吧~");
+            if (!input.value.trim() && !currentImageData) return alert("总得发点什么吧~");
 
+            // 注意：localStorage 有容量限制（通常 5MB），图片不要太大
             const newPost = {
                 id: Date.now(),
-                user: "User_" + Math.floor(Math.random()*1000), // 模拟用户名
+                user: "Fan_" + Math.floor(Math.random()*999),
                 content: input.value,
-                time: new Date().toLocaleString(),
-                isSystem: false
+                image: currentImageData,
+                time: new Date().toLocaleString()
             };
 
             posts.push(newPost);
-            localStorage.setItem('illit_square_posts', JSON.stringify(posts));
+            try {
+                localStorage.setItem('illit_square_posts_v2', JSON.stringify(posts));
+            } catch (e) {
+                alert("存储空间满了！请删除一些带图片的动态再试。");
+            }
+
+            // 重置表单
             input.value = '';
+            currentImageData = '';
+            document.getElementById('img-preview-container').style.display = 'none';
+            document.getElementById('file-input').value = '';
             renderPosts();
         }
 
         function deletePost(id) {
-            if(confirm("确定要删除这条动态吗？")) {
+            if(confirm("确定删除吗？")) {
                 posts = posts.filter(p => p.id !== id);
-                localStorage.setItem('illit_square_posts', JSON.stringify(posts));
+                localStorage.setItem('illit_square_posts_v2', JSON.stringify(posts));
                 renderPosts();
             }
         }
 
-        // 沿用你的背景装饰脚本
+        // 背景装饰
         const decoLayer = document.getElementById('deco-layer');
-        const icons = ['🌸', '✨', '☁️', '💖', '⭐'];
-        for (let i = 0; i < 20; i++) {
+        const icons = ['🌸', '✨', '💖', '⭐'];
+        for (let i = 0; i < 15; i++) {
             const el = document.createElement('div');
             el.className = 'floating-deco';
             el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
             el.style.left = Math.random() * 100 + 'vw';
             el.style.fontSize = (Math.random() * 15 + 10) + 'px';
             el.style.animationDuration = (Math.random() * 10 + 15) + 's';
-            el.style.animationDelay = (Math.random() * 5) + 's';
             el.style.top = '110vh';
             decoLayer.appendChild(el);
         }
 
-        // 初始渲染
         renderPosts();
     </script>
 </body>
