@@ -2,117 +2,216 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHOTO ZONE 📸</title>
+    <title>ILLIT Photo Booth 📸</title>
+    <link rel="stylesheet" href="https://unpkg.com/7.css">
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* 延续 image_48.png 的粉色波点背景 */
-        body {
-            margin: 0; padding: 0;
-            background-color: #ffb2d1;
-            background-image: radial-gradient(#ffffff 1.5px, transparent 1.5px);
-            background-size: 20px 20px;
-            font-family: "Courier New", Courier, monospace;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh;
+        .booth-container { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 10px; }
+        
+        /* 拍立得相纸 */
+        #polaroid-frame {
+            width: 320px;
+            padding: 15px 15px 60px 15px;
+            background: #ffffff;
+            border: 1px solid #ccc;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            transition: background 0.3s;
         }
 
-        /* 复古 Windows 窗口 */
-        .window {
-            background: #fff; border: 2px solid #5a8bc1; box-shadow: 2px 2px 0px #000;
-            width: 90%; max-width: 450px; position: relative;
-        }
-        .win-header {
-            background: linear-gradient(to right, #73a3d4, #b2d1f0);
-            padding: 4px 8px; display: flex; justify-content: space-between;
-            color: white; font-size: 12px; border-bottom: 2px solid #5a8bc1;
-        }
-        .win-btns span { border: 1px solid #fff; padding: 0 5px; margin-left: 2px; background: #eee; color: #000; font-size: 10px; }
-
-        /* 合照交互区 */
-        .photo-container {
-            position: relative; width: 90%; height: 350px; 
-            border: 2px dashed #ff4081; background: #eee; 
-            margin: 15px auto; overflow: hidden;
-        }
-        .main-img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* 可拖拽贴纸样式 */
-        .sticker {
-            position: absolute; width: 60px; cursor: move; 
-            user-select: none; z-index: 10;
+        /* 摄像头画面 */
+        #camera-view {
+            width: 320px;
+            height: 400px; /* 调高一点，更有大头贴的感觉 */
+            background: #000;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #333;
         }
 
-        .controls { padding: 10px; border-top: 1px solid #ccc; text-align: center; }
-        .btn-retro {
-            background: #efefef; border: 1px solid #999; padding: 8px 20px;
-            font-size: 11px; cursor: pointer; box-shadow: 1px 1px 0 #000;
+        #video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); /* 镜像处理 */
         }
+
+        /* 成员贴纸 */
+        #member-overlay {
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            height: 85%;
+            pointer-events: none;
+            display: none;
+            z-index: 10;
+        }
+
+        .frame-text {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            font-family: 'Comic Sans MS', cursive;
+            color: #ff80ab;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+
+        /* 控制区 */
+        .controls { width: 360px; }
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top: 5px; }
+        .color-picker { display: flex; gap: 8px; justify-content: center; margin: 10px 0; }
+        .color-btn { width: 20px; height: 20px; border: 1px solid #333; cursor: pointer; border-radius: 50%; }
+
+        #canvas { display: none; }
+
+        /* 星星特效样式 */
+        .star-effect { position: fixed; pointer-events: none; z-index: 9999; font-size: 24px; user-select: none; }
     </style>
 </head>
-<body>
+<body style="background: #fce4ec; padding: 10px;">
 
-    <div class="window">
-        <div class="win-header">
-            <span>PHOTO_ZONE.exe</span>
-            <div class="win-btns"><span>_</span><span>▢</span><span>X</span></div>
-        </div>
+    <div class="booth-container">
         
-        <div class="win-body">
-            <p style="font-size:10px; color:#ff4081; margin:10px;">✨ 拖动下方贴纸到照片上进行装饰 ✨</p>
-            
-            <div class="photo-container" id="drop-zone">
-                <!-- 你的五人合照 -->
-                <img src="group_photo.png" class="main-img" alt="ILLIT Group">
-                
-                <!-- 预设贴纸 (你可以换成自己的贴纸图片地址) -->
-                <img src="heart_sticker.png" class="sticker" style="top:10px; left:10px;" id="s1">
-                <img src="star_sticker.png" class="sticker" style="top:50px; left:20px;" id="s2">
-                <img src="y2k_logo.png" class="sticker" style="top:100px; left:30px;" id="s3">
+        <div class="window" style="width: 370px;">
+            <div class="title-bar"><div class="title-bar-text">Photo_Booth_v1.0.exe</div></div>
+            <div class="window-body">
+                <div id="polaroid-frame">
+                    <div id="camera-view">
+                        <video id="video" autoplay playsinline></video>
+                        <img id="member-overlay" src="" alt="Member">
+                    </div>
+                    <div class="frame-text">
+                        <strong>ILLIT & ME</strong><br>
+                        <span id="date-text">2026.04.26</span>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <div class="controls">
-                <button class="btn-retro" onclick="alert('截图功能已就绪！')">SAVE TO ALBUM</button>
-                <button class="btn-retro" onclick="location.reload()">RESET</button>
+        <div class="window controls">
+            <div class="title-bar"><div class="title-bar-text">Controls.sys</div></div>
+            <div class="window-body">
+                
+                <p style="margin: 0 0 5px 0;"><strong>1. 选择成员：</strong></p>
+                <div class="btn-grid">
+                    <button onclick="setMember('none')">❌ 只有我</button>
+                    <button onclick="setMember('yunah')">YUNAH</button>
+                    <button onclick="setMember('minju')">MINJU</button>
+                    <button onclick="setMember('moka')">MOKA</button>
+                    <button onclick="setMember('wonhee')">WONHEE</button>
+                    <button onclick="setMember('iroha')">IROHA</button>
+                </div>
+
+                <p style="margin: 10px 0 5px 0;"><strong>2. 相纸颜色：</strong></p>
+                <div class="color-picker">
+                    <div class="color-btn" style="background: #ffffff;" onclick="setFrameColor('#ffffff')"></div>
+                    <div class="color-btn" style="background: #fce4ec;" onclick="setFrameColor('#fce4ec')"></div>
+                    <div class="color-btn" style="background: #e1f5fe;" onclick="setFrameColor('#e1f5fe')"></div>
+                    <div class="color-btn" style="background: #fff9c4;" onclick="setFrameColor('#fff9c4')"></div>
+                </div>
+
+                <hr>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button id="snap" class="default" style="padding: 5px 25px;">📸 拍照并保存</button>
+                    <button onclick="window.location.href='index.html?from=internal'">返回桌面</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <canvas id="canvas" width="640" height="800"></canvas>
+
     <script>
-        // 拖拽逻辑实现
-        const stickers = document.querySelectorAll('.sticker');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const overlay = document.getElementById('member-overlay');
+        const frame = document.getElementById('polaroid-frame');
+        const snap = document.getElementById('snap');
 
-        stickers.forEach(sticker => {
-            sticker.onmousedown = function(event) {
-                let shiftX = event.clientX - sticker.getBoundingClientRect().left;
-                let shiftY = event.clientY - sticker.getBoundingClientRect().top;
+        // 初始化日期
+        document.getElementById('date-text').innerText = new Date().toISOString().split('T')[0].replace(/-/g, '.');
 
-                sticker.style.zIndex = 1000;
+        // 1. 开启摄像头
+        async function startCam() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 800 }, audio: false });
+                video.srcObject = stream;
+            } catch (err) {
+                alert("摄像头开启失败，请检查权限！");
+            }
+        }
+        startCam();
 
-                function moveAt(pageX, pageY) {
-                    // 计算在父容器内的相对坐标
-                    let containerRect = document.getElementById('drop-zone').getBoundingClientRect();
-                    let left = pageX - shiftX - containerRect.left;
-                    let top = pageY - shiftY - containerRect.top;
-                    
-                    sticker.style.left = left + 'px';
-                    sticker.style.top = top + 'px';
-                }
+        // 2. 选择成员
+        let currentMember = 'none';
+        function setMember(name) {
+            currentMember = name;
+            if (name === 'none') {
+                overlay.style.display = 'none';
+            } else {
+                overlay.src = `${name}_pose.png`; // 对应文件名
+                overlay.style.display = 'block';
+            }
+        }
 
-                function onMouseMove(event) {
-                    moveAt(event.pageX, event.pageY);
-                }
+        // 3. 换颜色
+        function setFrameColor(c) { frame.style.background = c; }
 
-                document.addEventListener('mousemove', onMouseMove);
+        // 4. 拍照下载
+        snap.addEventListener('click', () => {
+            const ctx = canvas.getContext('2d');
+            
+            // 绘制背景颜色（模拟相纸）
+            ctx.fillStyle = frame.style.background || "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                sticker.onmouseup = function() {
-                    document.removeEventListener('mousemove', onMouseMove);
-                    sticker.onmouseup = null;
+            // 绘制摄像头画面（镜像翻转回来）
+            ctx.save();
+            ctx.translate(canvas.width - 40, 30); // 留出相纸边框
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, 560, 700);
+            ctx.restore();
+
+            // 如果有成员，绘制成员
+            if (currentMember !== 'none') {
+                const img = new Image();
+                img.src = overlay.src;
+                img.onload = () => {
+                    const h = 700 * 0.85;
+                    const w = (img.width / img.height) * h;
+                    ctx.drawImage(img, 600 - w, 730 - h, w, h);
+                    saveImg();
                 };
-            };
+            } else {
+                saveImg();
+            }
+        });
 
-            sticker.ondragstart = function() {
-                return false;
-            };
+        function saveImg() {
+            const link = document.createElement('a');
+            link.download = `illit_snap_${Date.now()}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // --- 显眼星星特效 ---
+        document.addEventListener('mousemove', function(e) {
+            const star = document.createElement('div');
+            star.className = 'star-effect';
+            star.innerHTML = ['✨', '⭐', '🌸'][Math.floor(Math.random() * 3)];
+            star.style.color = ['#ff80ab', '#ce93d8', '#ffffff'][Math.floor(Math.random() * 3)];
+            star.style.left = e.clientX + 'px';
+            star.style.top = e.clientY + 'px';
+            document.body.appendChild(star);
+
+            let opacity = 1;
+            const ani = setInterval(() => {
+                opacity -= 0.05;
+                star.style.opacity = opacity;
+                star.style.top = (parseFloat(star.style.top) + 2) + 'px';
+                if (opacity <= 0) { clearInterval(ani); star.remove(); }
+            }, 30);
         });
     </script>
 </body>
