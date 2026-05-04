@@ -2,117 +2,79 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>ILLIT Photo Booth 📸</title>
+    <title>ILLIT Photo Booth Pro 📸</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
-    <link rel="stylesheet" href="style.css">
     <style>
-        /* 全局鼠标样式修改 */
-html, body, a, button, input {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%2378FFB1" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), auto !important;
-}
-
-/* 当鼠标移到按钮或链接上时，可以换成稍微深一点的青色，增加互动感 */
-a:hover, button:hover {
-    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%2356D98E" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), pointer !important;
-}
-
-        .booth-container { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 10px; }
+        /* --- 1. 全局样式 --- */
+        html, body, a, button, input {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path d="M0,0 L0,15 L4,11 L7,17 L9,16 L6,10 L11,10 Z" fill="%2378FFB1" stroke="black" stroke-width="1" style="shape-rendering:crispEdges;"/></svg>'), auto !important;
+        }
+        body { background: #fce4ec; padding: 10px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
         
-        /* 拍立得相纸 */
+        .global-nav-bar {
+            width: 100%; background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px); border-bottom: 2px solid #ff80ab;
+            padding: 8px 0; display: flex; justify-content: center; gap: 15px; position: fixed; top: 0; left: 0; z-index: 9999;
+        }
+        .global-nav-bar a { text-decoration: none; color: #ff4081; font-size: 12px; font-weight: bold; padding: 3px 8px; }
+
+        .booth-container { margin-top: 60px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+
+        /* --- 2. 拍立得区域 (比例切换动画) --- */
         #polaroid-frame {
-            width: 320px;
-            padding: 15px 15px 60px 15px;
-            background: #ffffff;
-            border: 1px solid #ccc;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
-            position: relative;
-            transition: background 0.3s;
+            padding: 15px 15px 60px 15px; background: #ffffff; border: 1px solid #ccc;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2); position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        #polaroid-frame.vertical { width: 320px; }
+        #polaroid-frame.horizontal { width: 450px; }
 
-        /* 摄像头画面 */
         #camera-view {
-            width: 320px;
-            height: 400px; /* 调高一点，更有大头贴的感觉 */
-            background: #000;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid #333;
+            background: #000; overflow: hidden; position: relative; border: 1px solid #333;
+            transition: all 0.5s ease;
         }
+        .vertical #camera-view { width: 320px; height: 400px; }
+        .horizontal #camera-view { width: 450px; height: 300px; }
 
-        #video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1); /* 镜像处理 */
-        }
+        #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
-        /* 成员贴纸 */
-        #member-overlay {
-            position: absolute;
-            bottom: -10px;
-            right: -10px;
-            height: 85%;
-            pointer-events: none;
-            display: none;
-            z-index: 10;
-        }
+        /* 贴纸样式 */
+        .sticker { position: absolute; cursor: move !important; user-select: none; z-index: 10; touch-action: none; }
+        .sticker.emoji { font-size: 40px; line-height: 1; }
+        .sticker img { pointer-events: none; height: 100%; display: block; }
 
-        .frame-text {
-            position: absolute;
-            bottom: 15px;
-            left: 20px;
-            font-family: 'Comic Sans MS', cursive;
-            color: #ff80ab;
-            font-size: 14px;
-            line-height: 1.2;
-        }
+        .frame-text { position: absolute; bottom: 15px; left: 20px; font-family: 'Comic Sans MS', cursive; color: #ff80ab; font-size: 14px; }
 
-        /* 控制区 */
-        .controls { width: 360px; }
+        /* --- 3. 控制面板 --- */
+        .controls { width: 400px; }
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top: 5px; }
+        .emoji-bar { display: flex; gap: 10px; font-size: 22px; padding: 5px; background: #fff; border: 1px inset #eee; margin: 5px 0; overflow-x: auto; }
+        .emoji-bar span { cursor: pointer; }
         .color-picker { display: flex; gap: 8px; justify-content: center; margin: 10px 0; }
         .color-btn { width: 20px; height: 20px; border: 1px solid #333; cursor: pointer; border-radius: 50%; }
 
         #canvas { display: none; }
-
-        /* 星星特效样式 */
-        .star-effect { position: fixed; pointer-events: none; z-index: 9999; font-size: 24px; user-select: none; }
-        /* 索引条样式 */
-.global-nav-bar {
-    width: 100%; background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(5px); border-bottom: 2px solid #ff80ab;
-    padding: 8px 0; display: flex; justify-content: center;
-    gap: 15px; position: fixed; top: 0; left: 0; z-index: 9999;
-}
-.global-nav-bar a {
-    text-decoration: none; color: #ff4081; font-size: 12px;
-    font-weight: bold; padding: 3px 8px;
-}
-/* 修正：让合照亭容器下移，不被导航条遮挡 */
-.booth-container { margin-top: 60px; }
-
     </style>
 </head>
-<body style="background: #fce4ec; padding: 10px;">
-    <!-- 全局导航条 -->
-<div class="global-nav-bar">
-    <a href="index.html">🏠 首页</a>
-    <a href="music.html">🎶 音乐</a>
-    <a href="menu.html">📁 档案</a>
-    <a href="messages.html">💬 留言</a>
-    <a href="square.html">✨ 广场</a>
-</div>
+<body>
 
+    <div class="global-nav-bar">
+        <a href="index.html">🏠 首页</a>
+        <a href="music.html">🎶 音乐</a>
+        <a href="menu.html">📁 档案</a>
+        <a href="messages.html">💬 留言</a>
+        <a href="square.html">✨ 广场</a>
+    </div>
 
     <div class="booth-container">
-        
-        <div class="window" style="width: 370px;">
-            <div class="title-bar"><div class="title-bar-text">Photo_Booth_v1.0.exe</div></div>
-            <div class="window-body">
-                <div id="polaroid-frame">
+        <!-- 核心显示区 -->
+        <div class="window" style="width: auto;">
+            <div class="title-bar"><div class="title-bar-text">ILLIT_Photo_Studio_v2.0.exe</div></div>
+            <div class="window-body" style="padding: 20px; display: flex; justify-content: center;">
+                <div id="polaroid-frame" class="vertical">
                     <div id="camera-view">
                         <video id="video" autoplay playsinline></video>
-                        <img id="member-overlay" src="" alt="Member">
+                        <!-- 动态贴纸层 -->
                     </div>
                     <div class="frame-text">
                         <strong>ILLIT & ME</strong><br>
@@ -122,21 +84,16 @@ a:hover, button:hover {
             </div>
         </div>
 
+        <!-- 操控区 -->
         <div class="window controls">
-            <div class="title-bar"><div class="title-bar-text">Controls.sys</div></div>
+            <div class="title-bar"><div class="title-bar-text">Studio_Controls.sys</div></div>
             <div class="window-body">
                 
-                <p style="margin: 0 0 5px 0;"><strong>1. 选择成员：</strong></p>
-                <div class="btn-grid">
-                    <button onclick="setMember('none')">❌ 只有我</button>
-                    <button onclick="setMember('yunah')">YUNAH</button>
-                    <button onclick="setMember('minju')">MINJU</button>
-                    <button onclick="setMember('moka')">MOKA</button>
-                    <button onclick="setMember('wonhee')">WONHEE</button>
-                    <button onclick="setMember('iroha')">IROHA</button>
+                <p><strong>1. 相纸比例与颜色：</strong></p>
+                <div style="display: flex; gap: 10px; margin-bottom: 5px;">
+                    <button style="flex: 1;" onclick="setMode('vertical')">📏 竖向模式</button>
+                    <button style="flex: 1;" onclick="setMode('horizontal')">📐 横向模式</button>
                 </div>
-
-                <p style="margin: 10px 0 5px 0;"><strong>2. 相纸颜色：</strong></p>
                 <div class="color-picker">
                     <div class="color-btn" style="background: #ffffff;" onclick="setFrameColor('#ffffff')"></div>
                     <div class="color-btn" style="background: #fce4ec;" onclick="setFrameColor('#fce4ec')"></div>
@@ -144,107 +101,191 @@ a:hover, button:hover {
                     <div class="color-btn" style="background: #fff9c4;" onclick="setFrameColor('#fff9c4')"></div>
                 </div>
 
+                <p><strong>2. 贴纸库 (点击添加，在预览框内拖动)：</strong></p>
+                <div class="btn-grid">
+                    <button onclick="addSticker('yunah', 'img')">YUNAH</button>
+                    <button onclick="addSticker('minju', 'img')">MINJU</button>
+                    <button onclick="addSticker('moka', 'img')">MOKA</button>
+                    <button onclick="addSticker('wonhee', 'img')">WONHEE</button>
+                    <button onclick="addSticker('iroha', 'img')">IROHA</button>
+                </div>
+                <div class="emoji-bar">
+                    <span onclick="addSticker('💖', 'emoji')">💖</span>
+                    <span onclick="addSticker('🌸', 'emoji')">🌸</span>
+                    <span onclick="addSticker('✨', 'emoji')">✨</span>
+                    <span onclick="addSticker('🍀', 'emoji')">🍀</span>
+                    <span onclick="addSticker('⭐', 'emoji')">⭐</span>
+                    <span onclick="addSticker('🎀', 'emoji')">🎀</span>
+                    <span onclick="addSticker('🐱', 'emoji')">🐱</span>
+                </div>
+
+                <p><strong>3. 自定义上传：</strong></p>
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="document.getElementById('upload-input').click()">🖼️ 上传本地图片</button>
+                    <input type="file" id="upload-input" style="display:none" accept="image/*" onchange="handleUpload(event)">
+                    <button style="color: red;" onclick="clearAll()">🗑️ 清空贴纸</button>
+                </div>
+
                 <hr>
                 <div style="display: flex; gap: 10px; justify-content: center;">
-                    <button id="snap" class="default" style="padding: 5px 25px;">📸 拍照并保存</button>
-                    <button onclick="window.location.href='index.html?from=internal'">返回桌面</button>
+                    <button id="snap" class="default" style="padding: 5px 30px;">📸 拍照并保存成片</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <canvas id="canvas" width="640" height="800"></canvas>
+    <canvas id="canvas"></canvas>
 
     <script>
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
-        const overlay = document.getElementById('member-overlay');
         const frame = document.getElementById('polaroid-frame');
+        const cameraView = document.getElementById('camera-view');
         const snap = document.getElementById('snap');
 
-        // 初始化日期
         document.getElementById('date-text').innerText = new Date().toISOString().split('T')[0].replace(/-/g, '.');
 
-        // 1. 开启摄像头
+        // 1. 启动摄像头
         async function startCam() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 800 }, audio: false });
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 }, audio: false });
                 video.srcObject = stream;
-            } catch (err) {
-                alert("摄像头开启失败，请检查权限！");
-            }
+            } catch (err) { alert("摄像头权限被拒绝"); }
         }
         startCam();
 
-        // 2. 选择成员
-        let currentMember = 'none';
-        function setMember(name) {
-            currentMember = name;
-            if (name === 'none') {
-                overlay.style.display = 'none';
-            } else {
-                overlay.src = `${name}_pose.png`; // 对应文件名
-                overlay.style.display = 'block';
+        // 2. 比例与颜色控制
+        function setMode(m) { 
+            frame.className = m; 
+            // 切换比例时，为了防止贴纸“飞走”，简单重置位置或清空
+        }
+        function setFrameColor(c) { frame.style.background = c; }
+
+        // 3. 贴纸系统 (多对象拖拽)
+        let dragTarget = null;
+        let startX, startY, initialX, initialY;
+
+        function makeDraggable(el) {
+            el.addEventListener('mousedown', (e) => {
+                dragTarget = el;
+                startX = e.clientX;
+                startY = e.clientY;
+                initialX = el.offsetLeft;
+                initialY = el.offsetTop;
+                el.style.zIndex = 1000;
+                e.preventDefault();
+            });
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            if (!dragTarget) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            
+            let nx = initialX + dx;
+            let ny = initialY + dy;
+
+            // 范围限制
+            const maxX = cameraView.clientWidth - dragTarget.clientWidth;
+            const maxY = cameraView.clientHeight - dragTarget.clientHeight;
+
+            dragTarget.style.left = Math.max(0, Math.min(nx, maxX)) + 'px';
+            dragTarget.style.top = Math.max(0, Math.min(ny, maxY)) + 'px';
+        });
+
+        document.addEventListener('mouseup', () => {
+            if(dragTarget) dragTarget.style.zIndex = 10;
+            dragTarget = null;
+        });
+
+        // 4. 添加贴纸逻辑
+        function addSticker(content, type) {
+            const el = document.createElement('div');
+            el.className = 'sticker ' + (type === 'emoji' ? 'emoji' : '');
+            el.style.left = '20px';
+            el.style.top = '20px';
+
+            if (type === 'emoji') {
+                el.innerText = content;
+            } else if (type === 'img') {
+                el.style.height = '70%'; // 成员默认高度
+                el.innerHTML = `<img src="${content}_pose.png" alt="sticker">`;
+            } else if (type === 'upload') {
+                el.style.height = '100px';
+                el.innerHTML = `<img src="${content}" alt="sticker">`;
+            }
+
+            cameraView.appendChild(el);
+            makeDraggable(el);
+        }
+
+        function handleUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => addSticker(ev.target.result, 'upload');
+                reader.readAsDataURL(file);
             }
         }
 
-        // 3. 换颜色
-        function setFrameColor(c) { frame.style.background = c; }
+        function clearAll() {
+            document.querySelectorAll('.sticker').forEach(s => s.remove());
+        }
 
-        // 4. 拍照下载
-        snap.addEventListener('click', () => {
+        // 5. 拍照保存 (精准计算每个贴纸比例)
+        snap.addEventListener('click', async () => {
             const ctx = canvas.getContext('2d');
+            const isH = frame.classList.contains('horizontal');
             
-            // 绘制背景颜色（模拟相纸）
+            // 画布分辨率
+            canvas.width = isH ? 1200 : 900;
+            canvas.height = isH ? 900 : 1200;
+
+            // 相纸背景
             ctx.fillStyle = frame.style.background || "#ffffff";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 绘制摄像头画面（镜像翻转回来）
+            // 计算视窗相对于画布的坐标
+            const margin = 40;
+            const camW = canvas.width - (margin * 2);
+            const camH = isH ? (canvas.height - 200) : (canvas.height - 250);
+
+            // 画视频层
             ctx.save();
-            ctx.translate(canvas.width - 40, 30); // 留出相纸边框
+            ctx.translate(canvas.width - margin, margin);
             ctx.scale(-1, 1);
-            ctx.drawImage(video, 0, 0, 560, 700);
+            ctx.drawImage(video, 0, 0, camW, camH);
             ctx.restore();
 
-            // 如果有成员，绘制成员
-            if (currentMember !== 'none') {
-                const img = new Image();
-                img.src = overlay.src;
-                img.onload = () => {
-                    const h = 700 * 0.85;
-                    const w = (img.width / img.height) * h;
-                    ctx.drawImage(img, 600 - w, 730 - h, w, h);
-                    saveImg();
-                };
-            } else {
-                saveImg();
+            // 渲染所有贴纸
+            const stickers = document.querySelectorAll('.sticker');
+            for (let s of stickers) {
+                const pL = s.offsetLeft / cameraView.clientWidth;
+                const pT = s.offsetTop / cameraView.clientHeight;
+                const pW = s.clientWidth / cameraView.clientWidth;
+                const pH = s.clientHeight / cameraView.clientHeight;
+
+                const targetX = margin + (pL * camW);
+                const targetY = margin + (pT * camH);
+                const targetW = pW * camW;
+                const targetH = pH * camH;
+
+                if (s.classList.contains('emoji')) {
+                    const baseSize = parseFloat(window.getComputedStyle(s).fontSize);
+                    const drawSize = (baseSize / cameraView.clientHeight) * camH;
+                    ctx.font = `${drawSize}px serif`;
+                    ctx.textBaseline = 'top';
+                    ctx.fillText(s.innerText, targetX, targetY);
+                } else {
+                    const img = s.querySelector('img');
+                    ctx.drawImage(img, targetX, targetY, targetW, targetH);
+                }
             }
-        });
 
-        function saveImg() {
             const link = document.createElement('a');
-            link.download = `illit_snap_${Date.now()}.png`;
-            link.href = canvas.toDataURL();
+            link.download = `ILLIT_BOOTH_STudio_${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
             link.click();
-        }
-
-        // --- 显眼星星特效 ---
-        document.addEventListener('mousemove', function(e) {
-            const star = document.createElement('div');
-            star.className = 'star-effect';
-            star.innerHTML = ['✨', '⭐', '🌸'][Math.floor(Math.random() * 3)];
-            star.style.color = ['#ff80ab', '#ce93d8', '#ffffff'][Math.floor(Math.random() * 3)];
-            star.style.left = e.clientX + 'px';
-            star.style.top = e.clientY + 'px';
-            document.body.appendChild(star);
-
-            let opacity = 1;
-            const ani = setInterval(() => {
-                opacity -= 0.05;
-                star.style.opacity = opacity;
-                star.style.top = (parseFloat(star.style.top) + 2) + 'px';
-                if (opacity <= 0) { clearInterval(ani); star.remove(); }
-            }, 30);
         });
     </script>
 </body>
