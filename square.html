@@ -212,11 +212,14 @@
             item.className = 'feed-item';
             
             // 九宫格显示内容
-            if (post.image) {
+                        if (post.image) {
+                // 如果有图就显示图
                 item.innerHTML = `<img src="${post.image}" class="post-img">`;
             } else {
-                item.innerHTML = `<div class="text-only-post">📝 纯文字</div>`;
+                // 如果没图，直接显示文字内容（取前20个字）
+                item.innerHTML = `<div class="text-only-post">${post.content.slice(0, 20)}</div>`;
             }
+
             
             // 点击格子弹出详情，并询问是否删除
             item.onclick = () => {
