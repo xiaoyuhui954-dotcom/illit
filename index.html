@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ILLIT WORLD 🎀</title>
     <style>
-        /* 核心背景：粉色波点纹理 */
+        /* 核心 Y2K 审美背景：粉色波点纹理 */
         body {
             margin: 0; padding: 0;
             background-color: #ffb2d1;
@@ -13,162 +13,89 @@
             background-size: 20px 20px;
             font-family: "Courier New", Courier, monospace;
             display: flex; flex-direction: column; align-items: center;
-            padding-bottom: 100px;
+            height: 100vh;
         }
 
-        /* 复古 Windows 窗口通用样式 */
+        /* 左上角版本标识 */
+        .version-label {
+            position: fixed; top: 20px; left: 20px;
+            color: #ffffff; font-size: 14px; opacity: 0.8;
+        }
+
+        /* 复古 Windows 窗口样式 */
         .window {
-            background: #fff; border: 2px solid #5a8bc1; box-shadow: 2px 2px 0px #000;
-            width: 90%; max-width: 450px; margin-top: 30px; position: relative;
+            background: #ffffff; border: 2px solid #5a8bc1; box-shadow: 2px 2px 0px #000;
+            width: 90%; max-width: 450px; margin-top: 80px; position: relative;
         }
         .win-header {
             background: linear-gradient(to right, #73a3d4, #b2d1f0);
             padding: 4px 8px; display: flex; justify-content: space-between;
             color: white; font-size: 12px; border-bottom: 2px solid #5a8bc1;
         }
-        .win-btns span { border: 1px solid #fff; padding: 0 5px; margin-left: 2px; background: #eee; color: #000; font-size: 10px; cursor: pointer; }
+        .win-btns span { border: 1px solid #fff; padding: 0 5px; margin-left: 2px; background: #eee; color: #000; font-size: 10px; }
 
-        /* --- 1. Dream Core 播放器 (复刻截图) --- */
-        .player-container {
-            background: #fff; border: 3px solid #333; border-radius: 30px;
-            width: 360px; padding: 15px; box-shadow: 0px 10px 20px rgba(0,0,0,0.1); margin-top: 30px;
+        /* 内容区 */
+        .win-body { text-align: center; }
+        .win-title-text { color: #ff4081; font-weight: bold; font-size: 20px; margin: 15px 0; }
+        .main-photo { width: 90%; border: 1px solid #999; margin-bottom: 10px; }
+        .welcome-text { font-size: 12px; text-align: left; padding: 0 20px 10px 20px; }
+
+        /* 六格导航按钮区 */
+        .nav-section { border-top: 1px solid #ccc; padding: 10px; text-align: left; }
+        .nav-label { font-size: 11px; margin-bottom: 8px; }
+        .nav-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;
         }
-        .player-top-info { display: flex; justify-content: space-between; font-size: 10px; color: #ffb2d1; margin-bottom: 8px; font-weight: bold; }
-        .battery { color: #4CAF50; }
-        .player-screen { background: #1a1a1a; border-radius: 10px; padding: 15px; text-align: center; margin-bottom: 15px; }
-        .cd-rotate { 
-            width: 120px; height: 120px; border-radius: 50%; border: 3px solid #fff; 
-            margin: 0 auto 10px; overflow: hidden; animation: rotateDisc 8s linear infinite; 
+        .btn-retro {
+            background: #efefef; border: 1px solid #999; padding: 5px 2px;
+            font-size: 11px; text-align: center; cursor: pointer; color: #000;
+            display: flex; align-items: center; justify-content: center; gap: 3px;
         }
-        .cd-rotate img { width: 100%; height: 100%; object-fit: cover; }
-        @keyframes rotateDisc { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .song-name { color: #ff8ab4; font-size: 13px; font-weight: bold; }
-        .controls { display: flex; justify-content: center; gap: 8px; }
-        .btn-ctrl { background: #fff; border: 2px solid #333; width: 50px; height: 35px; cursor: pointer; box-shadow: 2px 2px 0 #333; }
 
-        /* --- 2. 成员档案库 (3+2 布局) --- */
-        .member-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; padding: 0 10px; }
-        .mem-card { background: #fff; border: 1px solid #999; padding: 5px; width: 110px; cursor: pointer; text-align: center; }
-        .mem-photo-box { width: 100%; height: 120px; background: #eee; border: 1px solid #ccc; overflow: hidden; }
-        .mem-photo-box img { width: 100%; height: 100%; object-fit: cover; }
-        .mem-name { font-size: 10px; font-weight: bold; margin-top: 5px; color: #5a8bc1; }
-
-        /* --- 3. 详情弹窗、留言与合照区 --- */
-        #member-detail-win { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 300px; display: none; }
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 1500; display: none; }
-        .photo-zone { position: relative; width: 90%; height: 300px; border: 2px dashed #ff4081; background: #fff; margin: 10px auto; overflow: hidden; }
-        .sticker { position: absolute; width: 50px; cursor: move; z-index: 10; }
-        .guestbook-area { padding: 15px; }
-        .msg-input { width: 95%; border: 1px dashed #ff4081; padding: 5px; margin-bottom: 5px; }
-        .msg-list { max-height: 120px; overflow-y: auto; background: #fffafb; border: 1px solid #eee; padding: 5px; font-size: 11px; }
-        .btn-retro { background: #efefef; border: 1px solid #999; padding: 5px; font-size: 11px; width: 100%; cursor: pointer; }
+        /* 底部状态栏 */
+        .status-bar {
+            border-top: 2px solid #5a8bc1; background: #f0f0f0;
+            display: flex; justify-content: space-between; padding: 3px 10px; font-size: 11px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Dream Core 播放器 -->
-    <div class="player-container">
-        <div class="player-top-info"><span>✨ DREAM CORE PLAYER</span><span class="battery">🔋100%</span></div>
-        <div class="player-screen">
-            <div class="cd-rotate" id="cd"><img src="album_cover.png"></div>
-            <div class="song-name" id="current-song">Magnetic</div>
-        </div>
-        <div class="controls">
-            <button class="btn-ctrl">⏪</button>
-            <button class="btn-ctrl" onclick="togglePlay()">▶/II</button>
-            <button class="btn-ctrl">⏩</button>
-        </div>
-    </div>
+    <div class="version-label">ILLIT_Project_v1.exe</div>
 
-    <!-- 成员档案库 (3+2 布局) -->
     <div class="window">
-        <div class="win-header"><span>MEMBERS_PROFILE.exe</span><div class="win-btns"><span>_</span><span>▢</span><span>X</span></div></div>
-        <div class="win-body" style="padding-top:15px;">
-            <div class="member-row">
-                <div class="mem-card" onclick="openDetail('YUNAH')"><div class="mem-photo-box"><img src="yunah.png"></div><div class="mem-name">YUNAH</div></div>
-                <div class="mem-card" onclick="openDetail('MINJU')"><div class="mem-photo-box"><img src="minju.png"></div><div class="mem-name">MINJU</div></div>
-                <div class="mem-card" onclick="openDetail('MOKA')"><div class="mem-photo-box"><img src="moka.png"></div><div class="mem-name">MOKA</div></div>
+        <!-- 窗口头部 -->
+        <div class="win-header">
+            <span>WELCOME_TO_ILLIT.txt</span>
+            <div class="win-btns"><span>_</span><span>▢</span><span>X</span></div>
+        </div>
+
+        <!-- 窗口主体内容 -->
+        <div class="win-body">
+            <div class="win-title-text">Magnetic Love! 🎧</div>
+            <img src="group_photo.png" class="main-photo" alt="ILLIT Members">
+            <div class="welcome-text">欢迎来到 ILLIT WORLD。</div>
+
+            <!-- 导航功能区 -->
+            <div class="nav-section">
+                <div class="nav-label">快速访问:</div>
+                <div class="nav-grid">
+                    <div class="btn-retro">🎶 音乐频道</div>
+                    <div class="btn-retro">📁 档案库</div>
+                    <div class="btn-retro">🎮 换装游戏</div>
+                    <div class="btn-retro">📸 合照区</div>
+                    <div class="btn-retro">💬 留言区</div>
+                    <div class="btn-retro">✨ 粉丝广场</div>
+                </div>
             </div>
-            <div class="member-row">
-                <div class="mem-card" onclick="openDetail('WONHEE')"><div class="mem-photo-box"><img src="wonhee.png"></div><div class="mem-name">WONHEE</div></div>
-                <div class="mem-card" onclick="openDetail('IROHA')"><div class="mem-photo-box"><img src="iroha.png"></div><div class="mem-name">IROHA</div></div>
-            </div>
+        </div>
+
+        <!-- 底部状态 -->
+        <div class="status-bar">
+            <span>Status: Online</span>
+            <span>Members: 5</span>
         </div>
     </div>
 
-    <!-- 合照区 -->
-    <div class="window">
-        <div class="win-header"><span>PHOTO_ZONE.exe</span></div>
-        <div class="photo-zone" id="drop-zone">
-            <img src="group_photo.png" style="width:100%; height:100%; object-fit:cover;">
-            <img src="heart.png" class="sticker" style="top:10px; left:10px;">
-        </div>
-        <div style="padding: 10px;"><button class="btn-retro">SAVE PHOTO</button></div>
-    </div>
-
-    <!-- 留言区 -->
-    <div class="window">
-        <div class="win-header"><span>GUESTBOOK.txt</span></div>
-        <div class="guestbook-area">
-            <textarea class="msg-input" id="msgInput" placeholder="留言..."></textarea>
-            <button class="btn-retro" onclick="addMessage()">SEND</button>
-            <div class="msg-list" id="msgList"><div>🎀 Welcome!</div></div>
-        </div>
-    </div>
-
-    <!-- 详情弹窗模块 -->
-    <div id="overlay" onclick="closeDetail()"></div>
-    <div class="window" id="member-detail-win">
-        <div class="win-header"><span id="detail-win-title">INFO.txt</span><div class="win-btns"><span onclick="closeDetail()">X</span></div></div>
-        <div class="win-body" style="padding: 15px;">
-            <img id="detail-img" src="" style="width: 100%; border: 1px solid #ddd;">
-            <h3 id="detail-name" style="color: #ff4081; margin: 5px 0;">NAME</h3>
-            <p id="detail-info" style="font-size: 11px; white-space: pre-line;"></p>
-            <button class="btn-retro" onclick="closeDetail()">CLOSE</button>
-        </div>
-    </div>
-
-    <script>
-        // 播放器控制
-        let isPlaying = true;
-        function togglePlay() {
-            isPlaying = !isPlaying;
-            document.getElementById('cd').style.animationPlayState = isPlaying ? 'running' : 'paused';
-        }
-
-        // 成员数据
-        const memberData = {
-            'YUNAH': { img: 'yunah.png', info: '生日：2004.01.15\n特点：活力队长。' },
-            'MINJU': { img: 'minju.png', info: '生日：2004.05.11\n特点：蜜嗓音色。' },
-            'MOKA': { img: 'moka.png', info: '生日：2004.10.08\n特点：表情匠人。' },
-            'WONHEE': { img: 'wonhee.png', info: '生日：2007.06.26\n特点：清纯魅力。' },
-            'IROHA': { img: 'iroha.png', info: '生日：2008.02.04\n特点：忙内主舞。' }
-        };
-
-        function openDetail(name) {
-            const d = memberData[name];
-            document.getElementById('detail-win-title').innerText = name + '.txt';
-            document.getElementById('detail-name').innerText = name;
-            document.getElementById('detail-img').src = d.img;
-            document.getElementById('detail-info').innerText = d.info;
-            document.getElementById('member-detail-win').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        function closeDetail() {
-            document.getElementById('member-detail-win').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
-
-        function addMessage() {
-            const input = document.getElementById('msgInput');
-            if(input.value) {
-                const div = document.createElement('div');
-                div.innerText = "✨ " + input.value;
-                document.getElementById('msgList').prepend(div);
-                input.value = "";
-            }
-        }
-    </script>
 </body>
 </html>
