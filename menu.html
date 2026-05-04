@@ -6,16 +6,41 @@
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="style.css">
     <style>
+        /* 核心修改：3+2 布局逻辑 */
         .archive-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            /* 强制分为三列 */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 20px;
             padding: 10px;
+        }
+
+        /* 针对第二排的处理：让最后两个卡片居中 */
+        /* 我们通过让第4个卡片从第1列的末尾（或第1.5列）开始，但更稳妥的做法是利用 Grid 的位置指定 */
+        .member-card:nth-child(4) {
+            grid-column: 1 / 2;
+            margin-left: 50%; /* 向右偏移半个身位实现视觉居中 */
+        }
+        .member-card:nth-child(5) {
+            grid-column: 2 / 3;
+            margin-left: 50%;
+        }
+
+        /* 响应式适配：如果是手机端，自动恢复为单列或双列 */
+        @media (max-width: 800px) {
+            .archive-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            }
+            .member-card:nth-child(4), .member-card:nth-child(5) {
+                grid-column: auto;
+                margin-left: 0;
+            }
         }
 
         .member-card {
             text-align: center;
             background: #fff;
+            height: fit-content;
         }
 
         .member-img {
@@ -42,7 +67,6 @@
             text-align: center;
         }
 
-        /* 升级版星星特效样式 */
         .star-effect {
             position: fixed;
             pointer-events: none;
@@ -58,7 +82,7 @@
         <div class="title-bar">
             <div class="title-bar-text">ILLIT_Official_Profiles.dat</div>
             <div class="title-bar-controls">
-                <button aria-label="Close" onclick="window.location.href='index.html?from=internal'"></button>
+                <button aria-label="Close" onclick="window.location.href='index.html'"></button>
             </div>
         </div>
         <div class="window-body">
@@ -66,6 +90,7 @@
             <hr>
 
             <div class="archive-grid">
+                <!-- 第一排 -->
                 <div class="window member-card">
                     <div class="title-bar"><div class="title-bar-text">YUNAH.bmp</div></div>
                     <div class="window-body">
@@ -105,6 +130,7 @@
                     </div>
                 </div>
 
+                <!-- 第二排 -->
                 <div class="window member-card">
                     <div class="title-bar"><div class="title-bar-text">WONHEE.bmp</div></div>
                     <div class="window-body">
@@ -134,44 +160,35 @@
 
             <hr>
             <div style="text-align: center; margin-top: 20px;">
-                <button style="padding: 5px 25px;" onclick="window.location.href='index.html?from=internal'">返回系统桌面</button>
+                <button style="padding: 5px 25px;" onclick="window.location.href='index.html'">返回系统桌面</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 显眼星星特效脚本 ---
+        // 星星特效保持不变
         document.addEventListener('mousemove', function(e) {
             const star = document.createElement('div');
             const colors = ['#ff80ab', '#f48fb1', '#ce93d8', '#ffffff'];
             const icons = ['✨', '⭐', '🌸'];
-            
             star.className = 'star-effect';
             star.innerHTML = icons[Math.floor(Math.random() * icons.length)];
             star.style.color = colors[Math.floor(Math.random() * colors.length)];
             star.style.left = e.clientX + 'px';
             star.style.top = e.clientY + 'px';
-            
             document.body.appendChild(star);
-
             let speedY = Math.random() * 2 + 1;
             let speedX = (Math.random() - 0.5) * 2;
             let opacity = 1;
-
             const animation = setInterval(() => {
                 opacity -= 0.02;
                 let currentTop = parseFloat(star.style.top);
                 let currentLeft = parseFloat(star.style.left);
-                
                 star.style.top = (currentTop + speedY) + 'px';
                 star.style.left = (currentLeft + speedX) + 'px';
                 star.style.opacity = opacity;
                 star.style.transform = `scale(${opacity + 0.5}) rotate(${currentTop}deg)`;
-
-                if (opacity <= 0) {
-                    clearInterval(animation);
-                    star.remove();
-                }
+                if (opacity <= 0) { clearInterval(animation); star.remove(); }
             }, 30);
         });
     </script>
