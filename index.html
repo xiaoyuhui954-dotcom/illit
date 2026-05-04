@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ILLIT WORLD 🎀</title>
     <style>
-        /* 背景：粉色波点 */
+        /* 保持粉色波点背景 */
         body {
             margin: 0; padding: 0;
             background-color: #ffb2d1;
@@ -13,64 +13,80 @@
             background-size: 20px 20px;
             font-family: sans-serif;
             display: flex; justify-content: center; align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
-        /* 左上角微小文字 */
         .ver-tag {
             position: fixed; top: 10px; left: 15px;
             color: rgba(255,255,255,0.6); font-size: 10px;
         }
 
-        /* 核心窗口样式：参考第二张图 */
+        /* 响应式窗口：核心修改点 */
         .window {
             background: #ffffff; 
             border: 2px solid #5a8bc1; 
-            width: 320px; /* 紧凑型尺寸 */
-            box-shadow: 1px 1px 0px #000;
+            /* 在手机上占 90% 宽度，在电脑上最大 600px（你可以根据喜好调整这个最大值） */
+            width: 90%; 
+            max-width: 550px; 
+            box-shadow: 2px 2px 0px #000;
+            display: flex;
+            flex-direction: column;
         }
 
         /* 蓝白渐变标题栏 */
         .win-header {
             background: linear-gradient(to right, #73a3d4, #b2d1f0);
-            height: 22px; display: flex; justify-content: space-between;
-            align-items: center; padding: 0 5px;
+            height: 30px; /* 稍微加高了一点点，方便大屏操作 */
+            display: flex; justify-content: space-between;
+            align-items: center; padding: 0 8px;
             border-bottom: 2px solid #5a8bc1;
         }
-        .win-title { color: white; font-size: 11px; }
+        .win-title { color: white; font-size: 14px; font-weight: bold; }
         .win-controls span {
             border: 1px solid #fff; background: #eee;
-            font-size: 9px; padding: 0 3px; margin-left: 1px;
+            font-size: 11px; padding: 1px 5px; margin-left: 2px; box-shadow: 1px 1px 0px #000;
         }
 
-        /* 主体内容区 */
+        /* 内容区 */
         .win-content { text-align: center; }
-        .pink-title { color: #ff4081; font-weight: bold; margin: 10px 0; font-size: 16px; }
+        .pink-title { color: #ff4081; font-weight: bold; margin: 20px 0; font-size: 24px; }
         
-        /* 中间五人合照图 */
-        .photo-frame { width: 90%; border: 1px solid #888; margin: 0 auto; display: block; }
+        /* 图片随容器变大 */
+        .photo-frame { 
+            width: 90%; 
+            height: auto;
+            border: 1px solid #888; 
+            margin: 0 auto; 
+            display: block; 
+        }
 
-        .welcome-msg { text-align: left; font-size: 11px; padding: 8px 15px; border-bottom: 1px solid #ccc; }
+        .welcome-msg { text-align: left; font-size: 14px; padding: 15px 25px; border-bottom: 1px solid #ccc; line-height: 1.5; }
 
-        /* 快速访问区域 */
-        .quick-access { padding: 8px 15px; text-align: left; }
-        .access-label { font-size: 10px; margin-bottom: 5px; color: #333; }
+        /* 快速访问：响应式布局 */
+        .quick-access { padding: 15px 25px; text-align: left; }
+        .access-label { font-size: 12px; margin-bottom: 10px; color: #333; font-weight: bold; }
 
-        /* 按钮网格：严格复刻按钮样式 */
-        .nav-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+        .nav-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 8px; 
+        }
+        
         .btn-retro {
             background: #e1e1e1; border: 1px solid #999;
-            padding: 4px 2px; font-size: 11px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 4px;
-            box-shadow: inset 1px 1px 0 #fff;
+            padding: 10px 5px; font-size: 13px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            box-shadow: 2px 2px 0px #999, inset 1px 1px 0 #fff;
+            transition: 0.2s;
         }
-        .btn-retro:active { box-shadow: inset 1px 1px 2px #888; background: #d1d1d1; }
+        .btn-retro:hover { background: #eee; transform: translate(-1px, -1px); box-shadow: 3px 3px 0px #888; }
+        .btn-retro:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0px #999; }
 
         /* 底部状态栏 */
         .status-bar {
-            background: #f0f0f0; border-top: 1px solid #999;
+            background: #f0f0f0; border-top: 2px solid #5a8bc1;
             display: flex; justify-content: space-between;
-            padding: 2px 10px; font-size: 10px; color: #444;
+            padding: 5px 15px; font-size: 12px; color: #444;
         }
     </style>
 </head>
@@ -79,6 +95,7 @@
     <div class="ver-tag">ILLIT_Project_v1.exe</div>
 
     <div class="window">
+        <!-- 标题栏 -->
         <div class="win-header">
             <div class="win-title">WELCOME_TO_ILLIT.txt</div>
             <div class="win-controls"><span>_</span><span>▢</span><span>X</span></div>
@@ -87,8 +104,8 @@
         <div class="win-content">
             <div class="pink-title">Magnetic Love! 🎧</div>
             
-            <!-- 这里替换为你自己的合照图片路径 -->
-            <img src="IMG_4415.jpeg" class="photo-frame" alt="ILLIT">
+            <!-- 这里确保引用你想要的那张五人图 -->
+            <img src="image_48.png" class="photo-frame" alt="ILLIT">
 
             <div class="welcome-msg">欢迎来到 ILLIT WORLD。</div>
 
@@ -99,12 +116,13 @@
                     <div class="btn-retro" onclick="location.href='menu.html'">📁 档案库</div>
                     <div class="btn-retro" onclick="location.href='game.html'">🎮 换装游戏</div>
                     <div class="btn-retro" onclick="location.href='photos.html'">📸 合照区</div>
-                    <div class="btn-retro" onclick="location.href='messages.html'">💬 留言区</div>
+                    <div class="btn-retro" onclick="location.href='guestbook.html'">💬 留言区</div>
                     <div class="btn-retro" onclick="location.href='square.html'">✨ 粉丝广场</div>
                 </div>
             </div>
         </div>
 
+        <!-- 状态栏 -->
         <div class="status-bar">
             <span>Status: Online</span>
             <span>Members: 5</span>
