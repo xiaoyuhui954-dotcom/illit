@@ -17,9 +17,33 @@
         .closet { width: 150px; display: flex; flex-direction: column; gap: 10px; }
         .item-box { border: 1px solid #888; padding: 5px; background: #eee; cursor: pointer; text-align: center; }
         .item-box:hover { background: #ffc1e3; }
+        .global-nav-bar {
+    width: 100%; background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px); border-bottom: 2px solid #ff80ab;
+    padding: 8px 0; display: flex; justify-content: center;
+    gap: 15px; position: fixed; top: 0; left: 0; z-index: 9999;
+}
+.global-nav-bar a {
+    text-decoration: none; color: #ff4081; font-size: 12px;
+    font-weight: bold; padding: 3px 8px;
+}
+/* 确保游戏窗口向下移，不挡住 UI */
+#game-container, .game-window { margin-top: 60px; }
+
     </style>
 </head>
 <body style="background-color: #f8bbd0; padding: 20px;">
+    <div class="global-nav-bar">
+    <a href="index.html">🏠 首页</a>
+    <a href="music.html">🎶 音乐</a>
+    <a href="menu.html">📁 档案</a>
+    <a href="game.html">🎮 游戏</a>
+    <a href="photo.html">📸 合照</a>
+    <a href="messages.html">💬 留言</a>
+    <a href="square.html">✨ 广场</a>
+</div>
+
+    
 
     <div class="window" style="width: 450px; margin: 0 auto;">
         <div class="title-bar">
